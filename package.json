@@ -1,0 +1,38 @@
+{
+  "name": "aevim",
+  "version": "1.0.0",
+  "description": "Aevim fullstack application monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --workspace=@aevim/backend",
+    "dev:frontend": "npm run dev --workspace=@aevim/frontend",
+    "start:backend": "npm run start --workspace=@aevim/backend",
+    "start:frontend": "npm run start --workspace=@aevim/frontend",
+    "build": "npm run build --workspaces --if-present",
+    "build:backend": "npm run build --workspace=@aevim/backend --if-present",
+    "build:frontend": "npm run build --workspace=@aevim/frontend --if-present",
+    "install:all": "npm install",
+    "clean": "npm run clean --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "db:users:reset": "npm run db:users:reset --workspace=@aevim/backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geriszabo/aevim.git"
+  },
+  "author": "Gergő Szabó",
+  "license": "MIT"
+}
