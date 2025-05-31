@@ -1,0 +1,32 @@
+http://localhost:3000
+
+###
+
+POST http://localhost:3000/api/v1/signup
+Content-Type: application/json
+
+{
+    "email": "test@test.com",
+    "password": "password123"
+}
+
+###
+# @name login
+
+POST http://localhost:3000/api/v1/login
+Content-Type: application/json
+
+{
+    "email": "test@test.com",
+    "password": "password123"
+}
+
+###
+
+GET http://localhost:3000/api/v1/auth/me
+Cookie: {{login.response.headers.Set-Cookie}}
+
+###
+
+POST http://localhost:3000/api/v1/logout
+Content-Type: application/json

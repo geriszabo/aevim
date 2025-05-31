@@ -1,0 +1,22 @@
+{
+  "name": "@aevim/backend",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun run --hot src/index.ts",
+    "db:users:reset": "bun run scripts/reset-users.ts"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.6.0",
+    "hono": "^4.7.10",
+    "zod": "^3.25.30"
+  }
+}
