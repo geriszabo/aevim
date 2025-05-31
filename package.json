@@ -19,10 +19,6 @@
     "build": "npm run build:backend && npm run build:frontend",
     "build:backend": "cd apps/backend && bun run build",
     "build:frontend": "cd apps/frontend && npm run build",
-    "install:all": "npm install",
-    "clean": "npm run clean:backend && npm run clean:frontend",
-    "clean:backend": "cd apps/backend && rm -rf node_modules",
-    "clean:frontend": "cd apps/frontend && rm -rf node_modules",
     "db:users:reset": "cd apps/backend && bun run db:users:reset"
   },
   "devDependencies": {
