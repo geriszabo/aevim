@@ -9,18 +9,21 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "npm run dev --workspace=@aevim/backend",
-    "dev:frontend": "npm run dev --workspace=@aevim/frontend",
-    "start:backend": "npm run start --workspace=@aevim/backend",
-    "start:frontend": "npm run start --workspace=@aevim/frontend",
-    "build": "npm run build --workspaces --if-present",
-    "build:backend": "npm run build --workspace=@aevim/backend --if-present",
-    "build:frontend": "npm run build --workspace=@aevim/frontend --if-present",
+    "dev:backend": "cd apps/backend && bun run dev",
+    "dev:frontend": "cd apps/frontend && npm run dev",
+    "start:backend": "cd apps/backend && bun run start",
+    "start:frontend": "cd apps/frontend && npm run start",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd apps/backend && bun test",
+    "test:frontend": "cd apps/frontend && npm test",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "cd apps/backend && bun run build",
+    "build:frontend": "cd apps/frontend && npm run build",
     "install:all": "npm install",
-    "clean": "npm run clean --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
-    "db:users:reset": "npm run db:users:reset --workspace=@aevim/backend"
+    "clean": "npm run clean:backend && npm run clean:frontend",
+    "clean:backend": "cd apps/backend && rm -rf node_modules",
+    "clean:frontend": "cd apps/frontend && rm -rf node_modules",
+    "db:users:reset": "cd apps/backend && bun run db:users:reset"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
@@ -33,6 +36,6 @@
     "type": "git",
     "url": "https://github.com/geriszabo/aevim.git"
   },
-  "author": "Gergő Szabó",
+  "author": "Gergo Szabo",
   "license": "MIT"
 }
