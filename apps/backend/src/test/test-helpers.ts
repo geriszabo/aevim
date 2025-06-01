@@ -1,3 +1,11 @@
+export interface AddWorkoutRequestProps {
+  date?: string;
+  name?: string;
+  notes?: string;
+  userId?: string;
+  cookie?: string;
+}
+
 export const signupRequest = (
   email = "test@test.com",
   password = "password123"
@@ -34,7 +42,29 @@ export const logoutRequest = () => {
   return new Request("http://localhost:3000/api/v1/logout", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
-    }
-  })
-}
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const addWorkoutRequest = ({
+  date = "2022.08.25",
+  name = "crossfit session",
+  notes = "im dead",
+  userId = "szabogeri69",
+  cookie = "",
+}: AddWorkoutRequestProps) => {
+  return new Request("http://localhost:3000/api/v1/auth/workouts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: cookie,
+    },
+    body: JSON.stringify({
+      name,
+      notes,
+      date,
+      user_id: userId,
+    }),
+  });
+};
