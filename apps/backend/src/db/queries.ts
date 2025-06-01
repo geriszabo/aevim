@@ -1,5 +1,6 @@
 import { type UUID, randomUUID } from "crypto";
 import { Database } from "bun:sqlite";
+import { type WorkoutData } from "@aevim/shared-types";
 
 export const insertUser = async (
   db: Database,
@@ -37,4 +38,27 @@ export const getUserById = (db: Database, id: string) => {
 
   const user = userQuery.get(id) as { id: string; email: string } | null;
   return user;
+};
+
+export const insertWorkout = (
+  db: Database,
+  workoutData: WorkoutData,
+  userId: string
+) => {
+  const { date, name, notes } = workoutData;
+  const workoutId = randomUUID();
+  const workoutQuery = db.query(`
+    INSERT INTO workouts (id, user_id, name, notes, date)
+    VALUES (?, ?, ?, ?, ?)
+    RETURNING *
+    `);
+  const workout = workoutQuery.get(
+    workoutId,
+    userId,
+    name,
+    notes || null,
+    date
+  );
+
+  return workout;
 };

@@ -1,7 +1,13 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb } from "../test/test-db";
-import { getUserByEmail, getUserById, insertUser } from "./queries";
+import {
+  getUserByEmail,
+  getUserById,
+  insertUser,
+  insertWorkout,
+} from "./queries";
+import type { WorkoutData } from "@aevim/shared-types";
 
 let db: Database;
 
@@ -82,5 +88,41 @@ describe("getUsersById", () => {
   it("returns null if user does not exist", async () => {
     const user = getUserById(db, "anyId");
     expect(user).toBeNull();
+  });
+});
+
+describe("insertWorkout", () => {
+  it("inserts a workout", async () => {
+    const workoutData: WorkoutData = {
+      date: "now",
+      name: "gym session",
+      notes: "just a couple of notes",
+    };
+    const userId = "userId1";
+    const workout = await insertWorkout(db, workoutData, userId);
+    expect(workout).toEqual({
+      id: expect.any(String),
+      user_id: userId,
+      name: workoutData.name,
+      notes: workoutData.notes,
+      date: workoutData.date,
+      created_at: expect.any(String),
+    });
+  });
+
+  it("throws error if date or name are missing", async () => {
+    const workoutData = {
+      date: undefined,
+      name: undefined,
+    } as unknown as WorkoutData;
+    const userId = "userId1";
+    try {
+      await insertWorkout(db, workoutData, userId);
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/NOT NULL constraint failed/);
+      }
+    }
   });
 });
