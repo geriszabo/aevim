@@ -70,6 +70,7 @@ describe("/workouts endpoint", () => {
     } as unknown as AddWorkoutRequestProps);
     const res = await app.fetch(req);
     const json = await res.json();
+    expect(res.status).toBe(400);
     expect(json).toEqual({
       errors: [
         "You have to give the workout a name",
