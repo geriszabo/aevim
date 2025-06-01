@@ -1,6 +1,7 @@
 import { type UUID, randomUUID } from "crypto";
 import { Database } from "bun:sqlite";
-import { type WorkoutData } from "@aevim/shared-types";
+import { type Workout} from "@aevim/shared-types";
+import type { WorkoutData } from "../types/workout";
 
 export const insertUser = async (
   db: Database,
@@ -61,4 +62,15 @@ export const insertWorkout = (
   );
 
   return workout;
+};
+
+export const getUserWorkouts = (db: Database, userId: string) => {
+  const userWorkoutsQuery = db.query(`
+    SELECT id, name, notes, date, created_at FROM workouts
+    WHERE user_id = ?
+    ORDER BY date DESC
+    `);
+
+  const workoutsArray = userWorkoutsQuery.all(userId) as Workout[];
+  return workoutsArray;
 };
