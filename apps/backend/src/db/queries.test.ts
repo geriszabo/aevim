@@ -4,10 +4,12 @@ import { createTestDb } from "../test/test-db";
 import {
   getUserByEmail,
   getUserById,
+  getUserWorkouts,
   insertUser,
   insertWorkout,
 } from "./queries";
-import type { WorkoutData } from "@aevim/shared-types";
+import type { WorkoutData } from "../types/workout";
+import type { Workout } from "@aevim/shared-types";
 
 let db: Database;
 
@@ -18,6 +20,12 @@ beforeEach(() => {
 afterEach(() => {
   db.close();
 });
+
+const workoutData: WorkoutData = {
+  date: "now",
+  name: "gym session",
+  notes: "just a couple of notes",
+};
 
 describe("insertUser", () => {
   it("inserts user", async () => {
@@ -93,11 +101,6 @@ describe("getUsersById", () => {
 
 describe("insertWorkout", () => {
   it("inserts a workout", async () => {
-    const workoutData: WorkoutData = {
-      date: "now",
-      name: "gym session",
-      notes: "just a couple of notes",
-    };
     const userId = "userId1";
     const workout = await insertWorkout(db, workoutData, userId);
     expect(workout).toEqual({
@@ -125,4 +128,44 @@ describe("insertWorkout", () => {
       }
     }
   });
+});
+
+describe("getUserWorkouts", () => {
+  const userId = "userId1";
+
+  it("returns users workouts", async () => {
+    const count = 3;
+    for (let i = 0; i < count; i++) {
+      await insertWorkout(db, workoutData, userId);
+    }
+    const workouts = getUserWorkouts(db, userId);
+    const expectedWorkout = {
+      id: expect.any(String),
+      name: "gym session",
+      created_at: expect.any(String),
+      date: "now",
+      notes: "just a couple of notes",
+    };
+
+    expect(workouts).toHaveLength(count);
+    workouts.forEach((workout) => {
+      expect(workout).toMatchObject(expectedWorkout);
+    });
+  });
+
+  it("returns [] if user does not have any logged workouts", async () => {
+    const workouts = getUserWorkouts(db, userId);
+    expect(workouts).toEqual([]);
+  });
+
+  it("does not return workouts belonging to other users", async () => {
+  await insertWorkout(db, workoutData, userId);
+  await insertWorkout(db, workoutData, userId);
+  await insertWorkout(db, workoutData, "differentUser");
+  const workouts = getUserWorkouts(db, userId);
+  const differentUserWorkouts = workouts.filter(workout => workout.user_id === "differentUser")
+  expect(workouts).toHaveLength(2)
+  expect(differentUserWorkouts).toHaveLength(0)
+  expect(differentUserWorkouts).toEqual([])
+});
 });
