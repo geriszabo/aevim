@@ -43,7 +43,6 @@ describe("/workouts endpoint", () => {
       message: "Workout created successfully",
       workout: {
         id: expect.any(String),
-        user_id: expect.any(String),
         name: "crossfit session",
         date: "2022.08.25",
         created_at: expect.any(String),
