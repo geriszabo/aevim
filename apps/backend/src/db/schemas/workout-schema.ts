@@ -12,9 +12,12 @@ export const workoutValidator = zValidator(
   workoutSchema,
   (result, c) => {
     if (!result.success) {
-      return c.json({
-        errors: result.error.issues.map((issue) => issue.message),
-      });
+      return c.json(
+        {
+          errors: result.error.issues.map((issue) => issue.message),
+        },
+        400
+      );
     }
   }
 );
