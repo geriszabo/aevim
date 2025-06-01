@@ -30,3 +30,14 @@ Cookie: {{login.response.headers.Set-Cookie}}
 
 POST http://localhost:3000/api/v1/logout
 Content-Type: application/json
+
+###
+
+POST http://localhost:3000/api/v1/auth/workouts
+Cookie: {{login.response.headers.Set-Cookie}}
+Content-Type: application/json
+
+{
+    "date": "2025.05.15",
+    "name": "yoga session"
+}
