@@ -4,7 +4,8 @@ import { createTestDb } from "../test/test-db";
 import {
   getUserByEmail,
   getUserById,
-  getUserWorkouts,
+  getWorkoutById,
+  getWorkoutsByUserId,
   insertUser,
   insertWorkout,
 } from "./queries";
@@ -105,7 +106,6 @@ describe("insertWorkout", () => {
     const workout = await insertWorkout(db, workoutData, userId);
     expect(workout).toEqual({
       id: expect.any(String),
-      user_id: userId,
       name: workoutData.name,
       notes: workoutData.notes,
       date: workoutData.date,
@@ -130,15 +130,15 @@ describe("insertWorkout", () => {
   });
 });
 
-describe("getUserWorkouts", () => {
+describe("getWorkoutsByUserId", () => {
   const userId = "userId1";
 
   it("returns users workouts", async () => {
     const count = 3;
     for (let i = 0; i < count; i++) {
-      await insertWorkout(db, workoutData, userId);
+      insertWorkout(db, workoutData, userId);
     }
-    const workouts = getUserWorkouts(db, userId);
+    const workouts = getWorkoutsByUserId(db, userId);
     const expectedWorkout = {
       id: expect.any(String),
       name: "gym session",
@@ -154,18 +154,49 @@ describe("getUserWorkouts", () => {
   });
 
   it("returns [] if user does not have any logged workouts", async () => {
-    const workouts = getUserWorkouts(db, userId);
+    const workouts = getWorkoutsByUserId(db, userId);
     expect(workouts).toEqual([]);
   });
 
   it("does not return workouts belonging to other users", async () => {
-  await insertWorkout(db, workoutData, userId);
-  await insertWorkout(db, workoutData, userId);
-  await insertWorkout(db, workoutData, "differentUser");
-  const workouts = getUserWorkouts(db, userId);
-  const differentUserWorkouts = workouts.filter(workout => workout.user_id === "differentUser")
-  expect(workouts).toHaveLength(2)
-  expect(differentUserWorkouts).toHaveLength(0)
-  expect(differentUserWorkouts).toEqual([])
+    insertWorkout(db, workoutData, userId);
+    insertWorkout(db, workoutData, userId);
+    insertWorkout(db, workoutData, "differentUser");
+    const workouts = getWorkoutsByUserId(db, userId);
+    const differentUserWorkouts = workouts.filter(
+      (workout) => workout.user_id === "differentUser"
+    );
+    expect(workouts).toHaveLength(2);
+    expect(differentUserWorkouts).toHaveLength(0);
+    expect(differentUserWorkouts).toEqual([]);
+  });
 });
+
+describe("getWorkoutById", () => {
+  const userId = "userId1";
+
+  it("returns workout with given id", async () => {
+    insertWorkout(
+      db,
+      { date: "today", name: "workout 1", notes: "note for workout 1" },
+      userId
+    );
+    insertWorkout(
+      db,
+      { date: "tomorrow", name: "workout 2", notes: "note for workout 2" },
+      userId
+    );
+    const workouts = getWorkoutsByUserId(db, userId);
+    expect(workouts).toHaveLength(2);
+    const firstWorkout = getWorkoutById(db, userId, workouts[1]?.id!);
+    expect(firstWorkout).toBeDefined();
+
+    expect(firstWorkout).toEqual({
+      id: workouts[1]!.id,
+      name: "workout 1",
+      notes: "note for workout 1",
+      date: "today",
+      created_at: expect.any(String),
+    });
+  });
 });
