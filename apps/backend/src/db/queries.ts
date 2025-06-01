@@ -1,7 +1,9 @@
 import { type UUID, randomUUID } from "crypto";
 import { Database } from "bun:sqlite";
-import { type Workout} from "@aevim/shared-types";
+import { type Workout } from "@aevim/shared-types";
 import type { WorkoutData } from "../types/workout";
+
+type WorkoutWithoutUserId = Omit<Workout, "user_id">
 
 export const insertUser = async (
   db: Database,
@@ -51,7 +53,7 @@ export const insertWorkout = (
   const workoutQuery = db.query(`
     INSERT INTO workouts (id, user_id, name, notes, date)
     VALUES (?, ?, ?, ?, ?)
-    RETURNING *
+    RETURNING id, name, notes, date, created_at
     `);
   const workout = workoutQuery.get(
     workoutId,
@@ -59,12 +61,12 @@ export const insertWorkout = (
     name,
     notes || null,
     date
-  );
+  ) as WorkoutWithoutUserId
 
   return workout;
 };
 
-export const getUserWorkouts = (db: Database, userId: string) => {
+export const getWorkoutsByUserId = (db: Database, userId: string) => {
   const userWorkoutsQuery = db.query(`
     SELECT id, name, notes, date, created_at FROM workouts
     WHERE user_id = ?
@@ -73,4 +75,18 @@ export const getUserWorkouts = (db: Database, userId: string) => {
 
   const workoutsArray = userWorkoutsQuery.all(userId) as Workout[];
   return workoutsArray;
+};
+
+export const getWorkoutById = (
+  db: Database,
+  userId: string,
+  workoutId: string
+) => {
+  const userWorkoutQuery = db.query(`
+    SELECT id, name, notes, date, created_at FROM workouts
+    WHERE user_id = ? AND id = ?
+    `);
+
+  const workout = userWorkoutQuery.get(userId, workoutId) as WorkoutWithoutUserId | null;
+  return workout;
 };
