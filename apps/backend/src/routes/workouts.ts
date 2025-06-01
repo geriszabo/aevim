@@ -9,7 +9,6 @@ workouts.post("/workouts", workoutValidator, async (c) => {
   const db = dbConnect();
   const payload = c.get("jwtPayload");
   const { date, name, notes } = c.req.valid("json");
-  console.log(date, name, notes);
   try {
     const workout = await insertWorkout(db, { date, name, notes }, payload.sub);
     return c.json({ message: "Workout created successfully", workout });
