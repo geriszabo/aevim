@@ -1,9 +1,8 @@
 import { type UUID, randomUUID } from "crypto";
 import { Database } from "bun:sqlite";
 import { type Workout } from "@aevim/shared-types";
-import type { WorkoutData } from "../types/workout";
+import type { WorkoutData, WorkoutWithoutUserId } from "../types/workout";
 
-type WorkoutWithoutUserId = Omit<Workout, "user_id">
 
 export const insertUser = async (
   db: Database,
