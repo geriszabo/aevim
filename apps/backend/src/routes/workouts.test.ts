@@ -5,13 +5,14 @@ import { createTestDb } from "../test/test-db";
 import app from "../index";
 import {
   addWorkoutRequest,
-  getWorkoutsRequest,
+  getAllWorkoutsRequest,
+  getSingleWorkoutRequest,
   loginrequest,
   logoutRequest,
   signupRequest,
   type AddWorkoutRequestProps,
 } from "../test/test-helpers";
-import { insertWorkout} from "../db/queries";
+import { insertWorkout } from "../db/queries";
 import type { Workout } from "@aevim/shared-types";
 import type { WorkoutWithoutUserId } from "../types/workout";
 
@@ -86,14 +87,13 @@ describe("/workouts endpoint", () => {
   });
 
   describe("GET /workouts", () => {
-    const userId = "szabogeri69";
     it("returns all workouts for the authenticated user", async () => {
       const { cookie } = await loginFlow();
 
       await app.fetch(addWorkoutRequest({ cookie: cookie! }));
       await app.fetch(addWorkoutRequest({ cookie: cookie! }));
 
-      const req = getWorkoutsRequest(userId, cookie!);
+      const req = getAllWorkoutsRequest(cookie!);
       const res = await app.fetch(req);
       const json = (await res.json()) as { workouts: WorkoutWithoutUserId[] };
 
@@ -113,13 +113,53 @@ describe("/workouts endpoint", () => {
     it("returns an empty array if user has no workouts", async () => {
       const { cookie } = await loginFlow();
 
-      const req = getWorkoutsRequest(userId, cookie!);
+      const req = getAllWorkoutsRequest(cookie!);
       const res = await app.fetch(req);
       const json = await res.json();
 
       expect(res.status).toBe(200);
       expect(json).toEqual({
         workouts: [],
+      });
+    });
+  });
+
+  describe("GET /workouts/:id", async () => {
+    it("returns a workout based  on the workoutId", async () => {
+      const { cookie } = await loginFlow();
+      const workoutRes = await app.fetch(
+        addWorkoutRequest({ cookie: cookie! })
+      );
+      const workoutJson = (await workoutRes.json()) as {
+        message: string;
+        workout: WorkoutWithoutUserId;
+      };
+      const { workout } = workoutJson;
+
+      const req = getSingleWorkoutRequest(workout.id, cookie!);
+      const res = await app.fetch(req);
+      const json = await res.json();
+      expect(res.status).toBe(200);
+      expect(json).toEqual({
+        workout: {
+          id: workout.id,
+          name: "crossfit session",
+          notes: "im dead",
+          created_at: expect.any(String),
+          date: "2022.08.25",
+        },
+      });
+    });
+
+    it("throws error if workoutId is invalid", async () => {
+      const { cookie } = await loginFlow();
+
+      const req = getSingleWorkoutRequest("invalidWorkoutId", cookie!);
+      const res = await app.fetch(req);
+      const json = await res.json();
+      expect(res.status).toBe(400);
+      expect(json).toEqual({
+        errors: ["Invalid workout id"],
       });
     });
   });
