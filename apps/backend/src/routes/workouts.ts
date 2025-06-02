@@ -1,7 +1,11 @@
 import { Hono } from "hono";
 import { dbConnect } from "../db/db";
 import { workoutValidator } from "../db/schemas/workout-schema";
-import { getUserWorkouts, insertWorkout } from "../db/queries";
+import {
+  getWorkoutById,
+  getWorkoutsByUserId,
+  insertWorkout,
+} from "../db/queries";
 
 const workouts = new Hono();
 
@@ -11,11 +15,7 @@ workouts
     const payload = c.get("jwtPayload");
     const { date, name, notes } = c.req.valid("json");
     try {
-      const workout = await insertWorkout(
-        db,
-        { date, name, notes },
-        payload.sub
-      );
+      const workout = insertWorkout(db, { date, name, notes }, payload.sub);
       return c.json({ message: "Workout created successfully", workout });
     } catch (error) {
       if (
@@ -40,15 +40,30 @@ workouts
     const payload = c.get("jwtPayload");
     try {
       //Fetch all workouts from user
-      const workouts = getUserWorkouts(db, payload.sub);
+      const workouts = getWorkoutsByUserId(db, payload.sub);
       return c.json({ workouts }, 200);
       //Return success
     } catch (error) {
       console.error(error);
-      return c.json(
-        { errors: ["Failed to fetch workouts"] },
-        500
-      );
+      return c.json({ errors: ["Failed to fetch workouts"] }, 500);
+    }
+  })
+  .get("/workouts/:id", async (c) => {
+    const db = dbConnect();
+    const workoutId = c.req.param("id");
+    const payload = c.get("jwtPayload");
+    console.log(workoutId);
+    try {
+      //Fetch all workouts from user
+      const workout = getWorkoutById(db, payload.sub, workoutId);
+      if(!workout) {
+        return c.json({errors: ["Invalid workout id"]}, 400)
+      }
+      return c.json({ workout }, 200);
+      //Return success
+    } catch (error) {
+      console.error(error);
+      return c.json({ errors: ["Failed to fetch workout"] }, 500);
     }
   });
 

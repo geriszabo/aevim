@@ -69,8 +69,15 @@ export const addWorkoutRequest = ({
   });
 };
 
-export const getWorkoutsRequest = (userId: string, cookie: string) => {
+export const getAllWorkoutsRequest = (cookie: string) => {
   return new Request("http://localhost:3000/api/v1/auth/workouts", {
+    method: "GET",
+    headers: { Cookie: cookie! },
+  });
+};
+
+export const getSingleWorkoutRequest = (workoutId: string, cookie: string) => {
+  return new Request(`http://localhost:3000/api/v1/auth/workouts/${workoutId}`, {
     method: "GET",
     headers: { Cookie: cookie! },
   });
