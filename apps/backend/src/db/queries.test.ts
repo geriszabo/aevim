@@ -199,4 +199,19 @@ describe("getWorkoutById", () => {
       created_at: expect.any(String),
     });
   });
+
+  it("returns null if workout id is invalid", async () => {
+    const workout = getWorkoutById(db, userId, "invalidWorkoutId");
+    expect(workout).toBeNull();
+  });
+  
+  it("returns null if user id is invalid", async () => {
+    const workoutId = insertWorkout(
+      db,
+      { date: "today", name: "workout 1", notes: "note for workout 1" },
+      userId
+    ).id;
+    const workout = getWorkoutById(db, "invalidUserId", workoutId);
+    expect(workout).toBeNull();
+  });
 });
