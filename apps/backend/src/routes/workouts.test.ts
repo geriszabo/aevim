@@ -10,6 +10,7 @@ import {
   loginrequest,
   logoutRequest,
   signupRequest,
+  updateWorkoutRequest,
   type AddWorkoutRequestProps,
 } from "../test/test-helpers";
 import { insertWorkout } from "../db/queries";
@@ -160,6 +161,144 @@ describe("/workouts endpoint", () => {
       expect(res.status).toBe(400);
       expect(json).toEqual({
         errors: ["Invalid workout id"],
+      });
+    });
+  });
+
+  describe("PUT /workouts/:id", async () => {
+    const update = {
+      date: "updated date",
+      name: "updated name",
+      notes: "updated notes",
+    };
+
+    it("updates a workout if data is provided", async () => {
+      const { cookie } = await loginFlow();
+      const workoutRequest = addWorkoutRequest({ cookie: cookie! });
+      const workoutResponse = await app.fetch(workoutRequest);
+      const { workout } = (await workoutResponse.json()) as {
+        workout: WorkoutWithoutUserId;
+      };
+      expect(workout).toEqual({
+        name: "crossfit session",
+        notes: "im dead",
+        date: "2022.08.25",
+        id: expect.any(String),
+        created_at: expect.any(String),
+      });
+
+      const updateRequest = updateWorkoutRequest(workout.id, update, cookie!);
+      const updateResponse = await app.fetch(updateRequest);
+      const updateJson = await updateResponse.json();
+      expect(updateResponse.status).toBe(200);
+      expect(updateJson).toEqual({
+        message: "Workout updated successfully",
+        workout: {
+          id: workout.id,
+          ...update,
+          created_at: expect.any(String),
+        },
+      });
+    });
+
+    it("updates a workout with partially provided data", async () => {
+      const { cookie } = await loginFlow();
+      const workoutRequest = addWorkoutRequest({ cookie: cookie! });
+      const workoutResponse = await app.fetch(workoutRequest);
+      const { workout } = (await workoutResponse.json()) as {
+        workout: WorkoutWithoutUserId;
+      };
+
+      // Define partial updates and expected results
+      const partialUpdates = [
+        { date: "updated date" },
+        { name: "updated name" },
+        { notes: "updated notes" },
+      ];
+
+      for (const partialUpdate of partialUpdates) {
+        const updateRequest = updateWorkoutRequest(
+          workout.id,
+          partialUpdate,
+          cookie!
+        );
+        const updateResponse = await app.fetch(updateRequest);
+        const updateJson = await updateResponse.json();
+
+        expect(updateResponse.status).toBe(200);
+        console.log(updateJson);
+        expect(updateJson).toEqual({
+          message: "Workout updated successfully",
+          workout: {
+            ...workout,
+            ...partialUpdate,
+            created_at: expect.any(String),
+            id: workout.id,
+          },
+        });
+
+        Object.assign(workout, partialUpdate);
+      }
+    });
+
+    it("returns 400 if no update data is provided", async () => {
+      const { cookie } = await loginFlow();
+      const workoutRes = await app.fetch(
+        addWorkoutRequest({ cookie: cookie! })
+      );
+      const { workout } = (await workoutRes.json()) as {
+        workout: WorkoutWithoutUserId;
+      };
+      const updateRequest = updateWorkoutRequest(workout.id, {}, cookie!);
+      const updateResponse = await app.fetch(updateRequest);
+      const updateJson = await updateResponse.json();
+      expect(updateResponse.status).toBe(400);
+      expect(updateJson).toEqual({
+        errors: ["At least one field must be provided"],
+      });
+    });
+
+    it("returns 400 if update data is invalid", async () => {
+      const { cookie } = await loginFlow();
+      const workoutRes = await app.fetch(
+        addWorkoutRequest({ cookie: cookie! })
+      );
+      const { workout } = (await workoutRes.json()) as {
+        workout: WorkoutWithoutUserId;
+      };
+      const updateRequest = updateWorkoutRequest(
+        workout.id,
+        {
+          name: null as unknown as string,
+          date: null as unknown as string,
+          notes: null as unknown as string,
+        },
+        cookie!
+      );
+      const updateResponse = await app.fetch(updateRequest);
+      const updateJson = await updateResponse.json();
+      expect(updateResponse.status).toBe(400);
+      expect(updateJson).toEqual({
+        errors: [
+          "No string for name update provided",
+          "No string for date update provided",
+          "No string for notes update provided",
+        ],
+      });
+    });
+
+    it("returns 404 if workout does not exist", async () => {
+      const { cookie } = await loginFlow();
+      const updateRequest = updateWorkoutRequest(
+        "nonexistentId",
+        { name: "test" },
+        cookie!
+      );
+      const updateResponse = await app.fetch(updateRequest);
+      const updateJson = await updateResponse.json();
+      expect(updateResponse.status).toBe(404);
+      expect(updateJson).toEqual({
+        errors: ["Workout not found"],
       });
     });
   });
