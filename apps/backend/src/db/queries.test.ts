@@ -8,9 +8,9 @@ import {
   getWorkoutsByUserId,
   insertUser,
   insertWorkout,
+  updateWorkoutById,
 } from "./queries";
 import type { WorkoutData } from "../types/workout";
-import type { Workout } from "@aevim/shared-types";
 
 let db: Database;
 
@@ -204,7 +204,7 @@ describe("getWorkoutById", () => {
     const workout = getWorkoutById(db, userId, "invalidWorkoutId");
     expect(workout).toBeNull();
   });
-  
+
   it("returns null if user id is invalid", async () => {
     const workoutId = insertWorkout(
       db,
@@ -213,5 +213,72 @@ describe("getWorkoutById", () => {
     ).id;
     const workout = getWorkoutById(db, "invalidUserId", workoutId);
     expect(workout).toBeNull();
+  });
+});
+
+describe("updateWorkoutById", () => {
+  const userId = "userId1";
+
+  const updatesArray = [
+    { name: "updated name only" },
+    { date: "updated date only" },
+    { notes: "updated notes only" },
+    { name: "new name", date: "new date" },
+    { name: "new name", date: "new date", notes: "new notes too" },
+  ];
+
+  it("updates a workout with given data", async () => {
+    const workout = insertWorkout(
+      db,
+      { date: "today", name: "workout 1", notes: "note for workout 1" },
+      userId
+    );
+    const updatedFields = {
+      date: "updated date",
+      name: "updated workout name",
+      notes: "updated note",
+    };
+    const updatedWorkout = updateWorkoutById(
+      db,
+      workout.id,
+      userId,
+      updatedFields
+    );
+    expect(updatedWorkout).toEqual({
+      ...updatedFields,
+      created_at: expect.any(String),
+      id: expect.any(String),
+    });
+  });
+
+  it("updates only the data that is to be updated", async () => {
+    updatesArray.forEach((update) => {
+      const workout = insertWorkout(
+        db,
+        { date: "today", name: "workout 1", notes: "note for workout 1" },
+        userId
+      );
+      const updatedWorkout = updateWorkoutById(db, workout.id, userId, update);
+      expect(updatedWorkout).toEqual({
+        ...workout,
+        ...update,
+      });
+    });
+  });
+
+  it("throws error if there is no data to update", async () => {
+    const workout = insertWorkout(
+      db,
+      { date: "today", name: "workout 1", notes: "note for workout 1" },
+      userId
+    );
+    try {
+      const updatedWorkout = updateWorkoutById(db, workout.id, userId, {});
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/near \"WHERE\": syntax error/);
+      }
+    }
   });
 });
