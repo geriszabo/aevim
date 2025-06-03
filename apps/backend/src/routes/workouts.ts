@@ -82,7 +82,7 @@ workouts
         update
       );
       if (!updatedWorkout) {
-        return c.json({ errors: ["Failed to update workout"] }, 500);
+        return c.json({ errors: ["Workout not found"] }, 404);
       }
       return c.json(
         { message: "Workout updated successfully", workout: updatedWorkout },
