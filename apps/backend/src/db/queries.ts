@@ -3,7 +3,6 @@ import { Database } from "bun:sqlite";
 import { type Workout } from "@aevim/shared-types";
 import type { WorkoutData, WorkoutWithoutUserId } from "../types/workout";
 
-
 export const insertUser = async (
   db: Database,
   email: string,
@@ -60,7 +59,7 @@ export const insertWorkout = (
     name,
     notes || null,
     date
-  ) as WorkoutWithoutUserId
+  ) as WorkoutWithoutUserId;
 
   return workout;
 };
@@ -86,6 +85,46 @@ export const getWorkoutById = (
     WHERE user_id = ? AND id = ?
     `);
 
-  const workout = userWorkoutQuery.get(userId, workoutId) as WorkoutWithoutUserId | null;
+  const workout = userWorkoutQuery.get(
+    userId,
+    workoutId
+  ) as WorkoutWithoutUserId | null;
   return workout;
+};
+
+export const updateWorkoutById = (
+  db: Database,
+  workoutId: string,
+  userId: string,
+  updates: Partial<WorkoutData>
+) => {
+  const filteredUpdates = Object.fromEntries(
+    Object.entries(updates).filter(([_key, value]) => value !== undefined)
+  );
+
+  const fields = Object.keys(filteredUpdates);
+  const setClause = fields.map((field) => `${field} = ?`).join(", ");
+  const values = fields.map((field) =>
+    filteredUpdates[field] === undefined ? null : filteredUpdates[field]
+  );
+
+  const updateQuery = db.query(`
+      UPDATE workouts 
+      SET ${setClause}
+      WHERE id = ? AND user_id = ?
+    `);
+
+  const result = updateQuery.run(...values, workoutId, userId);
+
+  if (result.changes === 0) {
+    return null;
+  }
+
+  const selectQuery = db.query(`
+      SELECT id, name, notes, date, created_at 
+      FROM workouts 
+      WHERE id = ? AND user_id = ?
+    `);
+
+  return selectQuery.get(workoutId, userId) as WorkoutWithoutUserId;
 };
