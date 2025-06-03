@@ -1,6 +1,7 @@
 import { Database } from "bun:sqlite";
 import { sign } from "hono/jwt";
 import type { CookieOptions } from "hono/utils/cookie";
+import env from "./env";
 
 export const createTable = (
   dbInstance: Database,
@@ -15,7 +16,7 @@ export const createTable = (
 };
 
 export const generateToken = async (userId: string) => {
-  const secret = process.env.JWT_SECRET!;
+  const secret = env.JWT_SECRET;
   const now = Math.floor(Date.now() / 1000);
 
   const payload = {
