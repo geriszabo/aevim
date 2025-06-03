@@ -5,6 +5,7 @@ import {
   workoutValidator,
 } from "../db/schemas/workout-schema";
 import {
+  deleteWorkoutById,
   getWorkoutById,
   getWorkoutsByUserId,
   insertWorkout,
@@ -60,7 +61,7 @@ workouts
       //Fetch all workouts from user
       const workout = getWorkoutById(db, payload.sub, workoutId);
       if (!workout) {
-        return c.json({ errors: ["Invalid workout id"] }, 400);
+        return c.json({ errors: ["Invalid workout id"] }, 404);
       }
       return c.json({ workout }, 200);
       //Return success
@@ -86,6 +87,26 @@ workouts
       }
       return c.json(
         { message: "Workout updated successfully", workout: updatedWorkout },
+        200
+      );
+    } catch (error) {
+      console.error(error);
+      return c.json({ errors: ["Internal server error"] }, 500);
+    }
+  })
+  .delete("workouts/:id", async (c) => {
+    const db = dbConnect();
+    const workoutId = c.req.param("id");
+    const payload = c.get("jwtPayload");
+    try {
+      const deletedWorkout = deleteWorkoutById(db, workoutId, payload.sub);
+      if (!deletedWorkout) {
+        return c.json({ errors: ["Workout not found"] }, 404);
+      }
+      return c.json(
+        {
+          message: `Workout with name: ${deletedWorkout.name} as been deleted successfuly`,
+        },
         200
       );
     } catch (error) {
