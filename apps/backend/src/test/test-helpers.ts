@@ -100,3 +100,13 @@ export const updateWorkoutRequest = (
     }
   );
 };
+
+export const deleteWorkoutRequest = (workoutId: string, cookie: string) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}`,
+    {
+      method: "DELETE",
+      headers: { Cookie: cookie! },
+    }
+  );
+};

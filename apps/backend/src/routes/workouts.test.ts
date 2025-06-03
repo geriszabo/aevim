@@ -5,6 +5,7 @@ import { createTestDb } from "../test/test-db";
 import app from "../index";
 import {
   addWorkoutRequest,
+  deleteWorkoutRequest,
   getAllWorkoutsRequest,
   getSingleWorkoutRequest,
   loginrequest,
@@ -13,8 +14,6 @@ import {
   updateWorkoutRequest,
   type AddWorkoutRequestProps,
 } from "../test/test-helpers";
-import { insertWorkout } from "../db/queries";
-import type { Workout } from "@aevim/shared-types";
 import type { WorkoutWithoutUserId } from "../types/workout";
 
 let db: Database;
@@ -158,7 +157,7 @@ describe("/workouts endpoint", () => {
       const req = getSingleWorkoutRequest("invalidWorkoutId", cookie!);
       const res = await app.fetch(req);
       const json = await res.json();
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(404);
       expect(json).toEqual({
         errors: ["Invalid workout id"],
       });
@@ -297,6 +296,48 @@ describe("/workouts endpoint", () => {
       const updateJson = await updateResponse.json();
       expect(updateResponse.status).toBe(404);
       expect(updateJson).toEqual({
+        errors: ["Workout not found"],
+      });
+    });
+  });
+
+  describe("DELETE /workouts/:id", () => {
+    it("deletes a workout by id for the authenticated user", async () => {
+      const { cookie } = await loginFlow();
+      // Create a workout
+      const workoutRes = await app.fetch(
+        addWorkoutRequest({ cookie: cookie! })
+      );
+      const { workout } = (await workoutRes.json()) as {
+        workout: WorkoutWithoutUserId;
+      };
+      const deleteReq = deleteWorkoutRequest(workout.id, cookie!);
+      const deleteRes = await app.fetch(deleteReq);
+      const deleteJson = await deleteRes.json();
+      expect(deleteRes.status).toBe(200);
+      expect(deleteJson).toEqual({
+        message:
+          "Workout with name: crossfit session as been deleted successfuly",
+      });
+
+      const findWorkoutRes = await app.fetch(
+        getSingleWorkoutRequest(workout.id, cookie!)
+      );
+      const findworkoutJson = await findWorkoutRes.json();
+      expect(findWorkoutRes.status).toBe(404);
+      expect(findworkoutJson).toEqual({
+        errors: ["Invalid workout id"],
+      });
+    });
+
+    it("returns 404 if workout does not exist", async () => {
+      const { cookie } = await loginFlow();
+      const deleteReq = deleteWorkoutRequest("imaginaryWorkoutId", cookie!);
+      const deleteRes = await app.fetch(deleteReq);
+      const deleteJson = await deleteRes.json();
+
+      expect(deleteRes.status).toBe(404);
+      expect(deleteJson).toEqual({
         errors: ["Workout not found"],
       });
     });
