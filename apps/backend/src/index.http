@@ -52,3 +52,13 @@ Cookie: {{login.response.headers.Set-Cookie}}
 
 GET http://localhost:3000/api/v1/auth/workouts/7b20b747-3976-44ca-9982-3399a952a266
 Cookie: {{login.response.headers.Set-Cookie}}
+
+###
+
+PUT http://localhost:3000/api/v1/auth/workouts/7b20b747-3976-44ca-9982-3399a952a266
+Cookie: {{login.response.headers.Set-Cookie}}
+Content-Type: application/json
+
+{
+   "name": "complete new workout name"
+}
