@@ -281,4 +281,36 @@ describe("updateWorkoutById", () => {
       }
     }
   });
+
+  it("throws error if update data is undefined or null", async () => {
+    const workout = insertWorkout(
+      db,
+      { date: "today", name: "workout 1", notes: "note for workout 1" },
+      userId
+    );
+    try {
+      updateWorkoutById(db, workout.id, userId, {
+        date: null as unknown as undefined,
+        name: null as unknown as undefined,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/NOT NULL constraint failed/);
+      }
+    }
+  });
+
+  it("returns null when trying to update another user's workout", async () => {
+    const workout = insertWorkout(
+      db,
+      { date: "today", name: "workout 1", notes: "note for workout 1" },
+      "user1"
+    );
+
+    const result = updateWorkoutById(db, workout.id, "user2", {
+      name: "hacked",
+    });
+    expect(result).toBeNull();
+  });
 });
