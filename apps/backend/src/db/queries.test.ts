@@ -2,6 +2,7 @@ import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb } from "../test/test-db";
 import {
+  deleteWorkoutById,
   getUserByEmail,
   getUserById,
   getWorkoutById,
@@ -312,5 +313,42 @@ describe("updateWorkoutById", () => {
       name: "hacked",
     });
     expect(result).toBeNull();
+  });
+
+  describe("deleteWorkoutById", () => {
+    const userId = "userId1";
+
+    it("deletes a workout by id and userId", async () => {
+      const workout = insertWorkout(
+        db,
+        { date: "2024-06-01", name: "delete me", notes: "to be deleted" },
+        userId
+      );
+      const deleted = deleteWorkoutById(db, workout.id, userId);
+      expect(deleted).toEqual({
+        id: workout.id,
+        name: "delete me",
+      });
+
+      const retryFindingWorkout = getWorkoutById(db, userId, workout.id);
+      expect(retryFindingWorkout).toBeNull();
+    });
+
+    it("returns null if workout does not exist", async () => {
+      const deleted = deleteWorkoutById(db, "nonexistent-id", userId);
+      expect(deleted).toBeNull();
+    });
+
+    it("returns null if workout exists but belongs to another user", async () => {
+      const workout = insertWorkout(
+        db,
+        { date: "2024-06-01", name: "not your workout", notes: "nope" },
+        "otherUser"
+      );
+      const deleted = deleteWorkoutById(db, workout.id, userId);
+      expect(deleted).toBeNull();
+      const retryFindingWorkout = getWorkoutById(db, "otherUser", workout.id);
+      expect(retryFindingWorkout).not.toBeNull();
+    });
   });
 });

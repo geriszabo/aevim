@@ -121,3 +121,18 @@ export const updateWorkoutById = (
 
   return result;
 };
+
+export const deleteWorkoutById = (
+  db: Database,
+  workoutId: string,
+  userId: string
+) => {
+  const deleteWorkoutQuery = db.query(`
+    DELETE FROM workouts
+    WHERE id = ? AND user_id = ?
+    RETURNING name, id
+    `);
+
+  const deleteWorkout = deleteWorkoutQuery.get(workoutId, userId) as {name: string, id: string} | null
+  return deleteWorkout;
+};
