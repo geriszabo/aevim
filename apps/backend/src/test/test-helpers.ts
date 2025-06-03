@@ -77,8 +77,26 @@ export const getAllWorkoutsRequest = (cookie: string) => {
 };
 
 export const getSingleWorkoutRequest = (workoutId: string, cookie: string) => {
-  return new Request(`http://localhost:3000/api/v1/auth/workouts/${workoutId}`, {
-    method: "GET",
-    headers: { Cookie: cookie! },
-  });
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}`,
+    {
+      method: "GET",
+      headers: { Cookie: cookie! },
+    }
+  );
+};
+
+export const updateWorkoutRequest = (
+  workoutId: string,
+  update: { name?: string; date?: string; notes?: string },
+  cookie: string
+) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Cookie: cookie! },
+      body: JSON.stringify(update),
+    }
+  );
 };
