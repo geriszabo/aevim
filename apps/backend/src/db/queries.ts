@@ -104,27 +104,20 @@ export const updateWorkoutById = (
 
   const fields = Object.keys(filteredUpdates);
   const setClause = fields.map((field) => `${field} = ?`).join(", ");
-  const values = fields.map((field) =>
-    filteredUpdates[field] === undefined ? null : filteredUpdates[field]
-  );
+  const values = Object.values(filteredUpdates);
 
   const updateQuery = db.query(`
-      UPDATE workouts 
-      SET ${setClause}
-      WHERE id = ? AND user_id = ?
-    `);
+    UPDATE workouts
+    SET ${setClause}
+    WHERE id = ? AND user_id = ?
+    RETURNING id, name, notes, date, created_at
+  `);
 
-  const result = updateQuery.run(...values, workoutId, userId);
+  const result = updateQuery.get(
+    ...values,
+    workoutId,
+    userId
+  ) as WorkoutWithoutUserId | null;
 
-  if (result.changes === 0) {
-    return null;
-  }
-
-  const selectQuery = db.query(`
-      SELECT id, name, notes, date, created_at 
-      FROM workouts 
-      WHERE id = ? AND user_id = ?
-    `);
-
-  return selectQuery.get(workoutId, userId) as WorkoutWithoutUserId;
+  return result;
 };
