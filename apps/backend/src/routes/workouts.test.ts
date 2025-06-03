@@ -51,7 +51,7 @@ describe("/workouts endpoint", () => {
       const res = await app.fetch(req);
       const json = await res.json();
       expect(cookie).toMatch(/authToken=([^;]+)/);
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(201);
       expect(json).toEqual({
         message: "Workout created successfully",
         workout: {
