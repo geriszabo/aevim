@@ -226,7 +226,6 @@ describe("/workouts endpoint", () => {
         const updateJson = await updateResponse.json();
 
         expect(updateResponse.status).toBe(200);
-        console.log(updateJson);
         expect(updateJson).toEqual({
           message: "Workout updated successfully",
           workout: {
