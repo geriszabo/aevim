@@ -21,3 +21,34 @@ export const workoutValidator = zValidator(
     }
   }
 );
+
+const workoutUpdateSchema = z
+  .object({
+    name: z
+      .string({ message: "No string for name update provided" })
+      .optional(),
+    date: z
+      .string({ message: "No string for date update provided" })
+      .optional(),
+    notes: z
+      .string({ message: "No string for notes update provided" })
+      .optional(),
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field must be provided",
+  });
+
+export const workoutUpdateValidator = zValidator(
+  "json",
+  workoutUpdateSchema,
+  (result, c) => {
+    if (!result.success) {
+      return c.json(
+        {
+          errors: result.error.issues.map((issue) => issue.message),
+        },
+        400
+      );
+    }
+  }
+);
