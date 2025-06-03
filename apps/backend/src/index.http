@@ -62,3 +62,7 @@ Content-Type: application/json
 {
    "name": "complete new workout name"
 }
+###
+
+DELETE http://localhost:3000/api/v1/auth/workouts/68760fa2-6ee4-44a2-8167-047fb47ad359
+Cookie: {{login.response.headers.Set-Cookie}}
