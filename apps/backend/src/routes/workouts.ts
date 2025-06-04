@@ -10,7 +10,7 @@ import {
   getWorkoutsByUserId,
   insertWorkout,
   updateWorkoutById,
-} from "../db/queries";
+} from "../db/queries/workout-queries";
 
 const workouts = new Hono();
 

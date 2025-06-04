@@ -1,17 +1,10 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb } from "../test/test-db";
-import {
-  deleteWorkoutById,
-  getUserByEmail,
-  getUserById,
-  getWorkoutById,
-  getWorkoutsByUserId,
-  insertUser,
-  insertWorkout,
-  updateWorkoutById,
-} from "./queries";
+
 import type { WorkoutData } from "../types/workout";
+import { getUserByEmail, getUserById, insertUser } from "./queries/auth-queries";
+import { deleteWorkoutById, getWorkoutById, getWorkoutsByUserId, insertWorkout, updateWorkoutById } from "./queries/workout-queries";
 
 let db: Database;
 

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { signupValidator } from "../db/schemas/signup-schema";
 import { dbConnect } from "../db/db";
-import { getUserByEmail, getUserById, insertUser } from "../db/queries";
+import { getUserByEmail, getUserById, insertUser } from "../db/queries/auth-queries";
 import { cookieOptions, generateToken } from "../helpers";
 import { deleteCookie, setCookie } from "hono/cookie";
 
