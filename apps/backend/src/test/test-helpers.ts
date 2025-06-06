@@ -1,3 +1,6 @@
+import app from "../index";
+
+
 export interface AddWorkoutRequestProps {
   date?: string;
   name?: string;
@@ -5,6 +8,13 @@ export interface AddWorkoutRequestProps {
   userId?: string;
   cookie?: string;
 }
+
+  export async function loginFlow() {
+    await app.fetch(signupRequest());
+    const loginRes = await app.fetch(loginrequest());
+    const cookie = loginRes.headers.get("Set-Cookie");
+    return { loginRes, cookie };
+  }
 
 export const signupRequest = (
   email = "test@test.com",

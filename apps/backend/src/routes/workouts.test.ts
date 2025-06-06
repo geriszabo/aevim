@@ -8,9 +8,7 @@ import {
   deleteWorkoutRequest,
   getAllWorkoutsRequest,
   getSingleWorkoutRequest,
-  loginrequest,
-  logoutRequest,
-  signupRequest,
+  loginFlow,
   updateWorkoutRequest,
   type AddWorkoutRequestProps,
 } from "../test/test-helpers";
@@ -30,13 +28,6 @@ afterEach(() => {
 });
 
 describe("/workouts endpoint", () => {
-  async function loginFlow() {
-    await app.fetch(signupRequest());
-    const loginRes = await app.fetch(loginrequest());
-    const cookie = loginRes.headers.get("Set-Cookie");
-    return { loginRes, cookie };
-  }
-
   it("returns errors if no auth token is provided", async () => {
     await loginFlow();
     const req = addWorkoutRequest({});
