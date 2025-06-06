@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 
-const workoutSchema = z.object({
+export const workoutSchema = z.object({
   name: z.string({ message: "You have to give the workout a name" }),
   notes: z.string().optional(),
   date: z.string({ message: "Please pick a date for the workout" }),
