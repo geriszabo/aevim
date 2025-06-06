@@ -66,3 +66,14 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/api/v1/auth/workouts/68760fa2-6ee4-44a2-8167-047fb47ad359
 Cookie: {{login.response.headers.Set-Cookie}}
+
+###
+
+POST http://localhost:3000/api/v1/auth/exercises
+Cookie: {{login.response.headers.Set-Cookie}}
+Content-Type: application/json
+
+{
+    "name": "jogging",
+    "category": "cardio"
+}
