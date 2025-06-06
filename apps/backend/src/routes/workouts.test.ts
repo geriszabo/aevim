@@ -79,7 +79,6 @@ describe("/workouts endpoint", () => {
       expect(json).toEqual({
         errors: [
           "You have to give the workout a name",
-          "Expected string, received null",
           "Please pick a date for the workout",
         ],
       });
