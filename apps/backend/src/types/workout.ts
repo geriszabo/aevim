@@ -1,9 +1,7 @@
 import type { Workout } from "@aevim/shared-types";
+import type z from "zod";
+import type { workoutSchema } from "../db/schemas/workout-schema";
 
-export interface WorkoutData {
-  name: string;
-  notes?: string;
-  date: string;
-}
+export type WorkoutData = z.infer<typeof workoutSchema>;
 
-export type WorkoutWithoutUserId = Omit<Workout, "user_id">
+export type WorkoutWithoutUserId = Omit<Workout, "user_id">;
