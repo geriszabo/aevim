@@ -1,7 +1,7 @@
-export interface Workout {
+export interface Exercise {
   id: string;
   name: string;
-  notes?: string;
+  category?: string;
   date: string;
   created_at: string;
   user_id: string;
