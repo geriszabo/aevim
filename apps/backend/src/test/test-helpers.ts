@@ -1,6 +1,5 @@
 import app from "../index";
 
-
 export interface AddWorkoutRequestProps {
   date?: string;
   name?: string;
@@ -9,12 +8,19 @@ export interface AddWorkoutRequestProps {
   cookie?: string;
 }
 
-  export async function loginFlow() {
-    await app.fetch(signupRequest());
-    const loginRes = await app.fetch(loginrequest());
-    const cookie = loginRes.headers.get("Set-Cookie");
-    return { loginRes, cookie };
-  }
+export interface AddExerciseRequestProps {
+  category?: string;
+  name?: string;
+  userId?: string;
+  cookie?: string;
+}
+
+export async function loginFlow() {
+  await app.fetch(signupRequest());
+  const loginRes = await app.fetch(loginrequest());
+  const cookie = loginRes.headers.get("Set-Cookie");
+  return { loginRes, cookie };
+}
 
 export const signupRequest = (
   email = "test@test.com",
@@ -119,4 +125,24 @@ export const deleteWorkoutRequest = (workoutId: string, cookie: string) => {
       headers: { Cookie: cookie! },
     }
   );
+};
+
+export const addExerciseRequest = ({
+  name = "bench pressing",
+  category = "chest",
+  userId = "szabogeri69",
+  cookie = "",
+}: AddExerciseRequestProps) => {
+  return new Request("http://localhost:3000/api/v1/auth/exercises", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: cookie,
+    },
+    body: JSON.stringify({
+      name,
+      category,
+      user_id: userId,
+    }),
+  });
 };
