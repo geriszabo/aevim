@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb } from "../../test/test-db";
-import { insertexercise } from "./exercise-queries";
+import { insertExerciseToWorkout } from "./exercise-queries";
 import type { ExerciseData } from "../schemas/exercise-shema";
 
 let db: Database;
@@ -14,7 +14,7 @@ afterEach(() => {
   db.close();
 });
 
-describe("insertexercise", () => {
+describe("insertExerciseToWorkout", () => {
   const userId = "szabogeri69";
   it("inserts exercise", async () => {
     const exerciseData = {
@@ -22,7 +22,7 @@ describe("insertexercise", () => {
       category: "Strength",
     };
 
-    const exercise = insertexercise(db, exerciseData, userId);
+    const exercise = insertExerciseToWorkout(db, exerciseData, userId);
     expect(exercise).toBeDefined();
     expect(exercise).toEqual({
       id: expect.any(String),
@@ -37,7 +37,7 @@ describe("insertexercise", () => {
       name: "Push Up",
     };
 
-    const exercise = insertexercise(db, exerciseData, userId);
+    const exercise = insertExerciseToWorkout(db, exerciseData, userId);
     expect(exercise).toBeDefined();
     expect(exercise).toEqual({
       id: expect.any(String),
@@ -52,7 +52,7 @@ describe("insertexercise", () => {
       category: "Strength",
     } as ExerciseData;
     try {
-      insertexercise(db, exerciseData, userId);
+      insertExerciseToWorkout(db, exerciseData, userId);
     } catch (error) {
       if (error instanceof Error) {
         expect(error).toBeInstanceOf(Error);

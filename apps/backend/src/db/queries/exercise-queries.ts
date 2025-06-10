@@ -2,7 +2,7 @@ import { Database } from "bun:sqlite";
 import { randomUUID } from "crypto";
 import type { ExerciseData, ExerciseWithouthUserId } from "../../types/exercise";
 
-export const insertexercise = (
+export const insertExerciseToWorkout = (
   db: Database,
   exerciseData: ExerciseData,
   userId: string
