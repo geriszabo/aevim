@@ -38,9 +38,9 @@ Cookie: {{login.response.headers.Set-Cookie}}
 Content-Type: application/json
 
 {
-    "date": "2025.05.15",
-    "name": "spinning with eszter",
-    "notes": "we ended up having burgers :("
+    "date": "2025.06.08",
+    "name": "hiking with eszter",
+    "notes": "skocjan cave system was awesome"
 }
 
 ###
