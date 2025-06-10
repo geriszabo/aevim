@@ -1,10 +1,11 @@
-import { z} from "zod"
+import { z } from "zod";
 
 const EnvSchema = z.object({
-    JWT_SECRET: z.string(),
-    PORT: z.coerce.number().default(3000)
-})
+  JWT_SECRET: z.string(),
+  PORT: z.coerce.number().default(3000),
+  FOREIGN_KEY_CHECKS: z.enum(["ON", "OFF"]),
+});
 
- const env = EnvSchema.parse(process.env)
+const env = EnvSchema.parse(process.env);
 
- export default env
+export default env;

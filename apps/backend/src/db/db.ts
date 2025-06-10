@@ -1,6 +1,7 @@
 import { Database } from "bun:sqlite";
 import { join } from "path";
 import { createTable } from "../helpers";
+import env from "../env";
 
 const dbPath = join(".", "db.sqlite");
 
@@ -52,6 +53,19 @@ export const applySchema = (dbInstance: Database) => {
         `,
     },
     {
+      name: "workout_exercises",
+      schema: `
+          id TEXT PRIMARY KEY,
+          workout_id TEXT NOT NULL,
+          exercise_id TEXT NOT NULL,
+          order_index INTEGER,
+          notes TEXT,
+          created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (workout_id) REFERENCES workouts(id) ON DELETE CASCADE,
+          FOREIGN KEY (exercise_id) REFERENCES exercises(id)
+        `,
+    },
+    {
       name: "sets",
       schema: `
           id TEXT PRIMARY KEY,
@@ -60,10 +74,13 @@ export const applySchema = (dbInstance: Database) => {
           weight REAL,
           duration INTEGER,
           order_index INTEGER,
-          FOREIGN KEY (workout_exercise_id) REFERENCES workout_exercises(id)
+          created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (workout_exercise_id) REFERENCES workout_exercises(id) ON DELETE CASCADE
         `,
     },
   ];
+
+  dbInstance.exec(`PRAGMA foreign_keys = ${env.FOREIGN_KEY_CHECKS};`);
 
   tables.forEach(({ name, schema }) => createTable(dbInstance, name, schema));
 };
