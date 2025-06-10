@@ -5,19 +5,9 @@ import { createTestDb } from "../test/test-db";
 import app from "../index";
 import {
   addExerciseRequest,
-  addWorkoutRequest,
-  deleteWorkoutRequest,
-  getAllWorkoutsRequest,
-  getSingleWorkoutRequest,
   loginFlow,
-  loginrequest,
-  logoutRequest,
-  signupRequest,
-  updateWorkoutRequest,
   type AddExerciseRequestProps,
-  type AddWorkoutRequestProps,
 } from "../test/test-helpers";
-import type { WorkoutWithoutUserId } from "../types/workout";
 
 let db: Database;
 
@@ -73,5 +63,4 @@ describe("/exercises endpoint", () => {
       });
     });
   });
-
 });
