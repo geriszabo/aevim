@@ -36,7 +36,6 @@ describe("getWorkoutExercisesByWorkoutId", () => {
     const exercisesArray = getWorkoutExercisesByWorkoutId(db, workout.id);
     expect(exercisesArray).toBeArray();
     expect(exercisesArray).toHaveLength(exercises.length);
-    console.log(exercisesArray);
     exercisesArray.forEach((exercise, index) => {
       expect(exercise).toEqual({
         id: expect.any(String),
