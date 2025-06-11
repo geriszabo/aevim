@@ -9,7 +9,7 @@ import {
   getWorkoutsByUserId,
   insertWorkout,
   updateWorkoutById,
-} from "./workout-queries";
+} from "../../db/queries/workout-queries";
 
 let db: Database;
 

@@ -1,8 +1,8 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb } from "../../test/test-db";
+import { getUserByEmail, getUserById, insertUser } from "../../db/queries/auth-queries";
 
-import { getUserByEmail, getUserById, insertUser } from "./auth-queries";
 
 let db: Database;
 

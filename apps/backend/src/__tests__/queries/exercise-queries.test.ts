@@ -1,8 +1,8 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb } from "../../test/test-db";
-import { insertExercise, insertExerciseToWorkout } from "./exercise-queries";
-import type { ExerciseData } from "../schemas/exercise-schema";
+import { insertExercise, insertExerciseToWorkout } from "../../db/queries/exercise-queries";
+import type { ExerciseData } from "../../db/schemas/exercise-schema";
 
 let db: Database;
 const userId = "szabogeri69";
