@@ -146,3 +146,23 @@ export const addExerciseRequest = ({
     }),
   });
 };
+
+export const addExerciseToWorkoutRequest = ({
+  name = "bench pressing",
+  category = "chest",
+  userId = "szabogeri69",
+  cookie = "",
+  workoutId = "workout123",
+}) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookie,
+      },
+      body: JSON.stringify({ name, category }),
+    }
+  );
+};

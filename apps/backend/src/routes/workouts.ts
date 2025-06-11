@@ -11,6 +11,10 @@ import {
   insertWorkout,
   updateWorkoutById,
 } from "../db/queries/workout-queries";
+import { exerciseValidator } from "../db/schemas/exercise-schema";
+import {
+  insertExerciseToWorkout,
+} from "../db/queries/exercise-queries";
 
 const workouts = new Hono();
 
@@ -68,6 +72,30 @@ workouts
     } catch (error) {
       console.error(error);
       return c.json({ errors: ["Failed to fetch workout"] }, 500);
+    }
+  })
+  .post("workouts/:id/exercises", exerciseValidator, async (c) => {
+    const db = dbConnect();
+    const workoutId = c.req.param("id");
+    const payload = c.get("jwtPayload");
+    const exercise = c.req.valid("json");
+    try {
+      const workoutExercise = insertExerciseToWorkout(
+        db,
+        exercise,
+        payload.sub,
+        workoutId
+      );
+      return c.json(
+        {
+          message: "Exercise added to workout successfully",
+          exercise: workoutExercise,
+        },
+        201
+      );
+    } catch (error) {
+      console.error(error);
+      return c.json({ errors: ["Failed to add exercise to workout"] }, 500);
     }
   })
   .put("workouts/:id", workoutUpdateValidator, async (c) => {

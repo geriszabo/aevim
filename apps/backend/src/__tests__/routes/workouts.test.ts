@@ -4,6 +4,7 @@ import { Database } from "bun:sqlite";
 import { createTestDb } from "../../test/test-db";
 import app from "../../index";
 import {
+  addExerciseToWorkoutRequest,
   addWorkoutRequest,
   deleteWorkoutRequest,
   getAllWorkoutsRequest,
@@ -329,6 +330,82 @@ describe("/workouts endpoint", () => {
       expect(deleteRes.status).toBe(404);
       expect(deleteJson).toEqual({
         errors: ["Workout not found"],
+      });
+    });
+  });
+
+  describe("POST /workouts/:id/exercises", () => {
+    it("adds an exercise to a workout", async () => {
+      const { cookie } = await loginFlow();
+      await app.fetch(addWorkoutRequest({ cookie: cookie! }));
+      const addExerciseReq = addExerciseToWorkoutRequest({ cookie: cookie! });
+      const addExerciseRes = await app.fetch(addExerciseReq);
+      const addExerciseJson = await addExerciseRes.json();
+      expect(addExerciseJson).toEqual({
+        message: "Exercise added to workout successfully",
+        exercise: {
+          exercise: {
+            id: expect.any(String),
+            name: "bench pressing",
+            category: "chest",
+            created_at: expect.any(String),
+          },
+          workoutExercise: {
+            id: expect.any(String),
+            workout_id: expect.any(String),
+            exercise_id: expect.any(String),
+            created_at: expect.any(String),
+            order_index: 1,
+          },
+        },
+      });
+    });
+
+    it("returns 400 if exercise data is invalid", async () => {
+      const { cookie } = await loginFlow();
+      await app.fetch(addWorkoutRequest({ cookie: cookie! }));
+      const addExerciseReq = addExerciseToWorkoutRequest({
+        cookie: cookie!,
+        name: null as any,
+      });
+      const addExerciseRes = await app.fetch(addExerciseReq);
+      expect(addExerciseRes.status).toBe(400);
+      const json = await addExerciseRes.json();
+      expect(json).toEqual({
+        errors: ["You have to give the exercise a name"],
+      });
+    });
+
+    it("increments order_index for multiple exercises", async () => {
+      const { cookie } = await loginFlow();
+      await app.fetch(addWorkoutRequest({ cookie: cookie! }));
+      // first exercise
+      await app.fetch(addExerciseToWorkoutRequest({ cookie: cookie! }));
+      // second exercise
+      const addExerciseReq2 = addExerciseToWorkoutRequest({
+        cookie: cookie!,
+        name: "pull up",
+        category: "back",
+      });
+      const addExerciseRes2 = await app.fetch(addExerciseReq2);
+      const addExerciseJson2 = await addExerciseRes2.json();
+      expect(addExerciseJson2).toEqual({
+        message: "Exercise added to workout successfully",
+        exercise: {
+          exercise: {
+            id: expect.any(String),
+            name: "pull up",
+            category: "back",
+            created_at: expect.any(String),
+          },
+          workoutExercise: {
+            id: expect.any(String),
+            workout_id: expect.any(String),
+            exercise_id: expect.any(String),
+            created_at: expect.any(String),
+            order_index: 2,
+          },
+        },
       });
     });
   });

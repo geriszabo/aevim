@@ -39,6 +39,7 @@ export const insertExerciseToWorkout = (
   userId: string,
   workoutId: string
 ): InsertExerciseResult => {
+  
   const exerciseId = randomUUID();
   const workoutExerciseId = randomUUID();
   const { name, category } = exerciseData;
