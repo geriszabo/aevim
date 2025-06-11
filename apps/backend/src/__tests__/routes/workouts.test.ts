@@ -1,8 +1,8 @@
 import { describe, beforeEach, afterEach, expect, mock, it } from "bun:test";
 import { Database } from "bun:sqlite";
 
-import { createTestDb } from "../test/test-db";
-import app from "../index";
+import { createTestDb } from "../../test/test-db";
+import app from "../../index";
 import {
   addWorkoutRequest,
   deleteWorkoutRequest,
@@ -11,12 +11,12 @@ import {
   loginFlow,
   updateWorkoutRequest,
   type AddWorkoutRequestProps,
-} from "../test/test-helpers";
-import type { WorkoutWithoutUserId } from "../types/workout";
+} from "../../test/test-helpers";
+import type { WorkoutWithoutUserId } from "../../types/workout";
 
 let db: Database;
 
-mock.module("../db/db.ts", () => {
+mock.module("../../db/db.ts", () => {
   return { dbConnect: () => db };
 });
 

@@ -1,17 +1,17 @@
 import { describe, beforeEach, afterEach, expect, mock, it } from "bun:test";
 import { Database } from "bun:sqlite";
 
-import { createTestDb } from "../test/test-db";
-import app from "../index";
+import { createTestDb } from "../../test/test-db";
+import app from "../../index";
 import {
   addExerciseRequest,
   loginFlow,
   type AddExerciseRequestProps,
-} from "../test/test-helpers";
+} from "../../test/test-helpers";
 
 let db: Database;
 
-mock.module("../db/db.ts", () => {
+mock.module("../../db/db.ts", () => {
   return { dbConnect: () => db };
 });
 
