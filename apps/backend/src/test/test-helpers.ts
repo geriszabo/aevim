@@ -150,7 +150,6 @@ export const addExerciseRequest = ({
 export const addExerciseToWorkoutRequest = ({
   name = "bench pressing",
   category = "chest",
-  userId = "szabogeri69",
   cookie = "",
   workoutId = "workout123",
 }) => {
