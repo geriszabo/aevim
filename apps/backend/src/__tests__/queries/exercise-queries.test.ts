@@ -2,6 +2,7 @@ import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb } from "../../test/test-db";
 import {
+  deleteExerciseById,
   getAllExercises,
   getExerciseById,
   insertExercise,
@@ -160,6 +161,9 @@ describe("deleteExerciseById", () => {
       category: "Strength",
       created_at: expect.any(String),
     });
+    deleteExerciseById(db, exercise.id, userId);
+    const deletedExercise = getExerciseById(db, exercise.id, userId);
+    expect(deletedExercise).toBeNull();
   });
 
   it("returns null if exercise is not found", async () => {
