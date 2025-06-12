@@ -136,3 +136,15 @@ export const getExerciseById = (
 
   return exercise;
 };
+
+export const getAllExercises = (db: Database, userId: string) => {
+  const exercisesQuery = db.query(`
+    SELECT id, name, category, created_at
+    FROM exercises 
+    WHERE user_id = ?`);
+
+  const exercises = exercisesQuery.all(userId) as
+    | ExerciseWithouthUserId[]
+    | null;
+  return exercises;
+};

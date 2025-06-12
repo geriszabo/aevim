@@ -2,6 +2,7 @@ import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb } from "../../test/test-db";
 import {
+  getAllExercises,
   getExerciseById,
   insertExercise,
   insertExerciseToWorkout,
@@ -124,7 +125,12 @@ describe("getExerciseById", () => {
   it("returns exercise by id", () => {
     const exercise = insertExercise(db, exerciseData, userId);
     const foundExercise = getExerciseById(db, exercise.id, userId);
-    console.log({ foundExercise });
+    expect(foundExercise).toEqual({
+      id: exercise.id,
+      name: "Push Up",
+      category: "Strength",
+      created_at: expect.any(String),
+    });
   });
 
   it("returns null if exercise not found", () => {
@@ -159,5 +165,34 @@ describe("deleteExerciseById", () => {
   it("returns null if exercise is not found", async () => {
     const foundExercise = getExerciseById(db, "non-existing-id", userId);
     expect(foundExercise).toBeNull();
+  });
+});
+
+describe("getAllExercises", () => {
+  it("returns all exercises for user", () => {
+    const count = 3;
+    for (let i = 0; i < count; i++) {
+      insertExercise(
+        db,
+        { ...exerciseData, name: `Exercise ${i + 1}` },
+        userId
+      );
+    }
+    const exercises = getAllExercises(db, userId);
+
+    expect(exercises).toHaveLength(count);
+    exercises!.forEach((exercise, index) => {
+      expect(exercise).toEqual({
+        id: expect.any(String),
+        name: `Exercise ${index + 1}`,
+        category: "Strength",
+        created_at: expect.any(String),
+      });
+    });
+  });
+
+  it("returns empty array if user has no exercises", () => {
+    const exercises = getAllExercises(db, userId);
+    expect(exercises).toEqual([]);
   });
 });
