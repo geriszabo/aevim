@@ -12,9 +12,7 @@ import {
   updateWorkoutById,
 } from "../db/queries/workout-queries";
 import { exerciseValidator } from "../db/schemas/exercise-schema";
-import {
-  insertExerciseToWorkout,
-} from "../db/queries/exercise-queries";
+import { insertExerciseToWorkout } from "../db/queries/exercise-queries";
 
 const workouts = new Hono();
 
@@ -94,7 +92,10 @@ workouts
         201
       );
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
+        return c.json({ errors: ["Workout not found"] }, 404);
+      }
+
       return c.json({ errors: ["Failed to add exercise to workout"] }, 500);
     }
   })

@@ -337,8 +337,16 @@ describe("/workouts endpoint", () => {
   describe("POST /workouts/:id/exercises", () => {
     it("adds an exercise to a workout", async () => {
       const { cookie } = await loginFlow();
-      await app.fetch(addWorkoutRequest({ cookie: cookie! }));
-      const addExerciseReq = addExerciseToWorkoutRequest({ cookie: cookie! });
+      const workoutRes = await app.fetch(
+        addWorkoutRequest({ cookie: cookie! })
+      );
+      const { workout } = (await workoutRes.json()) as {
+        workout: WorkoutWithoutUserId;
+      };
+      const addExerciseReq = addExerciseToWorkoutRequest({
+        cookie: cookie!,
+        workoutId: workout.id,
+      });
       const addExerciseRes = await app.fetch(addExerciseReq);
       const addExerciseJson = await addExerciseRes.json();
       expect(addExerciseJson).toEqual({
@@ -376,16 +384,39 @@ describe("/workouts endpoint", () => {
       });
     });
 
+    it("returns 404 if workout does not exist", async () => {
+      const { cookie } = await loginFlow();
+      const addExerciseReq = addExerciseToWorkoutRequest({
+        cookie: cookie!,
+        workoutId: "fakeWorkoutId",
+      });
+      const addExerciseRes = await app.fetch(addExerciseReq);
+      expect(addExerciseRes.status).toBe(404);
+      const json = await addExerciseRes.json();
+      expect(json).toEqual({
+        errors: ["Workout not found"],
+      });
+    });
+
     it("increments order_index for multiple exercises", async () => {
       const { cookie } = await loginFlow();
-      await app.fetch(addWorkoutRequest({ cookie: cookie! }));
+      const workoutRes = await app.fetch(
+        addWorkoutRequest({ cookie: cookie! })
+      );
+      const { workout } = (await workoutRes.json()) as {
+        workout: WorkoutWithoutUserId;
+      };
+
       // first exercise
-      await app.fetch(addExerciseToWorkoutRequest({ cookie: cookie! }));
+      await app.fetch(
+        addExerciseToWorkoutRequest({ cookie: cookie!, workoutId: workout.id })
+      );
       // second exercise
       const addExerciseReq2 = addExerciseToWorkoutRequest({
         cookie: cookie!,
         name: "pull up",
         category: "back",
+        workoutId: workout.id,
       });
       const addExerciseRes2 = await app.fetch(addExerciseReq2);
       const addExerciseJson2 = await addExerciseRes2.json();
