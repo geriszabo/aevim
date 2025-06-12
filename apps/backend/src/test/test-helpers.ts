@@ -165,3 +165,20 @@ export const addExerciseToWorkoutRequest = ({
     }
   );
 };
+
+export const deleteExerciseRequest = (exerciseId: string, cookie: string) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/exercises/${exerciseId}`,
+    {
+      method: "DELETE",
+      headers: { Cookie: cookie! },
+    }
+  );
+};
+
+export const getAllExercisesRequest = (cookie: string) => {
+  return new Request("http://localhost:3000/api/v1/auth/exercises", {
+    method: "GET",
+    headers: { Cookie: cookie! },
+  });
+};
