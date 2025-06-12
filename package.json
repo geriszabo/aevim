@@ -16,6 +16,7 @@
     "test": "npm run test:backend && npm run test:frontend",
     "test:backend": "cd apps/backend && bun test",
     "test:frontend": "cd apps/frontend && npm test",
+    "coverage:backend": "cd apps/backend && bun test --coverage",
     "build": "npm run build:backend && npm run build:frontend",
     "build:backend": "cd apps/backend && bun tsc",
     "build:frontend": "cd apps/frontend && npm run build",
