@@ -39,7 +39,6 @@ export const insertExerciseToWorkout = (
   userId: string,
   workoutId: string
 ): InsertExerciseResult => {
-  
   const workoutExists = db
     .query(`SELECT id FROM workouts WHERE id = ? AND user_id = ?`)
     .get(workoutId, userId);
@@ -47,7 +46,7 @@ export const insertExerciseToWorkout = (
   if (!workoutExists) {
     throw new Error("WORKOUT_NOT_FOUND");
   }
-  
+
   const exerciseId = randomUUID();
   const workoutExerciseId = randomUUID();
   const { name, category } = exerciseData;
@@ -98,4 +97,42 @@ export const insertExerciseToWorkout = (
   });
 
   return transaction();
+};
+
+export const deleteExerciseById = (
+  db: Database,
+  exerciseId: string,
+  userId: string
+) => {
+  const exerciseQuery = db.query(`
+    DELETE FROM exercises
+    WHERE id = ? AND user_id = ?
+    RETURNING name, id
+    `);
+
+  const deletedExercise = exerciseQuery.get(exerciseId, userId) as {
+    name: string;
+    id: string;
+  } | null;
+
+  return deletedExercise;
+};
+
+export const getExerciseById = (
+  db: Database,
+  exerciseId: string,
+  userId: string
+) => {
+  const exerciseQuery = db.query(`
+    SELECT id, name, category, created_at
+    FROM exercises
+    WHERE id = ? AND user_id = ?
+    `);
+
+  const exercise = exerciseQuery.get(
+    exerciseId,
+    userId
+  ) as ExerciseWithouthUserId | null;
+
+  return exercise;
 };

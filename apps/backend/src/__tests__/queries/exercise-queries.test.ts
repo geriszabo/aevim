@@ -2,6 +2,7 @@ import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb } from "../../test/test-db";
 import {
+  getExerciseById,
   insertExercise,
   insertExerciseToWorkout,
 } from "../../db/queries/exercise-queries";
@@ -10,6 +11,10 @@ import { insertWorkout } from "../../db/queries/workout-queries";
 
 let db: Database;
 const userId = "szabogeri69";
+const exerciseData = {
+  name: "Push Up",
+  category: "Strength",
+};
 
 beforeEach(() => {
   db = createTestDb();
@@ -26,10 +31,6 @@ describe("insertExerciseToWorkout", () => {
     notes: "Felt great!",
   };
   it("inserts exercise to workout", async () => {
-    const exerciseData = {
-      name: "Push Up",
-      category: "Strength",
-    };
     const workout = insertWorkout(db, workoutData, userId);
     const exercise = insertExerciseToWorkout(
       db,
@@ -84,16 +85,11 @@ describe("insertExerciseToWorkout", () => {
 
 describe("insertExercise", () => {
   it("inserts exercise with category", () => {
-    const exerciseData = {
-      name: "Squat",
-      category: "Strength",
-    };
-
     const exercise = insertExercise(db, exerciseData, userId);
     expect(exercise).toBeDefined();
     expect(exercise).toEqual({
       id: expect.any(String),
-      name: "Squat",
+      name: "Push Up",
       category: "Strength",
       created_at: expect.any(String),
     });
@@ -121,5 +117,47 @@ describe("insertExercise", () => {
     expect(() => insertExercise(db, exerciseData, userId)).toThrow(
       /NOT NULL constraint failed/
     );
+  });
+});
+
+describe("getExerciseById", () => {
+  it("returns exercise by id", () => {
+    const exercise = insertExercise(db, exerciseData, userId);
+    const foundExercise = getExerciseById(db, exercise.id, userId);
+    console.log({ foundExercise });
+  });
+
+  it("returns null if exercise not found", () => {
+    const foundExercise = getExerciseById(db, "non-existing-id", userId);
+    expect(foundExercise).toBeNull();
+  });
+});
+
+describe("deleteExerciseById", () => {
+  const workoutData = {
+    date: "2025.08.03",
+    name: "Morning Workout",
+    notes: "Felt great!",
+  };
+  it("deletes exercise by id", () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      exerciseData,
+      userId,
+      workout.id
+    );
+    const foundExercise = getExerciseById(db, exercise.id, userId);
+    expect(foundExercise).toEqual({
+      id: exercise.id,
+      name: "Push Up",
+      category: "Strength",
+      created_at: expect.any(String),
+    });
+  });
+
+  it("returns null if exercise is not found", async () => {
+    const foundExercise = getExerciseById(db, "non-existing-id", userId);
+    expect(foundExercise).toBeNull();
   });
 });
