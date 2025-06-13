@@ -6,10 +6,10 @@ import {
   getAllExercises,
   getExerciseById,
   insertExercise,
-  insertExerciseToWorkout,
 } from "../../db/queries/exercise-queries";
 import type { ExerciseData } from "../../db/schemas/exercise-schema";
 import { insertWorkout } from "../../db/queries/workout-queries";
+import { insertExerciseToWorkout } from "../../db/queries/workout-exercises-queries";
 
 let db: Database;
 const userId = "szabogeri69";
