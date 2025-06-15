@@ -9,7 +9,7 @@ import {
   getAllExercisesRequest,
   loginFlow,
   type AddExerciseRequestProps,
-} from "../../test/test-helpers";
+} from "../../test/test-request-helpers";
 import type { ExerciseWithouthUserId } from "../../types/exercise";
 
 let db: Database;

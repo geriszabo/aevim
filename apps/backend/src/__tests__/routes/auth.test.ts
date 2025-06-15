@@ -7,7 +7,7 @@ import {
   loginrequest,
   logoutRequest,
   signupRequest,
-} from "../../test/test-helpers";
+} from "../../test/test-request-helpers";
 
 let db: Database;
 
