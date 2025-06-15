@@ -6,14 +6,18 @@ import app from "../../index";
 import {
   addExerciseToWorkoutRequest,
   addWorkoutRequest,
+  deleteExerciseFromWorkoutRequest,
   deleteWorkoutRequest,
   getAllWorkoutsRequest,
+  getExercisesByWorkoutIdRequest,
   getSingleWorkoutRequest,
   loginFlow,
   updateWorkoutRequest,
   type AddWorkoutRequestProps,
 } from "../../test/test-helpers";
 import type { WorkoutWithoutUserId } from "../../types/workout";
+import type { Workout, WorkoutExercise } from "@aevim/shared-types";
+import type { ExerciseWithouthUserId } from "../../types/exercise";
 
 let db: Database;
 
@@ -439,5 +443,67 @@ describe("/workouts endpoint", () => {
         },
       });
     });
+  });
+  describe("DELETE workouts/:id/exercises/:exerciseId", () => {
+    it("deletes an exercise from a workout", async () => {
+      const { cookie } = await loginFlow();
+      const workoutRes = await app.fetch(
+        addWorkoutRequest({ cookie: cookie! })
+      );
+      const { workout } = (await workoutRes.json()) as {
+        workout: WorkoutWithoutUserId;
+      };
+      const { id: workoutId } = workout;
+
+      const exerciseRes = await app.fetch(
+        addExerciseToWorkoutRequest({
+          cookie: cookie!,
+          workoutId,
+        })
+      );
+      const { exercise } = (await exerciseRes.json()) as {
+        exercise: ExerciseWithouthUserId;
+      };
+
+      const exercisesOfWorkoutRes = await app.fetch(
+        getExercisesByWorkoutIdRequest(cookie!, workoutId)
+      );
+      const { exercises } = (await exercisesOfWorkoutRes.json()) as {
+        exercises: WorkoutExercise[];
+      };
+
+      expect(exercises.length).toBe(1);
+      const deletedExerciseRes = await app.fetch(
+        deleteExerciseFromWorkoutRequest(
+          cookie!,
+          workoutId,
+          exercises[0]!.exercise_id
+        )
+      );
+      const deletedExercise = await deletedExerciseRes.json();
+      expect(deletedExercise).toEqual({
+        message: `Exercise with id: ${
+          exercises[0]!.exercise_id
+        } has been deleted successfully from workout with id: ${workoutId}`,
+        exercise: {
+          id: expect.any(String),
+          workout_id: expect.any(String),
+          exercise_id: expect.any(String),
+        },
+      });
+    });
+  });
+
+  it("returns 404 if the exercise is not in the workout", async () => {
+    const { cookie } = await loginFlow();
+    const workoutRes = await app.fetch(addWorkoutRequest({ cookie: cookie! }));
+    const { workout } = (await workoutRes.json()) as { workout: Workout };
+    const fakeExerciseId = "non-existent-exercise";
+    const res = await app.fetch(
+      deleteExerciseFromWorkoutRequest(cookie!, workout.id, fakeExerciseId)
+    );
+    expect(res.status).toBe(404);
+    const json = await res.json();
+    expect(json).toEqual({ errors: ["Exercise not found in workout"] });
   });
 });

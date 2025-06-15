@@ -7,12 +7,16 @@ import {
 import {
   deleteWorkoutById,
   getWorkoutById,
+  getWorkoutExercisesByWorkoutId,
   getWorkoutsByUserId,
   insertWorkout,
   updateWorkoutById,
 } from "../db/queries/workout-queries";
 import { exerciseValidator } from "../db/schemas/exercise-schema";
-import { insertExerciseToWorkout } from "../db/queries/exercise-queries";
+import {
+  deleteExerciseFromWorkout,
+  insertExerciseToWorkout,
+} from "../db/queries/workout-exercises-queries";
 
 const workouts = new Hono();
 
@@ -72,33 +76,6 @@ workouts
       return c.json({ errors: ["Failed to fetch workout"] }, 500);
     }
   })
-  .post("workouts/:id/exercises", exerciseValidator, async (c) => {
-    const db = dbConnect();
-    const workoutId = c.req.param("id");
-    const payload = c.get("jwtPayload");
-    const exercise = c.req.valid("json");
-    try {
-      const workoutExercise = insertExerciseToWorkout(
-        db,
-        exercise,
-        payload.sub,
-        workoutId
-      );
-      return c.json(
-        {
-          message: "Exercise added to workout successfully",
-          exercise: workoutExercise,
-        },
-        201
-      );
-    } catch (error) {
-      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
-        return c.json({ errors: ["Workout not found"] }, 404);
-      }
-
-      return c.json({ errors: ["Failed to add exercise to workout"] }, 500);
-    }
-  })
   .put("workouts/:id", workoutUpdateValidator, async (c) => {
     const db = dbConnect();
     const workoutId = c.req.param("id");
@@ -141,6 +118,79 @@ workouts
     } catch (error) {
       console.error(error);
       return c.json({ errors: ["Internal server error"] }, 500);
+    }
+  })
+  .post("workouts/:id/exercises", exerciseValidator, async (c) => {
+    const db = dbConnect();
+    const workoutId = c.req.param("id");
+    const payload = c.get("jwtPayload");
+    const exercise = c.req.valid("json");
+    try {
+      const workoutExercise = insertExerciseToWorkout(
+        db,
+        exercise,
+        payload.sub,
+        workoutId
+      );
+      return c.json(
+        {
+          message: "Exercise added to workout successfully",
+          exercise: workoutExercise,
+        },
+        201
+      );
+    } catch (error) {
+      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
+        return c.json({ errors: ["Workout not found"] }, 404);
+      }
+
+      return c.json({ errors: ["Failed to add exercise to workout"] }, 500);
+    }
+  })
+  .delete("workouts/:id/exercises/:exerciseId", async (c) => {
+    const db = dbConnect();
+    const workoutId = c.req.param("id");
+    const exerciseId = c.req.param("exerciseId");
+    const payload = c.get("jwtPayload");
+    try {
+      const deletedExercise = deleteExerciseFromWorkout(
+        db,
+        workoutId,
+        exerciseId,
+        payload.sub
+      );
+      if (!deletedExercise) {
+        return c.json({ errors: ["Exercise not found in workout"] }, 404);
+      }
+      return c.json({
+        message: `Exercise with id: ${exerciseId} has been deleted successfully from workout with id: ${workoutId}`,
+        exercise: deletedExercise,
+      });
+    } catch (error) {
+      console.log(error);
+      return c.json(
+        { errors: ["Failed to delete exercise from workout"] },
+        500
+      );
+    }
+  })
+  .get("workouts/:id/exercises", async (c) => {
+    const db = dbConnect();
+    const workoutId = c.req.param("id");
+    const payload = c.get("jwtPayload");
+    try {
+      const exercisesInWorkout = getWorkoutExercisesByWorkoutId(
+        db,
+        workoutId,
+        payload.sub
+      );
+      if (!exercisesInWorkout) {
+        return c.json({ errors: ["No exercises found for this workout"] }, 404);
+      }
+      return c.json({exercises: exercisesInWorkout})
+    } catch (error) {
+      console.error(error);
+      return c.json({ errors: ["Failed to fetch exercises for workout"] }, 500);
     }
   });
 

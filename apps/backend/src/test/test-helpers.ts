@@ -182,3 +182,30 @@ export const getAllExercisesRequest = (cookie: string) => {
     headers: { Cookie: cookie! },
   });
 };
+
+export const getExercisesByWorkoutIdRequest = (
+  cookie: string,
+  workoutId: string
+) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises`,
+    {
+      method: "GET",
+      headers: { Cookie: cookie! },
+    }
+  );
+};
+
+export const deleteExerciseFromWorkoutRequest = (
+  cookie: string,
+  workoutId: string,
+  exerciseId: string
+) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}`,
+    {
+      method: "DELETE",
+      headers: { Cookie: cookie! },
+    }
+  );
+};
