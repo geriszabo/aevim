@@ -4,7 +4,6 @@ import type {
   ExerciseData,
   ExerciseWithouthUserId,
 } from "../../types/exercise";
-import type { WorkoutExercise } from "@aevim/shared-types";
 
 
 export const insertExercise = (

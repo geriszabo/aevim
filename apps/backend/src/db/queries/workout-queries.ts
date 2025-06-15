@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { Database } from "bun:sqlite";
-import { type Workout } from "@aevim/shared-types";
+import { type Workout, type WorkoutExercise } from "@aevim/shared-types";
 import type { WorkoutData, WorkoutWithoutUserId } from "../../types/workout";
 
 export const insertWorkout = (
@@ -95,6 +95,38 @@ export const deleteWorkoutById = (
     RETURNING name, id
     `);
 
-  const deleteWorkout = deleteWorkoutQuery.get(workoutId, userId) as {name: string, id: string} | null
+  const deleteWorkout = deleteWorkoutQuery.get(workoutId, userId) as {
+    name: string;
+    id: string;
+  } | null;
   return deleteWorkout;
+};
+
+export const getWorkoutExercisesByWorkoutId = (
+  db: Database,
+  workoutId: string,
+  userId: string
+) => {
+  const workoutExerciseQuery = db.query(`
+    SELECT
+     workout_exercises.id,
+      workout_exercises.workout_id,
+      workout_exercises.exercise_id,
+      workout_exercises.order_index,
+      workout_exercises.notes,
+      workout_exercises.created_at,
+      exercises.name,
+      exercises.category
+    FROM workout_exercises
+    JOIN exercises ON workout_exercises.exercise_id = exercises.id
+    WHERE workout_exercises.workout_id = ?
+    AND exercises.user_id = ?
+    ORDER BY workout_exercises.order_index
+    `);
+
+  const exercises = workoutExerciseQuery.all(
+    workoutId,
+    userId
+  ) as WorkoutExercise[];
+  return exercises;
 };

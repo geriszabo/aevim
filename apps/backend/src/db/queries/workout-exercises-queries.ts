@@ -4,11 +4,11 @@ import type {
   ExerciseData,
   ExerciseWithouthUserId,
 } from "../../types/exercise";
-import type { WorkoutExercise } from "@aevim/shared-types";
+import type { ExerciseToWorkout } from "@aevim/shared-types";
 
 type InsertExerciseResult = {
   exercise: ExerciseWithouthUserId;
-  workoutExercise: WorkoutExercise;
+  workoutExercise: ExerciseToWorkout;
 };
 
 export const getWorkoutExercisesByWorkoutId = (
@@ -91,7 +91,7 @@ export const insertExerciseToWorkout = (
         workoutId,
         exerciseId,
         nextOrder
-      ) as WorkoutExercise;
+      ) as ExerciseToWorkout;
 
     return { exercise, workoutExercise };
   });
