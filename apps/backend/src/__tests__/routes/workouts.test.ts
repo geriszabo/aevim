@@ -21,8 +21,11 @@ import {
   createExerciseAddToWorkoutAndReturn,
   createWorkoutAndReturn,
   deleteExerciseFromWorkoutAndReturn,
+  deleteWorkoutAndReturn,
   getAllExercisesOfWorkoutAndReturn,
+  getSingleWorkoutAndReturn,
   loginFlow,
+  updateWorkoutAndReturn,
 } from "../../test/test-helpers";
 
 let db: Database;
@@ -242,12 +245,7 @@ describe("/workouts endpoint", () => {
 
     it("returns 400 if no update data is provided", async () => {
       const { cookie } = await loginFlow();
-      const workoutRes = await app.fetch(
-        addWorkoutRequest({ cookie: cookie! })
-      );
-      const { workout } = (await workoutRes.json()) as {
-        workout: WorkoutWithoutUserId;
-      };
+      const { workout } = await createWorkoutAndReturn(cookie!);
       const updateRequest = updateWorkoutRequest(workout.id, {}, cookie!);
       const updateResponse = await app.fetch(updateRequest);
       const updateJson = await updateResponse.json();
@@ -259,25 +257,18 @@ describe("/workouts endpoint", () => {
 
     it("returns 400 if update data is invalid", async () => {
       const { cookie } = await loginFlow();
-      const workoutRes = await app.fetch(
-        addWorkoutRequest({ cookie: cookie! })
-      );
-      const { workout } = (await workoutRes.json()) as {
-        workout: WorkoutWithoutUserId;
-      };
-      const updateRequest = updateWorkoutRequest(
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { updatedWorkout, updateWorkoutRes } = await updateWorkoutAndReturn(
+        cookie!,
         workout.id,
         {
           name: null as unknown as string,
           date: null as unknown as string,
           notes: null as unknown as string,
-        },
-        cookie!
+        }
       );
-      const updateResponse = await app.fetch(updateRequest);
-      const updateJson = await updateResponse.json();
-      expect(updateResponse.status).toBe(400);
-      expect(updateJson).toEqual({
+      expect(updateWorkoutRes.status).toBe(400);
+      expect(updatedWorkout).toEqual({
         errors: [
           "No string for name update provided",
           "No string for date update provided",
@@ -288,15 +279,13 @@ describe("/workouts endpoint", () => {
 
     it("returns 404 if workout does not exist", async () => {
       const { cookie } = await loginFlow();
-      const updateRequest = updateWorkoutRequest(
+      const { updateWorkoutRes, updatedWorkout } = await updateWorkoutAndReturn(
+        cookie!,
         "nonexistentId",
-        { name: "test" },
-        cookie!
+        { name: "test" }
       );
-      const updateResponse = await app.fetch(updateRequest);
-      const updateJson = await updateResponse.json();
-      expect(updateResponse.status).toBe(404);
-      expect(updateJson).toEqual({
+      expect(updateWorkoutRes.status).toBe(404);
+      expect(updatedWorkout).toEqual({
         errors: ["Workout not found"],
       });
     });
@@ -305,28 +294,20 @@ describe("/workouts endpoint", () => {
   describe("DELETE /workouts/:id", () => {
     it("deletes a workout by id for the authenticated user", async () => {
       const { cookie } = await loginFlow();
-      // Create a workout
-      const workoutRes = await app.fetch(
-        addWorkoutRequest({ cookie: cookie! })
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { deleteRes, deletedWorkout } = await deleteWorkoutAndReturn(
+        cookie!,
+        workout.id
       );
-      const { workout } = (await workoutRes.json()) as {
-        workout: WorkoutWithoutUserId;
-      };
-      const deleteReq = deleteWorkoutRequest(workout.id, cookie!);
-      const deleteRes = await app.fetch(deleteReq);
-      const deleteJson = await deleteRes.json();
       expect(deleteRes.status).toBe(200);
-      expect(deleteJson).toEqual({
+      expect(deletedWorkout).toEqual({
         message:
           "Workout with name: crossfit session as been deleted successfuly",
       });
-
-      const findWorkoutRes = await app.fetch(
-        getSingleWorkoutRequest(workout.id, cookie!)
-      );
-      const findworkoutJson = await findWorkoutRes.json();
-      expect(findWorkoutRes.status).toBe(404);
-      expect(findworkoutJson).toEqual({
+      const { workoutRes: foundWorkoutRes, workout: foundWorkout } =
+        await getSingleWorkoutAndReturn(cookie!, workout.id);
+      expect(foundWorkoutRes.status).toBe(404);
+      expect(foundWorkout).toEqual({
         errors: ["Invalid workout id"],
       });
     });
@@ -347,19 +328,13 @@ describe("/workouts endpoint", () => {
   describe("POST /workouts/:id/exercises", () => {
     it("adds an exercise to a workout", async () => {
       const { cookie } = await loginFlow();
-      const workoutRes = await app.fetch(
-        addWorkoutRequest({ cookie: cookie! })
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id
       );
-      const { workout } = (await workoutRes.json()) as {
-        workout: WorkoutWithoutUserId;
-      };
-      const addExerciseReq = addExerciseToWorkoutRequest({
-        cookie: cookie!,
-        workoutId: workout.id,
-      });
-      const addExerciseRes = await app.fetch(addExerciseReq);
-      const addExerciseJson = await addExerciseRes.json();
-      expect(addExerciseJson).toEqual({
+
+      expect(exercise).toEqual({
         message: "Exercise added to workout successfully",
         exercise: {
           exercise: {
@@ -381,56 +356,43 @@ describe("/workouts endpoint", () => {
 
     it("returns 400 if exercise data is invalid", async () => {
       const { cookie } = await loginFlow();
-      await app.fetch(addWorkoutRequest({ cookie: cookie! }));
-      const addExerciseReq = addExerciseToWorkoutRequest({
-        cookie: cookie!,
-        name: null as any,
-      });
-      const addExerciseRes = await app.fetch(addExerciseReq);
-      expect(addExerciseRes.status).toBe(400);
-      const json = await addExerciseRes.json();
-      expect(json).toEqual({
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise, exerciseRes } =
+        await createExerciseAddToWorkoutAndReturn(cookie!, workout.id, {
+          name: null as any,
+        });
+
+      expect(exerciseRes.status).toBe(400);
+      expect(exercise).toEqual({
         errors: ["You have to give the exercise a name"],
       });
     });
 
     it("returns 404 if workout does not exist", async () => {
       const { cookie } = await loginFlow();
-      const addExerciseReq = addExerciseToWorkoutRequest({
-        cookie: cookie!,
-        workoutId: "fakeWorkoutId",
-      });
-      const addExerciseRes = await app.fetch(addExerciseReq);
-      expect(addExerciseRes.status).toBe(404);
-      const json = await addExerciseRes.json();
-      expect(json).toEqual({
+      const { exerciseRes, exercise } =
+        await createExerciseAddToWorkoutAndReturn(cookie!, "fakeWorkoutId");
+      expect(exerciseRes.status).toBe(404);
+      expect(exercise).toEqual({
         errors: ["Workout not found"],
       });
     });
 
     it("increments order_index for multiple exercises", async () => {
       const { cookie } = await loginFlow();
-      const workoutRes = await app.fetch(
-        addWorkoutRequest({ cookie: cookie! })
-      );
-      const { workout } = (await workoutRes.json()) as {
-        workout: WorkoutWithoutUserId;
-      };
-
+      const { workout } = await createWorkoutAndReturn(cookie!);
       // first exercise
-      await app.fetch(
-        addExerciseToWorkoutRequest({ cookie: cookie!, workoutId: workout.id })
-      );
+      await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
       // second exercise
-      const addExerciseReq2 = addExerciseToWorkoutRequest({
-        cookie: cookie!,
-        name: "pull up",
-        category: "back",
-        workoutId: workout.id,
-      });
-      const addExerciseRes2 = await app.fetch(addExerciseReq2);
-      const addExerciseJson2 = await addExerciseRes2.json();
-      expect(addExerciseJson2).toEqual({
+      const { exercise } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        {
+          name: "pull up",
+          category: "back",
+        }
+      );
+      expect(exercise).toEqual({
         message: "Exercise added to workout successfully",
         exercise: {
           exercise: {
@@ -450,6 +412,7 @@ describe("/workouts endpoint", () => {
       });
     });
   });
+
   describe("DELETE workouts/:id/exercises/:exerciseId", () => {
     it("deletes an exercise from a workout", async () => {
       const { cookie } = await loginFlow();
