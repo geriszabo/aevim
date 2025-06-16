@@ -7,10 +7,10 @@ import {
   addExerciseRequest,
   deleteExerciseRequest,
   getAllExercisesRequest,
-  loginFlow,
   type AddExerciseRequestProps,
 } from "../../test/test-request-helpers";
 import type { ExerciseWithouthUserId } from "../../types/exercise";
+import { loginFlow } from "../../test/test-helpers";
 
 let db: Database;
 

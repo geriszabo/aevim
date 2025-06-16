@@ -15,12 +15,6 @@ export interface AddExerciseRequestProps {
   cookie?: string;
 }
 
-export async function loginFlow() {
-  await app.fetch(signupRequest());
-  const loginRes = await app.fetch(loginrequest());
-  const cookie = loginRes.headers.get("Set-Cookie");
-  return { loginRes, cookie };
-}
 
 export const signupRequest = (
   email = "test@test.com",
