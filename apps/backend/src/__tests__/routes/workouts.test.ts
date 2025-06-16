@@ -17,7 +17,13 @@ import {
 import type { WorkoutWithoutUserId } from "../../types/workout";
 import type { Workout, WorkoutExercise } from "@aevim/shared-types";
 import type { ExerciseWithouthUserId } from "../../types/exercise";
-import { loginFlow } from "../../test/test-helpers";
+import {
+  createExerciseAddToWorkoutAndReturn,
+  createWorkoutAndReturn,
+  deleteExerciseFromWorkoutAndReturn,
+  getAllExercisesOfWorkoutAndReturn,
+  loginFlow,
+} from "../../test/test-helpers";
 
 let db: Database;
 
@@ -447,40 +453,21 @@ describe("/workouts endpoint", () => {
   describe("DELETE workouts/:id/exercises/:exerciseId", () => {
     it("deletes an exercise from a workout", async () => {
       const { cookie } = await loginFlow();
-      const workoutRes = await app.fetch(
-        addWorkoutRequest({ cookie: cookie! })
+      const {
+        workout: { id: workoutId },
+      } = await createWorkoutAndReturn(cookie!);
+      await createExerciseAddToWorkoutAndReturn(cookie!, workoutId);
+      const { exercises } = await getAllExercisesOfWorkoutAndReturn(
+        cookie!,
+        workoutId
       );
-      const { workout } = (await workoutRes.json()) as {
-        workout: WorkoutWithoutUserId;
-      };
-      const { id: workoutId } = workout;
-
-      const exerciseRes = await app.fetch(
-        addExerciseToWorkoutRequest({
-          cookie: cookie!,
-          workoutId,
-        })
+      const { deletedExercise } = await deleteExerciseFromWorkoutAndReturn(
+        cookie!,
+        workoutId,
+        exercises[0]!.exercise_id
       );
-      const { exercise } = (await exerciseRes.json()) as {
-        exercise: ExerciseWithouthUserId;
-      };
-
-      const exercisesOfWorkoutRes = await app.fetch(
-        getExercisesByWorkoutIdRequest(cookie!, workoutId)
-      );
-      const { exercises } = (await exercisesOfWorkoutRes.json()) as {
-        exercises: WorkoutExercise[];
-      };
 
       expect(exercises.length).toBe(1);
-      const deletedExerciseRes = await app.fetch(
-        deleteExerciseFromWorkoutRequest(
-          cookie!,
-          workoutId,
-          exercises[0]!.exercise_id
-        )
-      );
-      const deletedExercise = await deletedExerciseRes.json();
       expect(deletedExercise).toEqual({
         message: `Exercise with id: ${
           exercises[0]!.exercise_id
@@ -496,14 +483,17 @@ describe("/workouts endpoint", () => {
 
   it("returns 404 if the exercise is not in the workout", async () => {
     const { cookie } = await loginFlow();
-    const workoutRes = await app.fetch(addWorkoutRequest({ cookie: cookie! }));
-    const { workout } = (await workoutRes.json()) as { workout: Workout };
+    const { workout } = await createWorkoutAndReturn(cookie!);
     const fakeExerciseId = "non-existent-exercise";
-    const res = await app.fetch(
-      deleteExerciseFromWorkoutRequest(cookie!, workout.id, fakeExerciseId)
-    );
-    expect(res.status).toBe(404);
-    const json = await res.json();
-    expect(json).toEqual({ errors: ["Exercise not found in workout"] });
+    const { deletedExerciseRes, deletedExercise } =
+      await deleteExerciseFromWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        fakeExerciseId
+      );
+    expect(deletedExerciseRes.status).toBe(404);
+    expect(deletedExercise).toEqual({
+      errors: ["Exercise not found in workout"],
+    });
   });
 });
