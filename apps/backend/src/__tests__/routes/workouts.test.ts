@@ -23,6 +23,7 @@ import {
   deleteExerciseFromWorkoutAndReturn,
   deleteWorkoutAndReturn,
   getAllExercisesOfWorkoutAndReturn,
+  getAllWorkoutsAndReturn,
   getSingleWorkoutAndReturn,
   loginFlow,
   updateWorkoutAndReturn,
@@ -52,20 +53,16 @@ describe("/workouts endpoint", () => {
   describe("POST /workouts", () => {
     it("creates a workout", async () => {
       const { cookie } = await loginFlow();
-      const req = addWorkoutRequest({ cookie: cookie! });
-      const res = await app.fetch(req);
-      const json = await res.json();
+      const { workoutRes, workout } = await createWorkoutAndReturn(cookie!);
+
       expect(cookie).toMatch(/authToken=([^;]+)/);
-      expect(res.status).toBe(201);
-      expect(json).toEqual({
-        message: "Workout created successfully",
-        workout: {
-          id: expect.any(String),
-          name: "crossfit session",
-          date: "2022.08.25",
-          created_at: expect.any(String),
-          notes: "im dead",
-        },
+      expect(workoutRes.status).toBe(201);
+      expect(workout).toEqual({
+        id: expect.any(String),
+        name: "crossfit session",
+        date: "2022.08.25",
+        created_at: expect.any(String),
+        notes: "im dead",
       });
     });
 
@@ -93,17 +90,13 @@ describe("/workouts endpoint", () => {
   describe("GET /workouts", () => {
     it("returns all workouts for the authenticated user", async () => {
       const { cookie } = await loginFlow();
-
-      await app.fetch(addWorkoutRequest({ cookie: cookie! }));
-      await app.fetch(addWorkoutRequest({ cookie: cookie! }));
-
-      const req = getAllWorkoutsRequest(cookie!);
-      const res = await app.fetch(req);
-      const json = (await res.json()) as { workouts: WorkoutWithoutUserId[] };
-
-      expect(res.status).toBe(200);
-      expect(json.workouts).toHaveLength(2);
-      json.workouts.forEach((workout) => {
+      // Create two workouts
+      await createWorkoutAndReturn(cookie!);
+      await createWorkoutAndReturn(cookie!);
+      const { workouts, workoutsRes } = await getAllWorkoutsAndReturn(cookie!);
+      expect(workoutsRes.status).toBe(200);
+      expect(workouts.workouts).toHaveLength(2);
+      workouts.workouts.forEach((workout) => {
         expect(workout).toEqual({
           id: expect.any(String),
           name: "crossfit session",
@@ -116,35 +109,22 @@ describe("/workouts endpoint", () => {
 
     it("returns an empty array if user has no workouts", async () => {
       const { cookie } = await loginFlow();
-
-      const req = getAllWorkoutsRequest(cookie!);
-      const res = await app.fetch(req);
-      const json = await res.json();
-
-      expect(res.status).toBe(200);
-      expect(json).toEqual({
+      const { workouts, workoutsRes } = await getAllWorkoutsAndReturn(cookie!);
+      expect(workoutsRes.status).toBe(200);
+      expect(workouts).toEqual({
         workouts: [],
       });
     });
   });
 
   describe("GET /workouts/:id", async () => {
-    it("returns a workout based  on the workoutId", async () => {
+    it("returns a workout based on the workoutId", async () => {
       const { cookie } = await loginFlow();
-      const workoutRes = await app.fetch(
-        addWorkoutRequest({ cookie: cookie! })
-      );
-      const workoutJson = (await workoutRes.json()) as {
-        message: string;
-        workout: WorkoutWithoutUserId;
-      };
-      const { workout } = workoutJson;
-
-      const req = getSingleWorkoutRequest(workout.id, cookie!);
-      const res = await app.fetch(req);
-      const json = await res.json();
-      expect(res.status).toBe(200);
-      expect(json).toEqual({
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workoutRes, workout: retrievedWorkout } =
+        await getSingleWorkoutAndReturn(cookie!, workout.id);
+      expect(workoutRes.status).toBe(200);
+      expect(retrievedWorkout).toEqual({
         workout: {
           id: workout.id,
           name: "crossfit session",
@@ -157,12 +137,12 @@ describe("/workouts endpoint", () => {
 
     it("throws error if workoutId is invalid", async () => {
       const { cookie } = await loginFlow();
-
-      const req = getSingleWorkoutRequest("invalidWorkoutId", cookie!);
-      const res = await app.fetch(req);
-      const json = await res.json();
-      expect(res.status).toBe(404);
-      expect(json).toEqual({
+      const { workoutRes, workout } = await getSingleWorkoutAndReturn(
+        cookie!,
+        "invalidWorkoutId"
+      );
+      expect(workoutRes.status).toBe(404);
+      expect(workout).toEqual({
         errors: ["Invalid workout id"],
       });
     });
@@ -177,11 +157,8 @@ describe("/workouts endpoint", () => {
 
     it("updates a workout if data is provided", async () => {
       const { cookie } = await loginFlow();
-      const workoutRequest = addWorkoutRequest({ cookie: cookie! });
-      const workoutResponse = await app.fetch(workoutRequest);
-      const { workout } = (await workoutResponse.json()) as {
-        workout: WorkoutWithoutUserId;
-      };
+      const { workout } = await createWorkoutAndReturn(cookie!);
+
       expect(workout).toEqual({
         name: "crossfit session",
         notes: "im dead",
@@ -189,12 +166,13 @@ describe("/workouts endpoint", () => {
         id: expect.any(String),
         created_at: expect.any(String),
       });
-
-      const updateRequest = updateWorkoutRequest(workout.id, update, cookie!);
-      const updateResponse = await app.fetch(updateRequest);
-      const updateJson = await updateResponse.json();
-      expect(updateResponse.status).toBe(200);
-      expect(updateJson).toEqual({
+      const { updateWorkoutRes, updatedWorkout } = await updateWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        update
+      );
+      expect(updateWorkoutRes.status).toBe(200);
+      expect(updatedWorkout).toEqual({
         message: "Workout updated successfully",
         workout: {
           id: workout.id,
@@ -206,51 +184,43 @@ describe("/workouts endpoint", () => {
 
     it("updates a workout with partially provided data", async () => {
       const { cookie } = await loginFlow();
-      const workoutRequest = addWorkoutRequest({ cookie: cookie! });
-      const workoutResponse = await app.fetch(workoutRequest);
-      const { workout } = (await workoutResponse.json()) as {
-        workout: WorkoutWithoutUserId;
-      };
-
+      const { workout } = await createWorkoutAndReturn(cookie!);
       // Define partial updates and expected results
       const partialUpdates = [
         { date: "updated date" },
         { name: "updated name" },
         { notes: "updated notes" },
       ];
-
+      const currentWorkout = { ...workout };
       for (const partialUpdate of partialUpdates) {
-        const updateRequest = updateWorkoutRequest(
-          workout.id,
-          partialUpdate,
-          cookie!
-        );
-        const updateResponse = await app.fetch(updateRequest);
-        const updateJson = await updateResponse.json();
+        const { updateWorkoutRes, updatedWorkout } =
+          await updateWorkoutAndReturn(cookie!, workout.id, partialUpdate);
 
-        expect(updateResponse.status).toBe(200);
-        expect(updateJson).toEqual({
+        expect(updateWorkoutRes.status).toBe(200);
+        expect(updatedWorkout).toEqual({
           message: "Workout updated successfully",
           workout: {
-            ...workout,
+            ...currentWorkout,
             ...partialUpdate,
             created_at: expect.any(String),
             id: workout.id,
           },
         });
 
-        Object.assign(workout, partialUpdate);
+        Object.assign(currentWorkout, partialUpdate);
       }
     });
 
     it("returns 400 if no update data is provided", async () => {
       const { cookie } = await loginFlow();
       const { workout } = await createWorkoutAndReturn(cookie!);
-      const updateRequest = updateWorkoutRequest(workout.id, {}, cookie!);
-      const updateResponse = await app.fetch(updateRequest);
-      const updateJson = await updateResponse.json();
-      expect(updateResponse.status).toBe(400);
-      expect(updateJson).toEqual({
+      const { updateWorkoutRes, updatedWorkout } = await updateWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        {}
+      );
+      expect(updateWorkoutRes.status).toBe(400);
+      expect(updatedWorkout).toEqual({
         errors: ["At least one field must be provided"],
       });
     });
@@ -258,6 +228,7 @@ describe("/workouts endpoint", () => {
     it("returns 400 if update data is invalid", async () => {
       const { cookie } = await loginFlow();
       const { workout } = await createWorkoutAndReturn(cookie!);
+
       const { updatedWorkout, updateWorkoutRes } = await updateWorkoutAndReturn(
         cookie!,
         workout.id,
@@ -314,12 +285,12 @@ describe("/workouts endpoint", () => {
 
     it("returns 404 if workout does not exist", async () => {
       const { cookie } = await loginFlow();
-      const deleteReq = deleteWorkoutRequest("imaginaryWorkoutId", cookie!);
-      const deleteRes = await app.fetch(deleteReq);
-      const deleteJson = await deleteRes.json();
-
+      const { deleteRes, deletedWorkout } = await deleteWorkoutAndReturn(
+        cookie!,
+        "imaginaryWorkoutId"
+      );
       expect(deleteRes.status).toBe(404);
-      expect(deleteJson).toEqual({
+      expect(deletedWorkout).toEqual({
         errors: ["Workout not found"],
       });
     });
