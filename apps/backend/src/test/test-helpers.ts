@@ -7,6 +7,7 @@ import {
   addWorkoutRequest,
   deleteExerciseFromWorkoutRequest,
   deleteWorkoutRequest,
+  getAllWorkoutsRequest,
   getExercisesByWorkoutIdRequest,
   getSingleWorkoutRequest,
   loginrequest,
@@ -21,8 +22,11 @@ export async function loginFlow() {
   return { loginRes, cookie };
 }
 
-export const createWorkoutAndReturn = async (cookie: string) => {
-  const workoutRes = await app.fetch(addWorkoutRequest({ cookie }));
+export const createWorkoutAndReturn = async (
+  cookie: string,
+  workoutData: { date?: string; name?: string; notes?: string; userId?: string } = {}
+) => {
+  const workoutRes = await app.fetch(addWorkoutRequest({ cookie, ...workoutData }));
   const { workout } = (await workoutRes.json()) as {
     workout: WorkoutWithoutUserId;
   };
@@ -115,4 +119,10 @@ export const updateWorkoutAndReturn = async (
   const updatedWorkout = await updateWorkoutRes.json();
 
   return { updateWorkoutRes, updatedWorkout };
+};
+
+export const getAllWorkoutsAndReturn = async (cookie: string) => {
+  const workoutsRes = await app.fetch(getAllWorkoutsRequest(cookie));
+  const workouts = await workoutsRes.json() as { workouts: WorkoutWithoutUserId[] };
+  return { workoutsRes, workouts };
 };
