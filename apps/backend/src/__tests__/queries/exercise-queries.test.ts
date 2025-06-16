@@ -6,6 +6,7 @@ import {
   getAllExercises,
   getExerciseById,
   insertExercise,
+  updateExerciseById,
 } from "../../db/queries/exercise-queries";
 import type { ExerciseData } from "../../db/schemas/exercise-schema";
 import { insertWorkout } from "../../db/queries/workout-queries";
@@ -198,5 +199,105 @@ describe("getAllExercises", () => {
   it("returns empty array if user has no exercises", () => {
     const exercises = getAllExercises(db, userId);
     expect(exercises).toEqual([]);
+  });
+});
+
+describe("updateExerciseById", () => {
+  const workoutData = {
+    date: "2025.08.03",
+    name: "Morning Workout",
+    notes: "Felt great!",
+  };
+
+  it("updates an exercise", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      exerciseData,
+      userId,
+      workout.id
+    );
+    const updatedExercise = updateExerciseById(db, exercise.id, userId, {
+      name: "updated name",
+      category: "updated category",
+    });
+    expect(updatedExercise).toEqual({
+      id: exercise.id,
+      name: "updated name",
+      category: "updated category",
+      created_at: expect.any(String),
+    });
+  });
+
+  it("returns null if exercise does not exist", () => {
+    const updated = updateExerciseById(db, "non-existent-id", userId, {
+      name: "new name",
+    });
+    expect(updated).toBeNull();
+  });
+
+  it("returns null if exercise belongs to another user", () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      { name: "Test" },
+      userId,
+      workout.id
+    );
+    const otherUserId = "other-user";
+    const updated = updateExerciseById(db, exercise.id, otherUserId, {
+      name: "new name",
+    });
+    expect(updated).toBeNull();
+  });
+
+  it("updates only the name if only name is provided", () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      { name: "name", category: "category" },
+      userId,
+      workout.id
+    );
+    const updatedName = updateExerciseById(db, exercise.id, userId, {
+      name: "updated name",
+    });
+    expect(updatedName).toEqual({
+      id: exercise.id,
+      name: "updated name",
+      category: "category",
+      created_at: expect.any(String),
+    });
+
+    const updatedCategory = updateExerciseById(db, exercise.id, userId, {
+      category: "updated category",
+    });
+    expect(updatedCategory).toEqual({
+      id: exercise.id,
+      name: "updated name",
+      category: "updated category",
+      created_at: expect.any(String),
+    });
+  });
+
+  it("does not update if no fields are provided", () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      { name: "name", category: "category" },
+      userId,
+      workout.id
+    );
+    try {
+      updateExerciseById(db, exercise.id, userId, {
+        category: null as any,
+        name: null as any,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/NOT NULL constraint failed/);
+      }
+    }
   });
 });

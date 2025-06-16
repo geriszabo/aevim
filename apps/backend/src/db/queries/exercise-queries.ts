@@ -5,7 +5,6 @@ import type {
   ExerciseWithouthUserId,
 } from "../../types/exercise";
 
-
 export const insertExercise = (
   db: Database,
   exerciseData: ExerciseData,
@@ -27,7 +26,6 @@ export const insertExercise = (
 
   return exercise;
 };
-
 
 export const deleteExerciseById = (
   db: Database,
@@ -77,4 +75,30 @@ export const getAllExercises = (db: Database, userId: string) => {
     | ExerciseWithouthUserId[]
     | null;
   return exercises;
+};
+
+export const updateExerciseById = (
+  db: Database,
+  exerciseId: string,
+  userId: string,
+  updates: Partial<ExerciseData>
+) => {
+  const filteredUpdates = Object.fromEntries(
+    Object.entries(updates).filter(([_key, value]) => value !== undefined)
+  );
+
+  const fields = Object.keys(filteredUpdates);
+  const setClause = fields.map((field) => `${field} = ?`).join(", ");
+  const values = Object.values(filteredUpdates);
+
+  const updateQuery = db.query(`
+      UPDATE exercises
+      SET ${setClause}
+      WHERE id = ? AND user_id = ?
+      RETURNING id, name, category, created_at
+    `);
+
+  const result = updateQuery.get(...values, exerciseId, userId);
+
+  return result;
 };
