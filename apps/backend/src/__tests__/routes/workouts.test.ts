@@ -298,19 +298,17 @@ describe("/workouts endpoint", () => {
       expect(exercise).toEqual({
         message: "Exercise added to workout successfully",
         exercise: {
-          exercise: {
-            id: expect.any(String),
-            name: "bench pressing",
-            category: "chest",
-            created_at: expect.any(String),
-          },
-          workoutExercise: {
-            id: expect.any(String),
-            workout_id: expect.any(String),
-            exercise_id: expect.any(String),
-            created_at: expect.any(String),
-            order_index: 1,
-          },
+          id: expect.any(String),
+          name: "bench pressing",
+          category: "chest",
+          created_at: expect.any(String),
+        },
+        workoutExercise: {
+          id: expect.any(String),
+          workout_id: expect.any(String),
+          exercise_id: expect.any(String),
+          created_at: expect.any(String),
+          order_index: 1,
         },
       });
     });
@@ -345,30 +343,25 @@ describe("/workouts endpoint", () => {
       // first exercise
       await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
       // second exercise
-      const { exercise } = await createExerciseAddToWorkoutAndReturn(
-        cookie!,
-        workout.id,
-        {
+      const { exercise, exerciseRes } =
+        await createExerciseAddToWorkoutAndReturn(cookie!, workout.id, {
           name: "pull up",
           category: "back",
-        }
-      );
+        });
       expect(exercise).toEqual({
         message: "Exercise added to workout successfully",
         exercise: {
-          exercise: {
-            id: expect.any(String),
-            name: "pull up",
-            category: "back",
-            created_at: expect.any(String),
-          },
-          workoutExercise: {
-            id: expect.any(String),
-            workout_id: expect.any(String),
-            exercise_id: expect.any(String),
-            created_at: expect.any(String),
-            order_index: 2,
-          },
+          id: expect.any(String),
+          name: "pull up",
+          category: "back",
+          created_at: expect.any(String),
+        },
+        workoutExercise: {
+          id: expect.any(String),
+          workout_id: expect.any(String),
+          exercise_id: expect.any(String),
+          created_at: expect.any(String),
+          order_index: 2,
         },
       });
     });

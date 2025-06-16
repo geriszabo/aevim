@@ -124,18 +124,19 @@ workouts
     const db = dbConnect();
     const workoutId = c.req.param("id");
     const payload = c.get("jwtPayload");
-    const exercise = c.req.valid("json");
+    const exerciseData = c.req.valid("json");
     try {
-      const workoutExercise = insertExerciseToWorkout(
+      const {exercise, workoutExercise} = insertExerciseToWorkout(
         db,
-        exercise,
+        exerciseData,
         payload.sub,
         workoutId
       );
       return c.json(
         {
           message: "Exercise added to workout successfully",
-          exercise: workoutExercise,
+          exercise,
+          workoutExercise,
         },
         201
       );

@@ -28,9 +28,16 @@ export async function loginFlow() {
 
 export const createWorkoutAndReturn = async (
   cookie: string,
-  workoutData: { date?: string; name?: string; notes?: string; userId?: string } = {}
+  workoutData: {
+    date?: string;
+    name?: string;
+    notes?: string;
+    userId?: string;
+  } = {}
 ) => {
-  const workoutRes = await app.fetch(addWorkoutRequest({ cookie, ...workoutData }));
+  const workoutRes = await app.fetch(
+    addWorkoutRequest({ cookie, ...workoutData })
+  );
   const { workout } = (await workoutRes.json()) as {
     workout: WorkoutWithoutUserId;
   };
@@ -53,10 +60,9 @@ export const createExerciseAddToWorkoutAndReturn = async (
   );
   const exercise = (await exerciseRes.json()) as
     | {
-        exercise: {
-          exercise: ExerciseWithouthUserId;
-          workoutExercise: ExerciseToWorkout;
-        };
+        exercise: ExerciseWithouthUserId;
+        workoutExercise: ExerciseToWorkout;
+
         message: string;
       }
     | { errors: string[] };
@@ -127,7 +133,9 @@ export const updateWorkoutAndReturn = async (
 
 export const getAllWorkoutsAndReturn = async (cookie: string) => {
   const workoutsRes = await app.fetch(getAllWorkoutsRequest(cookie));
-  const workouts = await workoutsRes.json() as { workouts: WorkoutWithoutUserId[] };
+  const workouts = (await workoutsRes.json()) as {
+    workouts: WorkoutWithoutUserId[];
+  };
   return { workoutsRes, workouts };
 };
 
@@ -159,20 +167,29 @@ export const createExerciseAndReturn = async (
   cookie: string,
   exerciseData: { name?: string; category?: string } = {}
 ) => {
-  const exerciseRes = await app.fetch(addExerciseRequest({ cookie, ...exerciseData }));
+  const exerciseRes = await app.fetch(
+    addExerciseRequest({ cookie, ...exerciseData })
+  );
   const exercise = await exerciseRes.json();
-  
-  return {exerciseRes, exercise}
+
+  return { exerciseRes, exercise };
 };
 
 export const getAllExercisesAndReturn = async (cookie: string) => {
   const exercisesRes = await app.fetch(getAllExercisesRequest(cookie));
-  const { exercises } = await exercisesRes.json() as { exercises: ExerciseWithouthUserId[] };
+  const { exercises } = (await exercisesRes.json()) as {
+    exercises: ExerciseWithouthUserId[];
+  };
   return { exercisesRes, exercises };
 };
 
-export const deleteExerciseAndReturn = async (cookie: string, exerciseId: string) => {
-  const deletedExerciseRes = await app.fetch(deleteExerciseRequest(exerciseId, cookie));
+export const deleteExerciseAndReturn = async (
+  cookie: string,
+  exerciseId: string
+) => {
+  const deletedExerciseRes = await app.fetch(
+    deleteExerciseRequest(exerciseId, cookie)
+  );
   const deletedExercise = await deletedExerciseRes.json();
   return { deletedExerciseRes, deletedExercise };
 };
