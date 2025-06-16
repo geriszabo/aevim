@@ -4,11 +4,11 @@ import { Database } from "bun:sqlite";
 import app from "../../index";
 import { createTestDb } from "../../test/test-db";
 import {
-  loginrequest,
-  logoutRequest,
-  signupRequest,
-} from "../../test/test-request-helpers";
-import { completeAuthFlow, loginAndReturn, logoutAndReturn, signupAndReturn } from "../../test/test-helpers";
+  completeAuthFlow,
+  loginAndReturn,
+  logoutAndReturn,
+  signupAndReturn,
+} from "../../test/test-helpers";
 
 let db: Database;
 
@@ -101,7 +101,7 @@ describe("/login endpoint", () => {
 });
 
 describe("/logout endpoint", () => {
- it("logs user out and deletes cookie", async () => {
+  it("logs user out and deletes cookie", async () => {
     const { cookie: loginCookie } = await completeAuthFlow();
     expect(loginCookie).toMatch(/authToken=([^;]+)/);
     const { cookie: logoutCookie } = await logoutAndReturn();
@@ -111,7 +111,7 @@ describe("/logout endpoint", () => {
 
 describe("/me endpoint", () => {
   it("returns the current user's id and email if authenticated", async () => {
-    const {cookie} = await completeAuthFlow()
+    const { cookie } = await completeAuthFlow();
     expect(cookie).toMatch(/authToken=([^;]+)/);
     const req = new Request("http://localhost:3000/api/v1/auth/me", {
       method: "GET",
@@ -129,7 +129,6 @@ describe("/me endpoint", () => {
   });
 
   it("returns 401 if not authenticated", async () => {
-    // No cookie
     const req = new Request("http://localhost:3000/api/v1/auth/me", {
       method: "GET",
     });

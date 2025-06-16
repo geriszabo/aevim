@@ -5,12 +5,13 @@ import { createTestDb } from "../../test/test-db";
 import app from "../../index";
 import {
   addExerciseRequest,
-  deleteExerciseRequest,
-  getAllExercisesRequest,
-  type AddExerciseRequestProps,
 } from "../../test/test-request-helpers";
-import type { ExerciseWithouthUserId } from "../../types/exercise";
-import { loginFlow } from "../../test/test-helpers";
+import {
+  createExerciseAndReturn,
+  deleteExerciseAndReturn,
+  getAllExercisesAndReturn,
+  loginFlow,
+} from "../../test/test-helpers";
 
 let db: Database;
 
@@ -36,11 +37,10 @@ describe("/exercises endpoint", () => {
   describe("POST /exercises", () => {
     it("creates an exercise", async () => {
       const { cookie } = await loginFlow();
-      const req = addExerciseRequest({ cookie: cookie! });
-      const res = await app.fetch(req);
-      const json = await res.json();
-      expect(res.status).toBe(201);
-      expect(json).toEqual({
+      const { exerciseRes, exercise } = await createExerciseAndReturn(cookie!);
+
+      expect(exerciseRes.status).toBe(201);
+      expect(exercise).toEqual({
         message: "exercise created successfully",
         exercise: {
           id: expect.any(String),
@@ -53,15 +53,13 @@ describe("/exercises endpoint", () => {
 
     it("returns 400 if parameters are invalid", async () => {
       const { cookie } = await loginFlow();
-      const req = addExerciseRequest({
-        cookie: cookie!,
-        name: null,
-        category: null,
-      } as unknown as AddExerciseRequestProps);
-      const res = await app.fetch(req);
-      const json = await res.json();
-      expect(res.status).toBe(400);
-      expect(json).toEqual({
+      const { exerciseRes, exercise } = await createExerciseAndReturn(cookie!, {
+        category: null as any,
+        name: null as any,
+      });
+
+      expect(exerciseRes.status).toBe(400);
+      expect(exercise).toEqual({
         errors: ["You have to give the exercise a name"],
       });
     });
@@ -70,10 +68,8 @@ describe("/exercises endpoint", () => {
   describe("DELETE /exercises/:id", () => {
     it("deletes an exercise", async () => {
       const { cookie } = await loginFlow();
-      const req = addExerciseRequest({ cookie: cookie! });
-      const res = await app.fetch(req);
-      const json = await res.json();
-      expect(json).toEqual({
+      const { exercise } = await createExerciseAndReturn(cookie!);
+      expect(exercise).toEqual({
         message: "exercise created successfully",
         exercise: {
           id: expect.any(String),
@@ -82,26 +78,24 @@ describe("/exercises endpoint", () => {
           created_at: expect.any(String),
         },
       });
-      const exercisesReqBefore = await app.fetch(
-        getAllExercisesRequest(cookie!)
+      const { exercises: exercisesBefore } = await getAllExercisesAndReturn(
+        cookie!
       );
-      const { exercises: exercisesBefore } =
-        (await exercisesReqBefore.json()) as {
-          exercises: ExerciseWithouthUserId[];
-        };
-      await app.fetch(deleteExerciseRequest(exercisesBefore[0]?.id!, cookie!));
-      const exercises = await app.fetch(getAllExercisesRequest(cookie!));
-      const exercisesAfter = await exercises.json();
-      expect(exercisesAfter).toEqual({ exercises: [] });
+      expect(exercisesBefore).toHaveLength(1);
+      await deleteExerciseAndReturn(cookie!, exercisesBefore[0]!.id);
+      const { exercises: exercisesAfter } = await getAllExercisesAndReturn(
+        cookie!
+      );
+      expect(exercisesAfter).toEqual([]);
     });
 
     it("returns 404 if exercise not found", async () => {
       const { cookie } = await loginFlow();
-      const req = deleteExerciseRequest("non-existing-id", cookie!);
-      const res = await app.fetch(req);
-      expect(res.status).toBe(404);
-      const json = await res.json();
-      expect(json).toEqual({
+      const { deletedExercise, deletedExerciseRes } =
+        await deleteExerciseAndReturn(cookie!, "non-existing-id");
+      expect(deletedExerciseRes.status).toBe(404);
+
+      expect(deletedExercise).toEqual({
         errors: ["Exercise not found"],
       });
     });

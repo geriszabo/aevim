@@ -3,10 +3,13 @@ import app from "../index";
 import type { ExerciseWithouthUserId } from "../types/exercise";
 import type { WorkoutWithoutUserId } from "../types/workout";
 import {
+  addExerciseRequest,
   addExerciseToWorkoutRequest,
   addWorkoutRequest,
   deleteExerciseFromWorkoutRequest,
+  deleteExerciseRequest,
   deleteWorkoutRequest,
+  getAllExercisesRequest,
   getAllWorkoutsRequest,
   getExercisesByWorkoutIdRequest,
   getSingleWorkoutRequest,
@@ -150,4 +153,26 @@ export const logoutAndReturn = async () => {
 export const completeAuthFlow = async (email?: string, password?: string) => {
   await signupAndReturn(email, password);
   return await loginAndReturn(email, password);
+};
+
+export const createExerciseAndReturn = async (
+  cookie: string,
+  exerciseData: { name?: string; category?: string } = {}
+) => {
+  const exerciseRes = await app.fetch(addExerciseRequest({ cookie, ...exerciseData }));
+  const exercise = await exerciseRes.json();
+  
+  return {exerciseRes, exercise}
+};
+
+export const getAllExercisesAndReturn = async (cookie: string) => {
+  const exercisesRes = await app.fetch(getAllExercisesRequest(cookie));
+  const { exercises } = await exercisesRes.json() as { exercises: ExerciseWithouthUserId[] };
+  return { exercisesRes, exercises };
+};
+
+export const deleteExerciseAndReturn = async (cookie: string, exerciseId: string) => {
+  const deletedExerciseRes = await app.fetch(deleteExerciseRequest(exerciseId, cookie));
+  const deletedExercise = await deletedExerciseRes.json();
+  return { deletedExerciseRes, deletedExercise };
 };
