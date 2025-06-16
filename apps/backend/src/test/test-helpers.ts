@@ -11,6 +11,7 @@ import {
   getExercisesByWorkoutIdRequest,
   getSingleWorkoutRequest,
   loginrequest,
+  logoutRequest,
   signupRequest,
   updateWorkoutRequest,
 } from "./test-request-helpers";
@@ -125,4 +126,28 @@ export const getAllWorkoutsAndReturn = async (cookie: string) => {
   const workoutsRes = await app.fetch(getAllWorkoutsRequest(cookie));
   const workouts = await workoutsRes.json() as { workouts: WorkoutWithoutUserId[] };
   return { workoutsRes, workouts };
+};
+
+export const signupAndReturn = async (email?: string, password?: string) => {
+  const signupRes = await app.fetch(signupRequest(email, password));
+  const json = await signupRes.json();
+  return { signupRes, json };
+};
+
+export const loginAndReturn = async (email?: string, password?: string) => {
+  const loginRes = await app.fetch(loginrequest(email, password));
+  const json = await loginRes.json();
+  const cookie = loginRes.headers.get("Set-Cookie");
+  return { loginRes, json, cookie };
+};
+
+export const logoutAndReturn = async () => {
+  const logoutRes = await app.fetch(logoutRequest());
+  const cookie = logoutRes.headers.get("Set-Cookie");
+  return { logoutRes, cookie };
+};
+
+export const completeAuthFlow = async (email?: string, password?: string) => {
+  await signupAndReturn(email, password);
+  return await loginAndReturn(email, password);
 };
