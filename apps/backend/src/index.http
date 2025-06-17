@@ -38,9 +38,9 @@ Cookie: {{login.response.headers.Set-Cookie}}
 Content-Type: application/json
 
 {
-    "date": "2025.06.08",
+    "date": "2025.06.16",
     "name": "hiking with eszter",
-    "notes": "skocjan cave system was awesome"
+    "notes": "skocjan cave system was awesome part two"
 }
 
 ###
@@ -50,7 +50,7 @@ Cookie: {{login.response.headers.Set-Cookie}}
 
 ###
 
-GET http://localhost:3000/api/v1/auth/workouts/7b20b747-3976-44ca-9982-3399a952a266
+GET http://localhost:3000/api/v1/auth/workouts/70a6c0c0-a70e-4f43-a6ae-efd7b2da2ccd
 Cookie: {{login.response.headers.Set-Cookie}}
 
 ###
@@ -64,7 +64,7 @@ Content-Type: application/json
 }
 ###
 
-DELETE http://localhost:3000/api/v1/auth/workouts/68760fa2-6ee4-44a2-8167-047fb47ad359
+DELETE http://localhost:3000/api/v1/auth/workouts/70a6c0c0-a70e-4f43-a6ae-efd7b2da2ccd
 Cookie: {{login.response.headers.Set-Cookie}}
 
 ###
@@ -77,3 +77,31 @@ Content-Type: application/json
     "name": "jogging",
     "category": "cardio"
 }
+
+###
+
+GET http://localhost:3000/api/v1/auth/workouts/7b20b747-3976-44ca-9982-3399a952a266/exercises/
+Cookie: {{login.response.headers.Set-Cookie}}
+
+###
+
+GET http://localhost:3000/api/v1/auth/exercises/b95db58e-a35d-430c-8b99-739fb69c6b5b
+Cookie: {{login.response.headers.Set-Cookie}}
+
+
+###
+
+POST http://localhost:3000/api/v1/auth/workouts/70a6c0c0-a70e-4f43-a6ae-efd7b2da2ccd/exercises
+Cookie: {{login.response.headers.Set-Cookie}}
+Content-Type: application/json
+
+{
+    "name": "hanky panky",
+    "category": ":)))"
+}
+
+###
+
+GET http://localhost:3000/api/v1/auth/workouts/70a6c0c0-a70e-4f43-a6ae-efd7b2da2ccd/exercises
+
+Cookie: {{login.response.headers.Set-Cookie}}
