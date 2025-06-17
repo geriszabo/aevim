@@ -203,3 +203,18 @@ export const deleteExerciseFromWorkoutRequest = (
     }
   );
 };
+
+export const updateExerciseRequest = (
+  exerciseId: string,
+  update: { name?: string; category?: string },
+  cookie: string
+) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/exercises/${exerciseId}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Cookie: cookie! },
+      body: JSON.stringify(update),
+    }
+  );
+};

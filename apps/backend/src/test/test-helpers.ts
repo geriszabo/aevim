@@ -16,6 +16,7 @@ import {
   loginrequest,
   logoutRequest,
   signupRequest,
+  updateExerciseRequest,
   updateWorkoutRequest,
 } from "./test-request-helpers";
 
@@ -58,16 +59,19 @@ export const createExerciseAddToWorkoutAndReturn = async (
       name,
     })
   );
-  const exercise = (await exerciseRes.json()) as
-    | {
-        exercise: ExerciseWithouthUserId;
-        workoutExercise: ExerciseToWorkout;
+  const json = await exerciseRes.json();
 
-        message: string;
-      }
-    | { errors: string[] };
-
-  return { exerciseRes, exercise };
+  if (exerciseRes.ok) {
+    const exercise = json as {
+      message: string;
+      exercise: ExerciseWithouthUserId;
+      workoutExercise: ExerciseToWorkout;
+    };
+    return { exerciseRes, exercise, success: true as const };
+  } else {
+    const exercise = json as { errors: string[] };
+    return { exerciseRes, exercise, success: false as const };
+  }
 };
 
 export const getAllExercisesOfWorkoutAndReturn = async (
@@ -193,3 +197,16 @@ export const deleteExerciseAndReturn = async (
   const deletedExercise = await deletedExerciseRes.json();
   return { deletedExerciseRes, deletedExercise };
 };
+
+export const updateExerciseAndReturn = async (
+  cookie: string,
+  exerciseId: string,
+  updateData: { name?: string; category?: string }
+) => {
+  const updatedExerciseRes = await app.fetch(
+    updateExerciseRequest(exerciseId, updateData, cookie)
+  );
+  const updatedExercise = await updatedExerciseRes.json();
+  return { updatedExerciseRes, updatedExercise };
+};
+

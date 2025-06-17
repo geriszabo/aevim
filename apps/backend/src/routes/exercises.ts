@@ -1,10 +1,14 @@
 import { Hono } from "hono";
 import { dbConnect } from "../db/db";
-import { exerciseValidator } from "../db/schemas/exercise-schema";
+import {
+  exerciseUpdateValidator,
+  exerciseValidator,
+} from "../db/schemas/exercise-schema";
 import {
   deleteExerciseById,
   getAllExercises,
   insertExercise,
+  updateExerciseById,
 } from "../db/queries/exercise-queries";
 
 const exercises = new Hono();
@@ -59,6 +63,30 @@ exercises
         },
         200
       );
+    } catch (error) {
+      console.error(error);
+      return c.json({ errors: ["Internal server error"] }, 500);
+    }
+  })
+  .put("/exercises/:id", exerciseUpdateValidator, async (c) => {
+    const db = dbConnect();
+    const exerciseId = c.req.param("id");
+    const payload = c.get("jwtPayload");
+    const updates = c.req.valid("json");
+    try {
+      const updatedExercise = updateExerciseById(
+        db,
+        exerciseId,
+        payload.sub,
+        updates
+      );
+      if (!updatedExercise) {
+        return c.json({ errors: ["Failed to find exercise"] }, 404);
+      }
+      return c.json({
+        message: "Exercise updated successfully",
+        exercise: updatedExercise,
+      });
     } catch (error) {
       console.error(error);
       return c.json({ errors: ["Internal server error"] }, 500);

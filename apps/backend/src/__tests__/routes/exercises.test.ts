@@ -7,10 +7,13 @@ import {
   addExerciseRequest,
 } from "../../test/test-request-helpers";
 import {
+  createExerciseAddToWorkoutAndReturn,
   createExerciseAndReturn,
+  createWorkoutAndReturn,
   deleteExerciseAndReturn,
   getAllExercisesAndReturn,
   loginFlow,
+  updateExerciseAndReturn,
 } from "../../test/test-helpers";
 
 let db: Database;
@@ -98,6 +101,106 @@ describe("/exercises endpoint", () => {
       expect(deletedExercise).toEqual({
         errors: ["Exercise not found"],
       });
+    });
+  });
+
+  describe("PUT /exercises/:id", () => {
+    it("updates an exercise", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id
+      );
+      if (success) {
+        const { updatedExercise } = await updateExerciseAndReturn(
+          cookie!,
+          exercise.exercise.id,
+          { name: "updated name", category: "updated category" }
+        );
+        expect(updatedExercise).toEqual({
+          message: "Exercise updated successfully",
+          exercise: {
+            id: exercise.exercise.id,
+            name: "updated name",
+            category: "updated category",
+            created_at: expect.any(String),
+          },
+        });
+      }
+    });
+
+    it("updates only 1 field if needed", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id
+      );
+      if (success) {
+        const { updatedExercise } = await updateExerciseAndReturn(
+          cookie!,
+          exercise.exercise.id,
+          {
+            category: "updated category",
+          }
+        );
+        expect(updatedExercise).toEqual({
+          message: "Exercise updated successfully",
+          exercise: {
+            id: exercise.exercise.id,
+            name: "bench pressing",
+            category: "updated category",
+            created_at: expect.any(String),
+          },
+        });
+        const { updatedExercise: updatedExerciseAgain } =
+          await updateExerciseAndReturn(cookie!, exercise.exercise.id, {
+            name: "updated name",
+          });
+        expect(updatedExerciseAgain).toEqual({
+          message: "Exercise updated successfully",
+          exercise: {
+            id: exercise.exercise.id,
+            name: "updated name",
+            category: "updated category",
+            created_at: expect.any(String),
+          },
+        });
+      }
+    });
+
+    it("returns 404 if exercise does not exist", async () => {
+      const { cookie } = await loginFlow();
+      const { updatedExercise, updatedExerciseRes } =
+        await updateExerciseAndReturn(cookie!, "non-existent-exercise-id", {
+          name: "updated name",
+        });
+
+      expect(updatedExerciseRes.status).toBe(404);
+      expect(updatedExercise).toEqual({ errors: ["Failed to find exercise"] });
+    });
+    it("returns 400 if invalid data is provided", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id
+      );
+      if (success) {
+        const { updatedExercise, updatedExerciseRes } =
+          await updateExerciseAndReturn(cookie!, exercise.exercise.id, {
+            name: null,
+            category: null,
+          } as any);
+        expect(updatedExerciseRes.status).toBe(400);
+        expect(updatedExercise).toEqual({
+          errors: [
+            "No string for name update provided",
+            "No string for category update provided",
+          ],
+        });
+      }
     });
   });
 });
