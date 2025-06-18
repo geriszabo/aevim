@@ -68,6 +68,38 @@ describe("/sets endpoint", () => {
       expect(setRes.status).toBe(404);
       expect(set).toEqual({ errors: ["Workout exercise not found"] });
     });
+
+    it("returns error if set data are invalid", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id
+      );
+      if (success) {
+        const { set, setRes } = await createSetAddToWorkoutAndReturn(
+          cookie!,
+          workout.id,
+          exercise.exercise.id,
+          {
+            distance: null as any,
+            duration: null as any,
+            notes: null as any,
+            reps: null as any,
+            weight: null as any,
+          }
+        );
+        expect(set).toEqual({
+          errors: [
+            "Expected number, received null",
+            "Expected number, received null",
+            "Expected number, received null",
+            "Expected number, received null",
+            "Expected string, received null",
+          ],
+        });
+      }
+    });
   });
   describe("GET workouts/:workoutId/exercises/:exerciseId/sets", () => {
     it("returns sets of an exercise", async () => {
