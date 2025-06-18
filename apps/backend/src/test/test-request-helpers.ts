@@ -1,5 +1,3 @@
-import app from "../index";
-
 export interface AddWorkoutRequestProps {
   date?: string;
   name?: string;
@@ -237,12 +235,26 @@ export const addSetRequest = ({
         Cookie: cookie,
       },
       body: JSON.stringify({
-       reps,
-       weight,
-       duration,
-       distance,
-       notes,
+        reps,
+        weight,
+        duration,
+        distance,
+        notes,
       }),
+    }
+  );
+};
+
+export const getAllSetsByExerciseIdRequest = (
+  cookie: string,
+  workoutId: string,
+  exerciseId: string
+) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}/sets`,
+    {
+      method: "GET",
+      headers: { Cookie: cookie! },
     }
   );
 };

@@ -15,6 +15,7 @@ import {
   deleteExerciseRequest,
   deleteWorkoutRequest,
   getAllExercisesRequest,
+  getAllSetsByExerciseIdRequest,
   getAllWorkoutsRequest,
   getExercisesByWorkoutIdRequest,
   getSingleWorkoutRequest,
@@ -246,5 +247,29 @@ export const createSetAddToWorkoutAndReturn = async (
     };
   } else {
     return { setRes, set } as { setRes: Response; set: { errors: string[] } };
+  }
+};
+
+export const getAllSetsByExerciseIdAndReturn = async (
+  cookie: string,
+  workoutId: string,
+  exerciseId: string
+) => {
+  const setsRes = await app.fetch(
+    getAllSetsByExerciseIdRequest(cookie, workoutId, exerciseId)
+  );
+  const sets = await setsRes.json();
+  if (setsRes.ok) {
+    return { setsRes, sets, success: true as const } as {
+      setsRes: Response;
+      sets: { sets: Set[] };
+      success: true;
+    };
+  } else {
+    return { setsRes, sets, success: false as const } as {
+      setsRes: Response;
+      sets: { errors: string[] };
+      success: false;
+    };
   }
 };
