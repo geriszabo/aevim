@@ -74,6 +74,8 @@ export const applySchema = (dbInstance: Database) => {
           weight REAL,
           duration INTEGER,
           order_index INTEGER,
+          distance INTEGER,
+          notes TEXT,
           created_at TEXT DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (workout_exercise_id) REFERENCES workout_exercises(id) ON DELETE CASCADE
         `,
