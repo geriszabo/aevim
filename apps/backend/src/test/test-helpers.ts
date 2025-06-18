@@ -1,10 +1,15 @@
-import type { ExerciseToWorkout, WorkoutExercise } from "@aevim/shared-types";
+import type {
+  ExerciseToWorkout,
+  Set,
+  WorkoutExercise,
+} from "@aevim/shared-types";
 import app from "../index";
 import type { ExerciseWithouthUserId } from "../types/exercise";
 import type { WorkoutWithoutUserId } from "../types/workout";
 import {
   addExerciseRequest,
   addExerciseToWorkoutRequest,
+  addSetRequest,
   addWorkoutRequest,
   deleteExerciseFromWorkoutRequest,
   deleteExerciseRequest,
@@ -210,3 +215,36 @@ export const updateExerciseAndReturn = async (
   return { updatedExerciseRes, updatedExercise };
 };
 
+export const createSetAddToWorkoutAndReturn = async (
+  cookie: string,
+  workoutId: string,
+  exerciseId: string,
+  setData: {
+    reps?: number;
+    weight?: number;
+    duration?: number;
+    distance?: number;
+    notes?: string;
+  } = {}
+) => {
+  const setRes = await app.fetch(
+    addSetRequest({
+      cookie,
+      workoutId,
+      exerciseId,
+      ...setData,
+    })
+  );
+  const set = await setRes.json();
+  if (setRes.ok) {
+    return { setRes, set } as {
+      setRes: Response;
+      set: {
+        message: string;
+        set: Set;
+      };
+    };
+  } else {
+    return { setRes, set } as { setRes: Response; set: { errors: string[] } };
+  }
+};

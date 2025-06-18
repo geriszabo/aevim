@@ -15,7 +15,6 @@ export interface AddExerciseRequestProps {
   cookie?: string;
 }
 
-
 export const signupRequest = (
   email = "test@test.com",
   password = "password123"
@@ -215,6 +214,35 @@ export const updateExerciseRequest = (
       method: "PUT",
       headers: { "Content-Type": "application/json", Cookie: cookie! },
       body: JSON.stringify(update),
+    }
+  );
+};
+
+export const addSetRequest = ({
+  workoutId = "defaultWorkoutId",
+  exerciseId = "defaultExerciseId",
+  reps = 10,
+  weight = 100,
+  duration = 2,
+  distance = 10,
+  notes = "felt pretty good",
+  cookie = "",
+}) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}/sets`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookie,
+      },
+      body: JSON.stringify({
+       reps,
+       weight,
+       duration,
+       distance,
+       notes,
+      }),
     }
   );
 };
