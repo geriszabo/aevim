@@ -6,6 +6,6 @@ export interface Set {
   duration: number | null;
   distance: number | null;
   notes: string | null;
-  set_order: number;
+  order_index: number;
   created_at: string;
 }
