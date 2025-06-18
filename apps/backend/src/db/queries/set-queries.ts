@@ -60,8 +60,55 @@ export const insertSet = (
     duration || null,
     distance || null,
     notes || null,
-    nextOrder,
+    nextOrder
   ) as Set;
 
   return set;
+};
+
+export const getAllSetsByExerciseId = (
+  db: Database,
+  userId: string,
+  workoutId: string,
+  exerciseId: string
+) => {
+    const workoutExerciseExists = db
+    .query(
+      `
+      SELECT workout_exercises.id 
+      FROM workout_exercises
+      JOIN workouts ON workout_exercises.workout_id = workouts.id
+      WHERE workout_exercises.workout_id = ?
+        AND workout_exercises.exercise_id = ?
+        AND workouts.user_id = ?
+    `
+    )
+    .get(workoutId, exerciseId, userId) as { id: string } | null;
+
+  if (!workoutExerciseExists) {
+    throw new Error("WORKOUT_EXERCISE_NOT_FOUND");
+  }
+
+  const setsQuery = db.query(`
+    SELECT 
+      sets.id,
+      sets.workout_exercise_id,
+      sets.reps,
+      sets.weight,
+      sets.duration,
+      sets.distance,
+      sets.notes,
+      sets.order_index,
+      sets.created_at
+    FROM sets
+    JOIN workout_exercises ON sets.workout_exercise_id = workout_exercises.id
+    JOIN workouts ON workout_exercises.workout_id = workouts.id
+    WHERE workout_exercises.workout_id = ? 
+      AND workout_exercises.exercise_id = ? 
+      AND workouts.user_id = ?
+    ORDER BY sets.order_index
+  `);
+
+  const sets = setsQuery.all(workoutId, exerciseId, userId) as Set[];
+  return sets;
 };
