@@ -7,11 +7,16 @@ import {
   deleteWorkoutById,
   getWorkoutById,
   getWorkoutExercisesByWorkoutId,
+  getWorkoutOverviewByWorkoutId,
   getWorkoutsByUserId,
   insertWorkout,
   updateWorkoutById,
 } from "../../db/queries/workout-queries";
 import { insertExerciseToWorkout } from "../../db/queries/workout-exercises-queries";
+import { createSetAddToWorkoutAndReturn } from "../../test/test-helpers";
+import { addSetRequest } from "../../test/test-request-helpers";
+import type { SetData } from "../../types/set";
+import { insertSet } from "../../db/queries/set-queries";
 
 let db: Database;
 const userId = "userId1";
@@ -329,3 +334,131 @@ describe("getWorkoutExercisesByWorkoutId", () => {
     expect(exercises[0]!.order_index).toBeLessThan(exercises[1]!.order_index);
   });
 });
+
+describe("getWorkoutOverviewByWorkoutId", () => {
+  it("returns workout with exercises and sets", async () => {
+    const setData: SetData = { reps: 10, weight: 50 };
+    const workout = insertWorkout(db, workoutData, userId);
+
+    const exercisesArray = [
+      { name: "Exercise 1", category: "Category 1" },
+      { name: "Exercise 2", category: "Category 2" },
+      { name: "Exercise 3", category: "Category 3" },
+    ];
+
+    exercisesArray.forEach((exercise) => {
+      insertExerciseToWorkout(db, exercise, userId, workout.id);
+    });
+
+    const exercises = getWorkoutExercisesByWorkoutId(db, workout.id, userId);
+
+    exercises.forEach((exercise) => {
+      insertSet(db, setData, userId, workout.id, exercise.exercise_id);
+      insertSet(db, setData, userId, workout.id, exercise.exercise_id);
+      insertSet(db, setData, userId, workout.id, exercise.exercise_id);
+    });
+
+    const overview = getWorkoutOverviewByWorkoutId(db, workout.id, userId);
+    expect(overview).toBeDefined();
+    expect(overview!.exercises).toHaveLength(3);
+
+    overview!.exercises.forEach((exercise, exerciseIndex) => {
+      expect(exercise).toEqual({
+        id: expect.any(String),
+        workout_id: expect.any(String),
+        exercise_id: expect.any(String),
+        order_index: exerciseIndex + 1,
+        created_at: expect.any(String),
+        name: `Exercise ${exerciseIndex + 1}`,
+        category: `Category ${exerciseIndex + 1}`,
+        sets: expect.any(Array),
+      });
+
+      expect(exercise.sets).toHaveLength(3);
+      exercise.sets.forEach((set, setIndex) => {
+        expect(set).toEqual({
+          id: expect.any(String),
+          workout_exercise_id: expect.any(String),
+          reps: 10,
+          weight: 50,
+          duration: null,
+          order_index: setIndex + 1,
+          created_at: expect.any(String),
+        });
+      });
+    });
+    expect(overview!.workout).toEqual({
+      id: expect.any(String),
+      name: workoutData.name,
+      notes: workoutData.notes,
+      date: workoutData.date,
+      created_at: expect.any(String),
+    });
+  });
+
+  it("throws error when workout does not exist", async () => {
+    try {
+      getWorkoutOverviewByWorkoutId(db, "fakeWorkoutId", userId);
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error.message).toBe("WORKOUT_NOT_FOUND");
+        expect(error).toBeInstanceOf(Error);
+      }
+    }
+  });
+
+  it("returns workout with exercises but no sets", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+
+    const exercisesArray = [
+      { name: "Exercise 1", category: "Category 1" },
+      { name: "Exercise 2", category: "Category 2" },
+    ];
+    exercisesArray.forEach((exercise) => {
+      insertExerciseToWorkout(db, exercise, userId, workout.id);
+    });
+    const overview = getWorkoutOverviewByWorkoutId(db, workout.id, userId);
+    expect(overview).toBeDefined();
+    expect(overview!.exercises).toHaveLength(2);
+    overview!.exercises.forEach((exercise) => {
+      expect(exercise.sets).toHaveLength(0);
+      expect(exercise.sets).toEqual([]);
+    });
+  });
+
+  it("returns workout with no exercises", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const overview = getWorkoutOverviewByWorkoutId(db, workout.id, userId);
+
+    expect(overview).toBeDefined();
+    expect(overview!.workout).toEqual({
+      id: workout.id,
+      name: workoutData.name,
+      notes: workoutData.notes,
+      date: workoutData.date,
+      created_at: expect.any(String),
+    });
+    expect(overview!.exercises).toHaveLength(0);
+    expect(overview!.exercises).toEqual([]);
+  });
+
+   it("maintains correct exercise order", async () => {
+    const setData: SetData = { reps: 8, weight: 40 };
+    const workout = insertWorkout(db, workoutData, userId);
+    
+    const exercisesArray = [
+      { name: "First Exercise", category: "Category 1" },
+      { name: "Second Exercise", category: "Category 2" },
+      { name: "Third Exercise", category: "Category 3" },
+      { name: "Fourth Exercise", category: "Category 4" },
+    ];
+
+    exercisesArray.forEach((exercise) => {
+      insertExerciseToWorkout(db, exercise, userId, workout.id);
+    });
+    const exercises = getWorkoutExercisesByWorkoutId(db, workout.id, userId);
+    exercises.forEach((exercise) => {
+      insertSet(db, setData, userId, workout.id, exercise.exercise_id);
+    })
+  })
+})
