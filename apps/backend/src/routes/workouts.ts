@@ -8,6 +8,7 @@ import {
   deleteWorkoutById,
   getWorkoutById,
   getWorkoutExercisesByWorkoutId,
+  getWorkoutOverviewByWorkoutId,
   getWorkoutsByUserId,
   insertWorkout,
   updateWorkoutById,
@@ -64,13 +65,11 @@ workouts
     const workoutId = c.req.param("id");
     const payload = c.get("jwtPayload");
     try {
-      //Fetch all workouts from user
       const workout = getWorkoutById(db, payload.sub, workoutId);
       if (!workout) {
         return c.json({ errors: ["Invalid workout id"] }, 404);
       }
       return c.json({ workout }, 200);
-      //Return success
     } catch (error) {
       console.error(error);
       return c.json({ errors: ["Failed to fetch workout"] }, 500);
@@ -126,7 +125,7 @@ workouts
     const payload = c.get("jwtPayload");
     const exerciseData = c.req.valid("json");
     try {
-      const {exercise, workoutExercise} = insertExerciseToWorkout(
+      const { exercise, workoutExercise } = insertExerciseToWorkout(
         db,
         exerciseData,
         payload.sub,
@@ -188,10 +187,28 @@ workouts
       if (!exercisesInWorkout) {
         return c.json({ errors: ["No exercises found for this workout"] }, 404);
       }
-      return c.json({exercises: exercisesInWorkout})
+      return c.json({ exercises: exercisesInWorkout });
     } catch (error) {
       console.error(error);
       return c.json({ errors: ["Failed to fetch exercises for workout"] }, 500);
+    }
+  })
+  .get("workouts/:id/overview", async (c) => {
+    const db = dbConnect();
+    const workoutId = c.req.param("id");
+    const payload = c.get("jwtPayload");
+    try {
+      const workoutOverview = getWorkoutOverviewByWorkoutId(
+        db,
+        workoutId,
+        payload.sub
+      );
+      return c.json({ overview: workoutOverview }, 200);
+    } catch (error) {
+      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
+        return c.json({ errors: ["Workout not found"] }, 404);
+      }
+      return c.json({ errors: ["Internal server error"] }, 500);
     }
   });
 

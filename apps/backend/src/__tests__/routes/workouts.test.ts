@@ -9,15 +9,18 @@ import {
 } from "../../test/test-request-helpers";
 import {
   createExerciseAddToWorkoutAndReturn,
+  createSetAddToWorkoutAndReturn,
   createWorkoutAndReturn,
   deleteExerciseFromWorkoutAndReturn,
   deleteWorkoutAndReturn,
   getAllExercisesOfWorkoutAndReturn,
   getAllWorkoutsAndReturn,
   getSingleWorkoutAndReturn,
+  getWorkoutOverviewAndReturn,
   loginFlow,
   updateWorkoutAndReturn,
 } from "../../test/test-helpers";
+import type { ExerciseWithouthUserId } from "../../types/exercise";
 
 let db: Database;
 
@@ -410,6 +413,76 @@ describe("/workouts endpoint", () => {
       expect(deletedExerciseRes.status).toBe(404);
       expect(deletedExercise).toEqual({
         errors: ["Exercise not found in workout"],
+      });
+    });
+  });
+
+  describe("GET workouts/:id/overview", () => {
+    it("returns a workout with its exercises and sets", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+
+      const exercisesArray = [
+        { name: "Bench Press", category: "chest" },
+        { name: "Squats", category: "legs" },
+      ];
+
+      for (const exercise of exercisesArray) {
+        const { exercise: createdExercise } =
+          await createExerciseAddToWorkoutAndReturn(
+            cookie!,
+            workout.id,
+            exercise
+          );
+
+        const successResponse = createdExercise as {
+          exercise: ExerciseWithouthUserId;
+        };
+
+        await createSetAddToWorkoutAndReturn(
+          cookie!,
+          workout.id,
+          successResponse.exercise.id,
+          { reps: 10, weight: 135 }
+        );
+        await createSetAddToWorkoutAndReturn(
+          cookie!,
+          workout.id,
+          successResponse.exercise.id,
+          { reps: 8, weight: 145 }
+        );
+      }
+
+      const { overview, success, overviewRes } =
+        await getWorkoutOverviewAndReturn(cookie!, workout.id);
+
+      if (success) {
+        expect(overviewRes.status).toBe(200);
+        expect(overview.workout).toEqual({
+          id: workout.id,
+          name: "crossfit session",
+          date: "2022.08.25",
+          notes: "im dead",
+          created_at: expect.any(String),
+        });
+
+        expect(overview.exercises).toHaveLength(2);
+        expect(overview.exercises[0]!.name).toBe("Bench Press");
+        expect(overview.exercises[0]!.sets).toHaveLength(2);
+        expect(overview.exercises[1]!.name).toBe("Squats");
+        expect(overview.exercises[1]!.sets).toHaveLength(2);
+      }
+    });
+
+    it("returns 404 when workout does not exist", async () => {
+      const { cookie } = await loginFlow();
+      const { overview, overviewRes } = await getWorkoutOverviewAndReturn(
+        cookie!,
+        "fakeWorkoutId"
+      )
+      expect(overviewRes.status).toBe(404);
+      expect(overview).toEqual({
+        errors: ["Workout not found"],
       });
     });
   });
