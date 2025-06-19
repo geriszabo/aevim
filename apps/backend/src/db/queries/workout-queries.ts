@@ -111,6 +111,11 @@ export const getWorkoutExercisesByWorkoutId = (
   workoutId: string,
   userId: string
 ) => {
+    const workout = getWorkoutById(db, userId, workoutId);
+  if (!workout) {
+    throw new Error("WORKOUT_NOT_FOUND");
+  }
+
   const workoutExerciseQuery = db.query(`
     SELECT
      workout_exercises.id,

@@ -310,13 +310,15 @@ describe("getWorkoutExercisesByWorkoutId", () => {
     expect(exercises).toEqual([]);
   });
 
-  it("returns an empty array if workout does not exist", () => {
-    const exercises = getWorkoutExercisesByWorkoutId(
-      db,
-      "non-existent-id",
-      userId
-    );
-    expect(exercises).toEqual([]);
+  it("throws an error if workout does not exist", () => {
+    try {
+      getWorkoutExercisesByWorkoutId(db, "non-existent-id", userId);
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
+      }
+    }
   });
 
   it("orders exercises by order_index", () => {
@@ -442,10 +444,10 @@ describe("getWorkoutOverviewByWorkoutId", () => {
     expect(overview!.exercises).toEqual([]);
   });
 
-   it("maintains correct exercise order", async () => {
+  it("maintains correct exercise order", async () => {
     const setData: SetData = { reps: 8, weight: 40 };
     const workout = insertWorkout(db, workoutData, userId);
-    
+
     const exercisesArray = [
       { name: "First Exercise", category: "Category 1" },
       { name: "Second Exercise", category: "Category 2" },
@@ -459,6 +461,6 @@ describe("getWorkoutOverviewByWorkoutId", () => {
     const exercises = getWorkoutExercisesByWorkoutId(db, workout.id, userId);
     exercises.forEach((exercise) => {
       insertSet(db, setData, userId, workout.id, exercise.exercise_id);
-    })
-  })
-})
+    });
+  });
+});

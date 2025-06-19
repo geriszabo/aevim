@@ -196,7 +196,12 @@ workouts
       }
       return c.json({ exercises: exercisesInWorkout });
     } catch (error) {
-      console.error(error);
+      if (
+        error instanceof Error &&
+        error.message === "WORKOUT_EXERCISE_NOT_FOUND"
+      ) {
+        return c.json({ errors: ["Workout exercise not found"] }, 404);
+      }
       return c.json({ errors: ["Failed to fetch exercises for workout"] }, 500);
     }
   })
