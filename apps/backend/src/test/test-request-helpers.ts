@@ -271,3 +271,18 @@ export const getWorkoutOverviewRequest = (
     }
   );
 };
+
+export const deleteSetRequest = (
+  workoutId: string,
+  exerciseId: string,
+  setId: string,
+  cookie: string
+) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}/sets/${setId}`,
+    {
+      method: "DELETE",
+      headers: { Cookie: cookie },
+    }
+  );
+};

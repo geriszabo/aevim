@@ -14,6 +14,7 @@ import {
   addWorkoutRequest,
   deleteExerciseFromWorkoutRequest,
   deleteExerciseRequest,
+  deleteSetRequest,
   deleteWorkoutRequest,
   getAllExercisesRequest,
   getAllSetsByExerciseIdRequest,
@@ -291,5 +292,24 @@ export const getWorkoutOverviewAndReturn = async (
   } else {
     const overview = json as { errors: string[] };
     return { overviewRes, overview, success: false as const };
+  }
+};
+
+export const deleteSetAndReturn = async (
+  cookie: string,
+  workoutId: string,
+  exerciseId: string,
+  setId: string
+) => {
+  const deletedSetRes = await app.fetch(
+    deleteSetRequest(workoutId, exerciseId, setId, cookie)
+  );
+  const deletedSet = await deletedSetRes.json();
+  
+  if (deletedSetRes.ok) {
+    return { deletedSetRes, deletedSet, success: true as const };
+  } else {
+    const errorResponse = deletedSet as { errors: string[] };
+    return { deletedSetRes, deletedSet: errorResponse, success: false as const };
   }
 };
