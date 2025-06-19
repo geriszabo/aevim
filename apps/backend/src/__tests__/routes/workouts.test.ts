@@ -413,7 +413,7 @@ describe("/workouts endpoint", () => {
         );
       expect(deletedExerciseRes.status).toBe(404);
       expect(deletedExercise).toEqual({
-        errors: ["Exercise not found in workout"],
+        errors: ["No exercises found for this workout"],
       });
     });
   });

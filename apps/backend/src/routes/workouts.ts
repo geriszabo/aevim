@@ -167,7 +167,7 @@ workouts
         payload.sub
       );
       if (!deletedExercise) {
-        return c.json({ errors: ["Exercise not found in workout"] }, 404);
+        return c.json({ errors: ["No exercises found for this workout"] }, 404);
       }
       return c.json({
         message: `Exercise with id: ${exerciseId} has been deleted successfully from workout with id: ${workoutId}`,
