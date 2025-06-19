@@ -200,7 +200,7 @@ describe("updateWorkoutById", () => {
       userId
     );
     try {
-      const updatedWorkout = updateWorkoutById(db, workout.id, userId, {});
+      updateWorkoutById(db, workout.id, userId, {});
     } catch (error) {
       if (error instanceof Error) {
         expect(error).toBeInstanceOf(Error);

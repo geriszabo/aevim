@@ -7,6 +7,7 @@ import {
   deleteSetBySetId,
   getAllSetsByExerciseId,
   insertSet,
+  updateSetById,
 } from "../../db/queries/set-queries";
 import type { SetData } from "../../types/set";
 
@@ -230,15 +231,15 @@ describe("deleteSetBySetId", () => {
   it("handles deletion from different exercises correctly", async () => {
     const workout = insertWorkout(db, workoutData, userId);
     const { exercise: exercise1 } = insertExerciseToWorkout(
-      db, 
-      { name: "Exercise 1", category: "test" }, 
-      userId, 
+      db,
+      { name: "Exercise 1", category: "test" },
+      userId,
       workout.id
     );
     const { exercise: exercise2 } = insertExerciseToWorkout(
-      db, 
-      { name: "Exercise 2", category: "test" }, 
-      userId, 
+      db,
+      { name: "Exercise 2", category: "test" },
+      userId,
       workout.id
     );
     const set1Ex1 = insertSet(db, setData, userId, workout.id, exercise1.id);
@@ -246,17 +247,186 @@ describe("deleteSetBySetId", () => {
     const set1Ex2 = insertSet(db, setData, userId, workout.id, exercise2.id);
     const deletedSet = deleteSetBySetId(db, set1Ex1.id, userId);
     expect(deletedSet).toEqual({ id: set1Ex1.id });
-    const setsEx1 = getAllSetsByExerciseId(   db,
+    const setsEx1 = getAllSetsByExerciseId(
+      db,
       userId,
       workout.id,
-      exercise1.id);
-    const setsEx2 = getAllSetsByExerciseId(   db,
+      exercise1.id
+    );
+    const setsEx2 = getAllSetsByExerciseId(
+      db,
       userId,
       workout.id,
-      exercise2.id);
+      exercise2.id
+    );
     expect(setsEx1).toHaveLength(1);
     expect(setsEx1[0]!.id).toBe(set2Ex1.id);
     expect(setsEx2).toHaveLength(1);
     expect(setsEx2[0]!.id).toBe(set1Ex2.id);
+  });
+});
+
+describe("updateSetById", () => {
+  it("successfully updates all set fields", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      exerciseData,
+      userId,
+      workout.id
+    );
+    const set = insertSet(db, setData, userId, workout.id, exercise.id);
+    const updates = {
+      reps: 6,
+      weight: 25,
+      duration: 120,
+    };
+
+    const updatedSet = updateSetById(db, set.id, updates, userId);
+    expect(updatedSet).toEqual({
+      id: set.id,
+      workout_exercise_id: expect.any(String),
+      reps: 6,
+      weight: 25,
+      duration: 120,
+      order_index: 1,
+      created_at: expect.any(String),
+      distance: null,
+      notes: "felt pretty good",
+    });
+
+    const sets = getAllSetsByExerciseId(db, userId, workout.id, exercise.id);
+    expect(sets).toHaveLength(1);
+    expect(sets[0]?.reps).toBe(6);
+    expect(sets[0]?.weight).toBe(25);
+    expect(sets[0]?.duration).toBe(120);
+  });
+
+  it("successfully updates only 1 field", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      exerciseData,
+      userId,
+      workout.id
+    );
+    const set = insertSet(db, setData, userId, workout.id, exercise.id);
+    // Update only weight
+    const updates = { weight: 30 };
+    const updatedSet = updateSetById(db, set.id, updates, userId);
+    expect(updatedSet).toEqual({
+      id: set.id,
+      workout_exercise_id: expect.any(String),
+      reps: 4,
+      weight: 30,
+      duration: null,
+      order_index: 1,
+      created_at: expect.any(String),
+      distance: null,
+      notes: "felt pretty good",
+    });
+  });
+
+  it("throws error when set does not exist", async () => {
+    const fakeSetId = "non-existent-set-id";
+    const updates = { reps: 20 };
+    try {
+      updateSetById(db, fakeSetId, updates, userId);
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error.message).toMatch(/SET_NOT_FOUND/);
+      }
+    }
+  });
+  it("returns null when no updates are provided", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      exerciseData,
+      userId,
+      workout.id
+    );
+    const set = insertSet(db, setData, userId, workout.id, exercise.id);
+    try {
+      updateSetById(db, set.id, {}, userId);
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/near \"WHERE\": syntax error/);
+      }
+    }
+  });
+  it("updates only the specified set when multiple sets exist", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      exerciseData,
+      userId,
+      workout.id
+    );
+
+    insertSet(db, { reps: 10, weight: 100 }, userId, workout.id, exercise.id);
+    const set2 = insertSet(
+      db,
+      { reps: 8, weight: 110 },
+      userId,
+      workout.id,
+      exercise.id
+    );
+    insertSet(db, { reps: 6, weight: 120 }, userId, workout.id, exercise.id);
+
+    const updates = { reps: 12, weight: 130 };
+    const updatedSet = updateSetById(db, set2.id, updates, userId);
+
+    expect(updatedSet).toEqual({
+      id: set2.id,
+      workout_exercise_id: expect.any(String),
+      reps: 12,
+      weight: 130,
+      duration: null,
+      order_index: 2,
+      created_at: expect.any(String),
+      distance: null,
+      notes: null,
+    });
+
+    const allSets = getAllSetsByExerciseId(db, userId, workout.id, exercise.id);
+    expect(allSets).toHaveLength(3);
+    expect(allSets[0]?.reps).toBe(10);
+    expect(allSets[0]?.weight).toBe(100);
+    expect(allSets[1]?.reps).toBe(12);
+    expect(allSets[1]?.weight).toBe(130);
+    expect(allSets[2]?.reps).toBe(6);
+    expect(allSets[2]?.weight).toBe(120);
+  });
+  it("handles null values correctly", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      exerciseData,
+      userId,
+      workout.id
+    );
+    const set = insertSet(
+      db,
+      { reps: 10, weight: 100 },
+      userId,
+      workout.id,
+      exercise.id
+    );
+    const updates = { weight: null } as any;
+    const updatedSet = updateSetById(db, set.id, updates, userId);
+
+    expect(updatedSet).toEqual({
+      id: set.id,
+      workout_exercise_id: expect.any(String),
+      reps: 10,
+      weight: null,
+      duration: null,
+      order_index: 1,
+      created_at: expect.any(String),
+      notes: null,
+      distance: null,
+    });
   });
 });

@@ -72,7 +72,7 @@ export const getAllSetsByExerciseId = (
   workoutId: string,
   exerciseId: string
 ) => {
-    const workoutExerciseExists = db
+  const workoutExerciseExists = db
     .query(
       `
       SELECT workout_exercises.id 
@@ -143,4 +143,53 @@ export const deleteSetBySetId = (
 
   const deletedSet = deleteSetQuery.get(setId) as { id: string } | null;
   return deletedSet;
+};
+
+export const updateSetById = (
+  db: Database,
+  setId: string,
+  updates: Partial<SetData>,
+  userId: string
+) => {
+  const setExists = db
+    .query(
+      `
+      SELECT sets.id
+      FROM sets
+      JOIN workout_exercises ON sets.workout_exercise_id = workout_exercises.id
+      JOIN workouts ON workout_exercises.workout_id = workouts.id
+      WHERE sets.id = ?
+        AND workouts.user_id = ?
+    `
+    )
+    .get(setId, userId) as { id: string } | null;
+
+  if (!setExists) {
+    throw new Error("SET_NOT_FOUND");
+  }
+
+  const filteredUpdates = Object.fromEntries(
+    Object.entries(updates).filter(([_key, value]) => value !== undefined)
+  );
+
+  const fields = Object.keys(filteredUpdates);
+  const setClause = fields.map((field) => `${field} = ?`).join(", ");
+  const values = Object.values(filteredUpdates);
+
+  const updateQuery = db.query(`
+    UPDATE sets
+    SET ${setClause}
+    WHERE id = ? 
+      AND workout_exercise_id IN (
+        SELECT workout_exercises.id 
+        FROM workout_exercises
+        JOIN workouts ON workout_exercises.workout_id = workouts.id
+        WHERE workouts.user_id = ?
+      )
+    RETURNING id, workout_exercise_id, reps, weight, duration, distance, notes, order_index, created_at
+  `);
+
+  const result = updateQuery.get(...values, setId, userId) as Set | null;
+
+  return result;
 };
