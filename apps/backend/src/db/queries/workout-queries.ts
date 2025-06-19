@@ -46,6 +46,7 @@ export const getWorkoutById = (
   userId: string,
   workoutId: string
 ) => {
+  
   const userWorkoutQuery = db.query(`
     SELECT id, name, notes, date, created_at FROM workouts
     WHERE user_id = ? AND id = ?

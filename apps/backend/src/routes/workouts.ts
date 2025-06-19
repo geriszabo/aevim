@@ -54,17 +54,15 @@ workouts
       );
     }
   })
-  .get("/workouts", async (c) => {
+ .get("/workouts", async (c) => {
     const db = dbConnect();
     const payload = c.get("jwtPayload");
     try {
-      //Fetch all workouts from user
       const workouts = getWorkoutsByUserId(db, payload.sub);
       return c.json({ workouts }, 200);
-      //Return success
     } catch (error) {
       console.error(error);
-      return c.json({ errors: ["Failed to fetch workouts"] }, 500);
+      return c.json({ errors: ["Internal server error"] }, 500);
     }
   })
   .get("/workouts/:id", async (c) => {
