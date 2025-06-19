@@ -1,3 +1,5 @@
+import type { WorkoutWithoutUserId } from "../../apps/backend/src/types/workout";
+
 export interface Workout {
   id: string;
   name: string;
@@ -6,3 +8,25 @@ export interface Workout {
   created_at: string;
   user_id: string;
 }
+
+export type WorkoutOverview = {
+  workout: WorkoutWithoutUserId;
+  exercises: Array<{
+    id: string;
+    workout_id: string;
+    exercise_id: string;
+    order_index: number;
+    name: string;
+    category: string;
+    created_at: string;
+    sets: Array<{
+      id: string;
+      workout_exercise_id: string;
+      reps: number;
+      weight: number | null;
+      duration: number | null;
+      order_index: number;
+      created_at: string;
+    }>;
+  }>;
+};
