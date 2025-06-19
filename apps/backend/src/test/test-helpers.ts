@@ -2,6 +2,7 @@ import type {
   ExerciseToWorkout,
   Set,
   WorkoutExercise,
+  WorkoutOverview,
 } from "@aevim/shared-types";
 import app from "../index";
 import type { ExerciseWithouthUserId } from "../types/exercise";
@@ -19,6 +20,7 @@ import {
   getAllWorkoutsRequest,
   getExercisesByWorkoutIdRequest,
   getSingleWorkoutRequest,
+  getWorkoutOverviewRequest,
   loginrequest,
   logoutRequest,
   signupRequest,
@@ -271,5 +273,23 @@ export const getAllSetsByExerciseIdAndReturn = async (
       sets: { errors: string[] };
       success: false;
     };
+  }
+};
+
+export const getWorkoutOverviewAndReturn = async (
+  cookie: string,
+  workoutId: string
+) => {
+  const overviewRes = await app.fetch(
+    getWorkoutOverviewRequest(workoutId, cookie)
+  );
+  const json = await overviewRes.json();
+
+  if (overviewRes.ok) {
+    const overview = json as { overview: WorkoutOverview };
+    return { overviewRes, overview: overview.overview, success: true as const };
+  } else {
+    const overview = json as { errors: string[] };
+    return { overviewRes, overview, success: false as const };
   }
 };
