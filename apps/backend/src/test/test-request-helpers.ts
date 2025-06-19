@@ -1,3 +1,5 @@
+import type { SetData } from "../types/set";
+
 export interface AddWorkoutRequestProps {
   date?: string;
   name?: string;
@@ -283,6 +285,26 @@ export const deleteSetRequest = (
     {
       method: "DELETE",
       headers: { Cookie: cookie },
+    }
+  );
+};
+
+export const updateSetRequest = (
+  workoutId: string,
+  exerciseId: string,
+  setId: string,
+  update: Partial<SetData>,
+  cookie: string
+) => {
+  return new Request(
+    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}/sets/${setId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookie,
+      },
+      body: JSON.stringify(update),
     }
   );
 };

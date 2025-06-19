@@ -26,6 +26,7 @@ import {
   logoutRequest,
   signupRequest,
   updateExerciseRequest,
+  updateSetRequest,
   updateWorkoutRequest,
 } from "./test-request-helpers";
 
@@ -241,15 +242,20 @@ export const createSetAddToWorkoutAndReturn = async (
   );
   const set = await setRes.json();
   if (setRes.ok) {
-    return { setRes, set } as {
+    return { setRes, set, success: true as const } as {
       setRes: Response;
       set: {
         message: string;
         set: Set;
       };
+      success: true;
     };
   } else {
-    return { setRes, set } as { setRes: Response; set: { errors: string[] } };
+    return { setRes, set, success: false as const } as {
+      setRes: Response;
+      set: { errors: string[] };
+      success: false;
+    };
   }
 };
 
@@ -305,11 +311,48 @@ export const deleteSetAndReturn = async (
     deleteSetRequest(workoutId, exerciseId, setId, cookie)
   );
   const deletedSet = await deletedSetRes.json();
-  
+
   if (deletedSetRes.ok) {
     return { deletedSetRes, deletedSet, success: true as const };
   } else {
     const errorResponse = deletedSet as { errors: string[] };
-    return { deletedSetRes, deletedSet: errorResponse, success: false as const };
+    return {
+      deletedSetRes,
+      deletedSet: errorResponse,
+      success: false as const,
+    };
+  }
+};
+
+export const updateSetAndReturn = async (
+  cookie: string,
+  workoutId: string,
+  exerciseId: string,
+  setId: string,
+  update: {
+    reps?: number;
+    weight?: number;
+    duration?: number;
+    distance?: number;
+    notes?: string;
+  }
+) => {
+  const updatedSetRes = await app.fetch(
+    updateSetRequest(workoutId, exerciseId, setId, update, cookie)
+  );
+  const updatedSet = await updatedSetRes.json();
+
+  if (updatedSetRes.ok) {
+    return { updatedSetRes, updatedSet, success: true as const } as {
+      updatedSetRes: Response;
+      updatedSet: { message: string; set: Set };
+      success: true;
+    };
+  } else {
+    return { updatedSetRes, updatedSet, success: false as const } as {
+      updatedSetRes: Response;
+      updatedSet: { errors: string[] };
+      success: false;
+    };
   }
 };
