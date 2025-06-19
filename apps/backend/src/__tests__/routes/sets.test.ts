@@ -1,14 +1,19 @@
 import { describe, beforeEach, afterEach, expect, mock, it } from "bun:test";
 import { Database } from "bun:sqlite";
+import app from "../../index";
 
 import { createTestDb } from "../../test/test-db";
 import {
   createExerciseAddToWorkoutAndReturn,
   createSetAddToWorkoutAndReturn,
   createWorkoutAndReturn,
+  deleteSetAndReturn,
   getAllSetsByExerciseIdAndReturn,
   loginFlow,
 } from "../../test/test-helpers";
+import type { ExerciseWithouthUserId } from "../../types/exercise";
+import type { Set } from "@aevim/shared-types";
+import { deleteSetRequest } from "../../test/test-request-helpers";
 
 let db: Database;
 
@@ -167,6 +172,96 @@ describe("/sets endpoint", () => {
       );
       expect(setsRes.status).toBe(404);
       expect(sets).toEqual({ errors: ["Could not find exercise with set"] });
+    });
+  });
+  describe("DELETE workouts/:workoutId/exercises/:exerciseId/sets/:setId", () => {
+    it("successfully deletes a set", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+
+      // Create exercise
+      const { exercise } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        { name: "Bench Press", category: "chest" }
+      );
+
+      const successResponse = exercise as {
+        exercise: ExerciseWithouthUserId;
+      };
+
+      // Create set
+      const { set } = await createSetAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        { reps: 10, weight: 135 }
+      );
+
+      const setResponse = set as {
+        message: string;
+        set: Set;
+      };
+
+      const { deletedSet, deletedSetRes, success } = await deleteSetAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        setResponse.set.id
+      );
+      expect(deletedSetRes.status).toBe(200);
+      expect(deletedSet).toEqual({ message: "Set successfully deleted" });
+    });
+
+    it("returns 404 when set does not exist", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+
+      const { exercise } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        { name: "Squats", category: "legs" }
+      );
+
+      const successResponse = exercise as {
+        exercise: ExerciseWithouthUserId;
+      };
+      const { deletedSet, deletedSetRes, success } = await deleteSetAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        "fakeSetId"
+      );
+      expect(deletedSetRes.status).toBe(404);
+      expect(deletedSet).toEqual({
+        errors: ["Set not found"],
+      });
+    });
+
+    it("returns 401 when no auth token provided", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+
+      const { exercise: exerciseObject } =
+        await createExerciseAddToWorkoutAndReturn(cookie!, workout.id, {
+          name: "Push Ups",
+          category: "chest",
+        });
+      const { exercise } = exerciseObject as {
+        exercise: ExerciseWithouthUserId;
+      };
+      const { set: setObject } = await createSetAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        exercise.id,
+        { reps: 15, weight: 10 }
+      );
+      const { set } = setObject as { set: Set };
+      // No cookie 🍪
+      const deleteRes = await app.fetch(
+        deleteSetRequest(workout.id, exercise.id, set.id, "")
+      );
+      expect(deleteRes.status).toBe(401);
     });
   });
 });

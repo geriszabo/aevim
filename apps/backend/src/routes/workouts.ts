@@ -19,7 +19,11 @@ import {
   insertExerciseToWorkout,
 } from "../db/queries/workout-exercises-queries";
 import { setValidator } from "../db/schemas/set-schema";
-import { getAllSetsByExerciseId, insertSet } from "../db/queries/set-queries";
+import {
+  deleteSetBySetId,
+  getAllSetsByExerciseId,
+  insertSet,
+} from "../db/queries/set-queries";
 
 const workouts = new Hono();
 
@@ -250,6 +254,23 @@ workouts
       return c.json({ errors: ["Internal server error"] }, 500);
     }
   })
+  .delete(
+    "/workouts/:workoutId/exercises/:exerciseId/sets/:setId",
+    async (c) => {
+      const db = dbConnect();
+      const setId = c.req.param("setId");
+      const payload = c.get("jwtPayload");
+      try {
+        deleteSetBySetId(db, setId, payload.sub);
+        return c.json({ message: "Set successfully deleted" }, 200);
+      } catch (error) {
+        if (error instanceof Error && error.message === "SET_NOT_FOUND") {
+          return c.json({ errors: ["Set not found"] }, 404);
+        }
+        return c.json({ errors: ["Internal server error"] }, 500);
+      }
+    }
+  )
   .get("workouts/:id/overview", async (c) => {
     const db = dbConnect();
     const workoutId = c.req.param("id");
