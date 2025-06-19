@@ -396,21 +396,21 @@ describe("/workouts endpoint", () => {
         },
       });
     });
-  });
-
-  it("returns 404 if the exercise is not in the workout", async () => {
-    const { cookie } = await loginFlow();
-    const { workout } = await createWorkoutAndReturn(cookie!);
-    const fakeExerciseId = "non-existent-exercise";
-    const { deletedExerciseRes, deletedExercise } =
-      await deleteExerciseFromWorkoutAndReturn(
-        cookie!,
-        workout.id,
-        fakeExerciseId
-      );
-    expect(deletedExerciseRes.status).toBe(404);
-    expect(deletedExercise).toEqual({
-      errors: ["Exercise not found in workout"],
+    
+    it("returns 404 if the exercise is not in the workout", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const fakeExerciseId = "non-existent-exercise";
+      const { deletedExerciseRes, deletedExercise } =
+        await deleteExerciseFromWorkoutAndReturn(
+          cookie!,
+          workout.id,
+          fakeExerciseId
+        );
+      expect(deletedExerciseRes.status).toBe(404);
+      expect(deletedExercise).toEqual({
+        errors: ["Exercise not found in workout"],
+      });
     });
   });
 });
