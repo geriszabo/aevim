@@ -4,6 +4,7 @@ import { createTestDb } from "../../test/test-db";
 import { Database } from "bun:sqlite";
 import { insertExerciseToWorkout } from "../../db/queries/workout-exercises-queries";
 import {
+  deleteSetBySetId,
   getAllSetsByExerciseId,
   insertSet,
 } from "../../db/queries/set-queries";
@@ -137,5 +138,125 @@ describe("getAllSetsByExerciseId", () => {
         expect(error.message).toMatch(/WORKOUT_EXERCISE_NOT_FOUND/);
       }
     }
+  });
+});
+
+describe("deleteSetBySetId", () => {
+  it("successfully deletes a set", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      exerciseData,
+      userId,
+      workout.id
+    );
+    const set = insertSet(db, setData, userId, workout.id, exercise.id);
+    const setsBefore = getAllSetsByExerciseId(
+      db,
+      userId,
+      workout.id,
+      exercise.id
+    );
+    expect(setsBefore).toHaveLength(1);
+    expect(setsBefore[0]?.id).toBe(set.id);
+    const deletedSet = deleteSetBySetId(db, set.id, userId);
+    const setsAfter = getAllSetsByExerciseId(
+      db,
+      userId,
+      workout.id,
+      exercise.id
+    );
+    expect(deletedSet).toEqual({
+      id: expect.any(String),
+    });
+    expect(setsAfter).toEqual([]);
+  });
+
+  it("deletes only the specified set when multiple sets exist", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise } = insertExerciseToWorkout(
+      db,
+      exerciseData,
+      userId,
+      workout.id
+    );
+
+    const set1 = insertSet(
+      db,
+      { reps: 10, weight: 100 },
+      userId,
+      workout.id,
+      exercise.id
+    );
+    const set2 = insertSet(
+      db,
+      { reps: 8, weight: 110 },
+      userId,
+      workout.id,
+      exercise.id
+    );
+    const set3 = insertSet(
+      db,
+      { reps: 6, weight: 120 },
+      userId,
+      workout.id,
+      exercise.id
+    );
+    const setsBefore = getAllSetsByExerciseId(
+      db,
+      userId,
+      workout.id,
+      exercise.id
+    );
+    expect(setsBefore).toHaveLength(3);
+    const deletedSet = deleteSetBySetId(db, set2.id, userId);
+    expect(deletedSet).toEqual({
+      id: set2.id,
+    });
+    const setsAfter = getAllSetsByExerciseId(
+      db,
+      userId,
+      workout.id,
+      exercise.id
+    );
+    expect(setsAfter).toHaveLength(2);
+
+    const remainingSetIds = setsAfter.map((set) => set.id);
+    expect(remainingSetIds).toContain(set1.id);
+    expect(remainingSetIds).toContain(set3.id);
+    expect(remainingSetIds).not.toContain(set2.id);
+  });
+
+  it("handles deletion from different exercises correctly", async () => {
+    const workout = insertWorkout(db, workoutData, userId);
+    const { exercise: exercise1 } = insertExerciseToWorkout(
+      db, 
+      { name: "Exercise 1", category: "test" }, 
+      userId, 
+      workout.id
+    );
+    const { exercise: exercise2 } = insertExerciseToWorkout(
+      db, 
+      { name: "Exercise 2", category: "test" }, 
+      userId, 
+      workout.id
+    );
+    const set1Ex1 = insertSet(db, setData, userId, workout.id, exercise1.id);
+    const set2Ex1 = insertSet(db, setData, userId, workout.id, exercise1.id);
+    const set1Ex2 = insertSet(db, setData, userId, workout.id, exercise2.id);
+    const deletedSet = deleteSetBySetId(db, set1Ex1.id, userId);
+    expect(deletedSet).toEqual({ id: set1Ex1.id });
+    const setsEx1 = getAllSetsByExerciseId(   db,
+      userId,
+      workout.id,
+      exercise1.id);
+    const setsEx2 = getAllSetsByExerciseId(   db,
+      userId,
+      workout.id,
+      exercise2.id);
+    expect(setsEx1).toHaveLength(1);
+    expect(setsEx1[0]!.id).toBe(set2Ex1.id);
+    expect(setsEx2).toHaveLength(1);
+    expect(setsEx2[0]!.id).toBe(set1Ex2.id);
   });
 });

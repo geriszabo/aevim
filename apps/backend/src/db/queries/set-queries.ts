@@ -112,3 +112,35 @@ export const getAllSetsByExerciseId = (
   const sets = setsQuery.all(workoutId, exerciseId, userId) as Set[];
   return sets;
 };
+
+export const deleteSetBySetId = (
+  db: Database,
+  setId: string,
+  userId: string
+): { id: string } | null => {
+  const setExists = db
+    .query(
+      `
+      SELECT sets.id
+      FROM sets
+      JOIN workout_exercises ON sets.workout_exercise_id = workout_exercises.id
+      JOIN workouts ON workout_exercises.workout_id = workouts.id
+      WHERE sets.id = ?
+        AND workouts.user_id = ?
+    `
+    )
+    .get(setId, userId) as { id: string } | null;
+
+  if (!setExists) {
+    throw new Error("SET_NOT_FOUND");
+  }
+
+  const deleteSetQuery = db.query(`
+    DELETE FROM sets
+    WHERE id = ?
+    RETURNING id
+  `);
+
+  const deletedSet = deleteSetQuery.get(setId) as { id: string } | null;
+  return deletedSet;
+};
