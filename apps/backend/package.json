@@ -5,7 +5,10 @@
   "scripts": {
     "start": "bun run src/index.ts",
     "dev": "bun run --hot src/index.ts",
-    "db:users:reset": "bun run scripts/reset-users.ts"
+    "db:users:reset": "bun run scripts/reset-users.ts",
+    "db:workouts:reset": "bun run scripts/reset-workouts.ts",
+    "db:we:reset": "bun run scripts/reset-workout-exercises.ts",
+    "db:exercises:reset": "bun run scripts/reset-exercises.ts"
   },
   "private": true,
   "devDependencies": {
