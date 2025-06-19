@@ -18,11 +18,12 @@ import {
   deleteExerciseFromWorkout,
   insertExerciseToWorkout,
 } from "../db/queries/workout-exercises-queries";
-import { setValidator } from "../db/schemas/set-schema";
+import { setUpdateValidator, setValidator } from "../db/schemas/set-schema";
 import {
   deleteSetBySetId,
   getAllSetsByExerciseId,
   insertSet,
+  updateSetById,
 } from "../db/queries/set-queries";
 
 const workouts = new Hono();
@@ -263,6 +264,25 @@ workouts
       try {
         deleteSetBySetId(db, setId, payload.sub);
         return c.json({ message: "Set successfully deleted" }, 200);
+      } catch (error) {
+        if (error instanceof Error && error.message === "SET_NOT_FOUND") {
+          return c.json({ errors: ["Set not found"] }, 404);
+        }
+        return c.json({ errors: ["Internal server error"] }, 500);
+      }
+    }
+  )
+  .put(
+    "/workouts/:workoutId/exercises/:exerciseId/sets/:setId",
+    setUpdateValidator,
+    async (c) => {
+      const db = dbConnect();
+      const setId = c.req.param("setId");
+      const payload = c.get("jwtPayload");
+      const update = c.req.valid("json");
+      try {
+        const updatedSet = updateSetById(db, setId, update, payload.sub);
+        return c.json({ message: "Set updated successfully", set: updatedSet });
       } catch (error) {
         if (error instanceof Error && error.message === "SET_NOT_FOUND") {
           return c.json({ errors: ["Set not found"] }, 404);

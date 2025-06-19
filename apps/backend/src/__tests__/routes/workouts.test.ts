@@ -18,6 +18,7 @@ import {
   getSingleWorkoutAndReturn,
   getWorkoutOverviewAndReturn,
   loginFlow,
+  updateSetAndReturn,
   updateWorkoutAndReturn,
 } from "../../test/test-helpers";
 import type { ExerciseWithouthUserId } from "../../types/exercise";
@@ -399,7 +400,7 @@ describe("/workouts endpoint", () => {
         },
       });
     });
-    
+
     it("returns 404 if the exercise is not in the workout", async () => {
       const { cookie } = await loginFlow();
       const { workout } = await createWorkoutAndReturn(cookie!);
@@ -417,73 +418,192 @@ describe("/workouts endpoint", () => {
     });
   });
 
-  describe("GET workouts/:id/overview", () => {
-    it("returns a workout with its exercises and sets", async () => {
+  describe("PUT /workouts/:workoutId/exercises/:exerciseId/sets/:setId", () => {
+    it("updates a set successfully", async () => {
       const { cookie } = await loginFlow();
       const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise, success: exerciseSuccess } =
+        await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
+      if (!exerciseSuccess) return;
 
-      const exercisesArray = [
-        { name: "Bench Press", category: "chest" },
-        { name: "Squats", category: "legs" },
-      ];
+      const { set, success: setSuccess } = await createSetAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        exercise.exercise.id
+      );
+      if (!setSuccess) return;
 
-      for (const exercise of exercisesArray) {
-        const { exercise: createdExercise } =
-          await createExerciseAddToWorkoutAndReturn(
-            cookie!,
-            workout.id,
-            exercise
-          );
-
-        const successResponse = createdExercise as {
-          exercise: ExerciseWithouthUserId;
-        };
-
-        await createSetAddToWorkoutAndReturn(
-          cookie!,
-          workout.id,
-          successResponse.exercise.id,
-          { reps: 10, weight: 135 }
-        );
-        await createSetAddToWorkoutAndReturn(
-          cookie!,
-          workout.id,
-          successResponse.exercise.id,
-          { reps: 8, weight: 145 }
-        );
-      }
-
-      const { overview, success, overviewRes } =
-        await getWorkoutOverviewAndReturn(cookie!, workout.id);
-
-      if (success) {
-        expect(overviewRes.status).toBe(200);
-        expect(overview.workout).toEqual({
-          id: workout.id,
-          name: "crossfit session",
-          date: "2022.08.25",
-          notes: "im dead",
+      const { updatedSet, updatedSetRes } = await updateSetAndReturn(
+        cookie!,
+        workout.id,
+        exercise.exercise.id,
+        set.set.id,
+        {
+          weight: 69,
+          reps: 69,
+          duration: 69,
+          distance: 69,
+          notes: "still feels pretty good",
+        }
+      );
+      expect(updatedSetRes.status).toBe(200);
+      expect(updatedSet).toEqual({
+        message: "Set updated successfully",
+        set: {
+          id: expect.any(String),
+          workout_exercise_id: expect.any(String),
+          reps: 69,
+          weight: 69,
+          duration: 69,
+          distance: 69,
+          notes: "still feels pretty good",
+          order_index: 1,
           created_at: expect.any(String),
-        });
-
-        expect(overview.exercises).toHaveLength(2);
-        expect(overview.exercises[0]!.name).toBe("Bench Press");
-        expect(overview.exercises[0]!.sets).toHaveLength(2);
-        expect(overview.exercises[1]!.name).toBe("Squats");
-        expect(overview.exercises[1]!.sets).toHaveLength(2);
-      }
+        },
+      });
     });
 
-    it("returns 404 when workout does not exist", async () => {
+    it("returns 400 if no update data is provided", async () => {
       const { cookie } = await loginFlow();
-      const { overview, overviewRes } = await getWorkoutOverviewAndReturn(
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise, success: exerciseSuccess } =
+        await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
+      if (!exerciseSuccess) return;
+      const { set, success: setSuccess } = await createSetAddToWorkoutAndReturn(
         cookie!,
-        "fakeWorkoutId"
-      )
-      expect(overviewRes.status).toBe(404);
-      expect(overview).toEqual({
-        errors: ["Workout not found"],
+        workout.id,
+        exercise.exercise.id
+      );
+
+      if (!setSuccess) return;
+      const { updatedSetRes, updatedSet } = await updateSetAndReturn(
+        cookie!,
+        workout.id,
+        exercise.exercise.id,
+        set.set.id,
+        {}
+      );
+      expect(updatedSetRes.status).toBe(400);
+      expect(updatedSet).toEqual({
+        errors: ["At least one field must be provided for update"],
       });
+    });
+
+    it("returns 400 if update data is invalid", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise, success: exerciseSuccess } =
+        await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
+      if (!exerciseSuccess) return;
+      const { set, success: setSuccess } = await createSetAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        exercise.exercise.id
+      );
+
+      if (!setSuccess) return;
+      const { updatedSetRes, updatedSet } = await updateSetAndReturn(
+        cookie!,
+        workout.id,
+        exercise.exercise.id,
+        set.set.id,
+        { reps: -5 }
+      );
+
+      expect(updatedSetRes.status).toBe(400);
+      expect(updatedSet).toEqual({
+        errors: ["Reps must be at least 1"],
+      });
+    });
+
+    it("returns 404 if set does not exist", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise, success: exerciseSuccess } =
+        await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
+
+      if (!exerciseSuccess) return;
+      const { updatedSetRes, updatedSet } = await updateSetAndReturn(
+        cookie!,
+        workout.id,
+        exercise.exercise.id,
+        "nonexistent-set-id",
+        { reps: 10 }
+      );
+      expect(updatedSetRes.status).toBe(404);
+      expect(updatedSet).toEqual({
+        errors: ["Set not found"],
+      });
+    });
+  });
+});
+
+describe("GET workouts/:id/overview", () => {
+  it("returns a workout with its exercises and sets", async () => {
+    const { cookie } = await loginFlow();
+    const { workout } = await createWorkoutAndReturn(cookie!);
+
+    const exercisesArray = [
+      { name: "Bench Press", category: "chest" },
+      { name: "Squats", category: "legs" },
+    ];
+
+    for (const exercise of exercisesArray) {
+      const { exercise: createdExercise } =
+        await createExerciseAddToWorkoutAndReturn(
+          cookie!,
+          workout.id,
+          exercise
+        );
+
+      const successResponse = createdExercise as {
+        exercise: ExerciseWithouthUserId;
+      };
+
+      await createSetAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        { reps: 10, weight: 135 }
+      );
+      await createSetAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        { reps: 8, weight: 145 }
+      );
+    }
+
+    const { overview, success, overviewRes } =
+      await getWorkoutOverviewAndReturn(cookie!, workout.id);
+
+    if (success) {
+      expect(overviewRes.status).toBe(200);
+      expect(overview.workout).toEqual({
+        id: workout.id,
+        name: "crossfit session",
+        date: "2022.08.25",
+        notes: "im dead",
+        created_at: expect.any(String),
+      });
+
+      expect(overview.exercises).toHaveLength(2);
+      expect(overview.exercises[0]!.name).toBe("Bench Press");
+      expect(overview.exercises[0]!.sets).toHaveLength(2);
+      expect(overview.exercises[1]!.name).toBe("Squats");
+      expect(overview.exercises[1]!.sets).toHaveLength(2);
+    }
+  });
+
+  it("returns 404 when workout does not exist", async () => {
+    const { cookie } = await loginFlow();
+    const { overview, overviewRes } = await getWorkoutOverviewAndReturn(
+      cookie!,
+      "fakeWorkoutId"
+    );
+    expect(overviewRes.status).toBe(404);
+    expect(overview).toEqual({
+      errors: ["Workout not found"],
     });
   });
 });
