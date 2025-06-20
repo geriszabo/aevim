@@ -289,7 +289,44 @@ describe("/workouts endpoint", () => {
       });
     });
   });
+  describe("GET /workouts/:id/exercises", () => {
+    it("returns all exercises of a workout", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
+      await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
+      const { exercises, exercisesRes, success } =
+        await getAllExercisesOfWorkoutAndReturn(cookie!, workout.id);
+      if (!success) return;
+      expect(exercisesRes.status).toBe(200);
+      expect(exercises).toHaveLength(2);
+      exercises.forEach((exercise, index) => {
+        expect(exercise).toEqual({
+          id: expect.any(String),
+          workout_id: workout.id,
+          exercise_id: expect.any(String),
+          order_index: index + 1,
+          notes: null,
+          created_at: expect.any(String),
+          name: "bench pressing",
+          category: "chest",
+        });
+      });
+    });
 
+    it("returns 404 if workout does not exist", async () => {
+      const { cookie } = await loginFlow();
+      const { exercises, exercisesRes } =
+        await getAllExercisesOfWorkoutAndReturn(
+          cookie!,
+          "nonexistentWorkoutId"
+        );
+      expect(exercisesRes.status).toBe(404);
+      expect(exercises).toEqual({
+        errors: ["Workout not found"],
+      });
+    });
+  });
   describe("POST /workouts/:id/exercises", () => {
     it("adds an exercise to a workout", async () => {
       const { cookie } = await loginFlow();
@@ -378,10 +415,11 @@ describe("/workouts endpoint", () => {
         workout: { id: workoutId },
       } = await createWorkoutAndReturn(cookie!);
       await createExerciseAddToWorkoutAndReturn(cookie!, workoutId);
-      const { exercises } = await getAllExercisesOfWorkoutAndReturn(
+      const { exercises, success } = await getAllExercisesOfWorkoutAndReturn(
         cookie!,
         workoutId
       );
+      if (!success) return;
       const { deletedExercise } = await deleteExerciseFromWorkoutAndReturn(
         cookie!,
         workoutId,

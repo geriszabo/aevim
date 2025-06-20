@@ -91,11 +91,16 @@ export const getAllExercisesOfWorkoutAndReturn = async (
   const exercisesRes = await app.fetch(
     getExercisesByWorkoutIdRequest(cookie!, workoutId)
   );
-  const { exercises } = (await exercisesRes.json()) as {
+  const json = (await exercisesRes.json()) as {
     exercises: WorkoutExercise[];
   };
-
-  return { exercisesRes, exercises };
+  if (exercisesRes.ok) {
+    const exercises = json.exercises as WorkoutExercise[];
+    return { exercisesRes, exercises, success: true as const };
+  } else {
+    const exercises = json as unknown as { errors: string[] };
+    return { exercisesRes, exercises, success: false as const };
+  }
 };
 
 export const deleteExerciseFromWorkoutAndReturn = async (

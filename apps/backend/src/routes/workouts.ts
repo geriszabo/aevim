@@ -7,7 +7,7 @@ import {
 import {
   deleteWorkoutById,
   getWorkoutById,
-  getWorkoutExercisesByWorkoutId,
+  getExercisesByWorkoutId,
   getWorkoutOverviewByWorkoutId,
   getWorkoutsByUserId,
   insertWorkout,
@@ -37,17 +37,6 @@ workouts
       const workout = insertWorkout(db, { date, name, notes }, payload.sub);
       return c.json({ message: "Workout created successfully", workout }, 201);
     } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message.includes("SQLITE_CONSTRAINT_NOTNULL")
-      ) {
-        console.error(error);
-        return c.json(
-          { errors: ["Date and Name fields can not be empty"] },
-          400
-        );
-      }
-      console.error(error);
       return c.json(
         { errors: ["Something went wrong creating the workout"] },
         500
@@ -186,21 +175,15 @@ workouts
     const workoutId = c.req.param("id");
     const payload = c.get("jwtPayload");
     try {
-      const exercisesInWorkout = getWorkoutExercisesByWorkoutId(
+      const exercisesInWorkout = getExercisesByWorkoutId(
         db,
         workoutId,
         payload.sub
       );
-      if (!exercisesInWorkout) {
-        return c.json({ errors: ["No exercises found for this workout"] }, 404);
-      }
       return c.json({ exercises: exercisesInWorkout });
     } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message === "WORKOUT_EXERCISE_NOT_FOUND"
-      ) {
-        return c.json({ errors: ["Workout exercise not found"] }, 404);
+      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
+        return c.json({ errors: ["Workout not found"] }, 404);
       }
       return c.json({ errors: ["Failed to fetch exercises for workout"] }, 500);
     }

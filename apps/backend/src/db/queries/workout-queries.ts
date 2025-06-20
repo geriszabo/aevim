@@ -146,7 +146,7 @@ export const deleteWorkoutById = (
   return transaction();
 };
 
-export const getWorkoutExercisesByWorkoutId = (
+export const getExercisesByWorkoutId = (
   db: Database,
   workoutId: string,
   userId: string

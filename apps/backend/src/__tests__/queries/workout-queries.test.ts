@@ -6,7 +6,7 @@ import type { WorkoutData } from "../../types/workout";
 import {
   deleteWorkoutById,
   getWorkoutById,
-  getWorkoutExercisesByWorkoutId,
+  getExercisesByWorkoutId,
   getWorkoutOverviewByWorkoutId,
   getWorkoutsByUserId,
   insertWorkout,
@@ -294,7 +294,7 @@ describe("getWorkoutExercisesByWorkoutId", () => {
     exercises.forEach((exercise) => {
       insertExerciseToWorkout(db, exercise, userId, workout.id);
     });
-    const allExercises = getWorkoutExercisesByWorkoutId(db, workout.id, userId);
+    const allExercises = getExercisesByWorkoutId(db, workout.id, userId);
     expect(allExercises.length).toBe(3);
     allExercises.forEach((exercise, index) => {
       expect(exercise).toEqual({
@@ -312,13 +312,13 @@ describe("getWorkoutExercisesByWorkoutId", () => {
 
   it("returns an empty array if no exercises are attached", () => {
     const workout = insertWorkout(db, workoutData, userId);
-    const exercises = getWorkoutExercisesByWorkoutId(db, workout.id, userId);
+    const exercises = getExercisesByWorkoutId(db, workout.id, userId);
     expect(exercises).toEqual([]);
   });
 
   it("throws an error if workout does not exist", () => {
     try {
-      getWorkoutExercisesByWorkoutId(db, "non-existent-id", userId);
+      getExercisesByWorkoutId(db, "non-existent-id", userId);
     } catch (error) {
       if (error instanceof Error) {
         expect(error).toBeInstanceOf(Error);
@@ -337,7 +337,7 @@ describe("getWorkoutExercisesByWorkoutId", () => {
     );
     insertExerciseToWorkout(db, { name: "Second" }, userId, workout.id);
 
-    const exercises = getWorkoutExercisesByWorkoutId(db, workout.id, userId);
+    const exercises = getExercisesByWorkoutId(db, workout.id, userId);
 
     expect(exercises[0]!.order_index).toBeLessThan(exercises[1]!.order_index);
   });
@@ -358,7 +358,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
       insertExerciseToWorkout(db, exercise, userId, workout.id);
     });
 
-    const exercises = getWorkoutExercisesByWorkoutId(db, workout.id, userId);
+    const exercises = getExercisesByWorkoutId(db, workout.id, userId);
 
     exercises.forEach((exercise) => {
       insertSet(db, setData, userId, workout.id, exercise.exercise_id);
@@ -464,7 +464,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
     exercisesArray.forEach((exercise) => {
       insertExerciseToWorkout(db, exercise, userId, workout.id);
     });
-    const exercises = getWorkoutExercisesByWorkoutId(db, workout.id, userId);
+    const exercises = getExercisesByWorkoutId(db, workout.id, userId);
     exercises.forEach((exercise) => {
       insertSet(db, setData, userId, workout.id, exercise.exercise_id);
     });
