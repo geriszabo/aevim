@@ -23,7 +23,8 @@
     "db:users:reset": "cd apps/backend && bun run db:users:reset",
     "db:workouts:reset": "cd apps/backend && bun run db:workouts:reset",
     "db:we:reset": "cd apps/backend && bun run db:we:reset",
-    "db:exercises:reset": "cd apps/backend && bun run db:exercises:reset"
+    "db:exercises:reset": "cd apps/backend && bun run db:exercises:reset",
+    "db:sets:reset": "cd apps/backend && bun run db:sets:reset"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

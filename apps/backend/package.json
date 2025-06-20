@@ -8,7 +8,8 @@
     "db:users:reset": "bun run scripts/reset-users.ts",
     "db:workouts:reset": "bun run scripts/reset-workouts.ts",
     "db:we:reset": "bun run scripts/reset-workout-exercises.ts",
-    "db:exercises:reset": "bun run scripts/reset-exercises.ts"
+    "db:exercises:reset": "bun run scripts/reset-exercises.ts",
+    "db:sets:reset": "bun run scripts/reset-sets.ts"
   },
   "private": true,
   "devDependencies": {
