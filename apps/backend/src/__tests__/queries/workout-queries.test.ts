@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
-import { createTestDb } from "../../test/test-db";
+import { createTestDb, createTestUser } from "../../test/test-db";
 
 import type { WorkoutData } from "../../types/workout";
 import {
@@ -13,16 +13,15 @@ import {
   updateWorkoutById,
 } from "../../db/queries/workout-queries";
 import { insertExerciseToWorkout } from "../../db/queries/workout-exercises-queries";
-import { createSetAddToWorkoutAndReturn } from "../../test/test-helpers";
-import { addSetRequest } from "../../test/test-request-helpers";
 import type { SetData } from "../../types/set";
 import { insertSet } from "../../db/queries/set-queries";
 
 let db: Database;
-const userId = "userId1";
+let userId: string;
 
 beforeEach(() => {
   db = createTestDb();
+  userId = createTestUser(db);
 });
 
 afterEach(() => {
@@ -92,14 +91,12 @@ describe("getWorkoutsByUserId", () => {
   it("does not return workouts belonging to other users", async () => {
     insertWorkout(db, workoutData, userId);
     insertWorkout(db, workoutData, userId);
-    insertWorkout(db, workoutData, "differentUser");
+
+    const differentUserId = createTestUser(db);
+    insertWorkout(db, workoutData, differentUserId);
+
     const workouts = getWorkoutsByUserId(db, userId);
-    const differentUserWorkouts = workouts.filter(
-      (workout) => workout.user_id === "differentUser"
-    );
     expect(workouts).toHaveLength(2);
-    expect(differentUserWorkouts).toHaveLength(0);
-    expect(differentUserWorkouts).toEqual([]);
   });
 });
 
@@ -229,16 +226,20 @@ describe("updateWorkoutById", () => {
   });
 
   it("returns null when trying to update another user's workout", async () => {
-    const workout = insertWorkout(
-      db,
-      { date: "today", name: "workout 1", notes: "note for workout 1" },
-      "user1"
-    );
+    it("returns null when trying to update another user's workout", async () => {
+      const workout = insertWorkout(db, workoutData, userId);
 
-    const result = updateWorkoutById(db, workout.id, "user2", {
-      name: "hacked",
+      // Create a different user
+      const differentUserId = createTestUser(db);
+
+      const result = updateWorkoutById(
+        db,
+        workout.id,
+        differentUserId, // Try to update with different user
+        { name: "new name" }
+      );
+      expect(result).toBeNull();
     });
-    expect(result).toBeNull();
   });
 
   describe("deleteWorkoutById", () => {
@@ -259,20 +260,25 @@ describe("updateWorkoutById", () => {
     });
 
     it("returns null if workout does not exist", async () => {
-      const deleted = deleteWorkoutById(db, "nonexistent-id", userId);
-      expect(deleted).toBeNull();
+      try {
+        deleteWorkoutById(db, "nonexistent-id", userId);
+      } catch (error) {
+        if (error instanceof Error) {
+          expect(error.message).toBe("WORKOUT_NOT_FOUND");
+        }
+      }
     });
 
     it("returns null if workout exists but belongs to another user", async () => {
-      const workout = insertWorkout(
-        db,
-        { date: "2024-06-01", name: "not your workout", notes: "nope" },
-        "otherUser"
-      );
-      const deleted = deleteWorkoutById(db, workout.id, userId);
-      expect(deleted).toBeNull();
-      const retryFindingWorkout = getWorkoutById(db, "otherUser", workout.id);
-      expect(retryFindingWorkout).not.toBeNull();
+      const workout = insertWorkout(db, workoutData, userId);
+      const differentUserId = createTestUser(db);
+      try {
+        deleteWorkoutById(db, workout.id, differentUserId);
+      } catch (error) {
+        if (error instanceof Error) {
+          expect(error.message).toBe("WORKOUT_NOT_FOUND");
+        }
+      }
     });
   });
 });

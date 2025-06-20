@@ -1,13 +1,15 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
-import { createTestDb } from "../../test/test-db";
+import { createTestDb, createTestUser } from "../../test/test-db";
 import { getUserByEmail, getUserById, insertUser } from "../../db/queries/auth-queries";
 
 
 let db: Database;
+let userId: string;
 
 beforeEach(() => {
-  db = createTestDb();
+    db = createTestDb();
+  userId = createTestUser(db)
 });
 
 afterEach(() => {

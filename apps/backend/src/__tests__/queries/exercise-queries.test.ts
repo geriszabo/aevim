@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
-import { createTestDb } from "../../test/test-db";
+import { createTestDb, createTestUser } from "../../test/test-db";
 import {
   deleteExerciseById,
   getAllExercises,
@@ -13,7 +13,7 @@ import { insertWorkout } from "../../db/queries/workout-queries";
 import { insertExerciseToWorkout } from "../../db/queries/workout-exercises-queries";
 
 let db: Database;
-const userId = "szabogeri69";
+let userId: string;
 const exerciseData = {
   name: "Push Up",
   category: "Strength",
@@ -21,6 +21,7 @@ const exerciseData = {
 
 beforeEach(() => {
   db = createTestDb();
+  userId = createTestUser(db);
 });
 
 afterEach(() => {
