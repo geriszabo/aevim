@@ -24,7 +24,7 @@ export const applySchema = (dbInstance: Database) => {
       schema: `
           id TEXT PRIMARY KEY,
           email TEXT UNIQUE NOT NULL,
-          password_hash TEXT UNIQUE NOT NULL,
+          password_hash TEXT NOT NULL,
           createdAt TEXT DEFAULT CURRENT_TIMESTAMP
         `,
     },
@@ -37,7 +37,7 @@ export const applySchema = (dbInstance: Database) => {
           notes TEXT,
           date TEXT NOT NULL,
           created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (user_id) REFERENCES users(id)
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         `,
     },
     {
@@ -49,7 +49,7 @@ export const applySchema = (dbInstance: Database) => {
           category TEXT,
           is_global INTEGER DEFAULT 0,
           created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (user_id) REFERENCES users(id)
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         `,
     },
     {
@@ -62,7 +62,7 @@ export const applySchema = (dbInstance: Database) => {
           notes TEXT,
           created_at TEXT DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (workout_id) REFERENCES workouts(id) ON DELETE CASCADE,
-          FOREIGN KEY (exercise_id) REFERENCES exercises(id)
+          FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE
         `,
     },
     {
