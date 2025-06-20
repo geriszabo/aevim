@@ -55,7 +55,7 @@ Cookie: {{login.response.headers.Set-Cookie}}
 
 ###
 
-PUT http://localhost:3000/api/v1/auth/workouts/7b20b747-3976-44ca-9982-3399a952a266
+PUT http://localhost:3000/api/v1/auth/workouts/7922bfd8-d5e0-4c79-a2dc-4376eff75ccf
 Cookie: {{login.response.headers.Set-Cookie}}
 Content-Type: application/json
 
@@ -80,7 +80,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/v1/auth/workouts/7b20b747-3976-44ca-9982-3399a952a266/exercises/
+GET http://localhost:3000/api/v1/auth/workouts/5a5fc8e2-80b3-43f8-ab45-bddcc8f627a0/exercises/
 Cookie: {{login.response.headers.Set-Cookie}}
 
 ###
@@ -91,7 +91,7 @@ Cookie: {{login.response.headers.Set-Cookie}}
 
 ###
 
-POST http://localhost:3000/api/v1/auth/workouts/70a6c0c0-a70e-4f43-a6ae-efd7b2da2ccd/exercises
+POST http://localhost:3000/api/v1/auth/workouts/7bf2134c-793f-4aee-9b6b-a29980d9b027/exercises
 Cookie: {{login.response.headers.Set-Cookie}}
 Content-Type: application/json
 
@@ -104,4 +104,32 @@ Content-Type: application/json
 
 GET http://localhost:3000/api/v1/auth/workouts/70a6c0c0-a70e-4f43-a6ae-efd7b2da2ccd/exercises
 
+Cookie: {{login.response.headers.Set-Cookie}}
+
+###
+
+DELETE http://localhost:3000/api/v1/auth/workouts/7bf2134c-793f-4aee-9b6b-a29980d9b027
+Cookie: {{login.response.headers.Set-Cookie}}
+
+###
+
+GET http://localhost:3000/api/v1/auth/workouts/7bf2134c-793f-4aee-9b6b-a29980d9b027/overview
+
+Cookie: {{login.response.headers.Set-Cookie}}
+
+###
+
+POST http://localhost:3000/api/v1/auth/workouts/7bf2134c-793f-4aee-9b6b-a29980d9b027/exercises/071a2b38-1678-4cef-8391-b74208c40bae/sets
+Cookie: {{login.response.headers.Set-Cookie}}
+Content-Type: application/json
+
+{
+    "reps": 12,
+    "weight": 5.6,
+    "notes": "was okay"
+}
+
+###
+
+DELETE http://localhost:3000/api/v1/auth/workouts/55e04db0-3ed5-4a65-8b92-d1d7361e3aaf/exercises/de8f8f3a-36c4-46aa-befc-b6f4e7bbb7eb
 Cookie: {{login.response.headers.Set-Cookie}}
