@@ -54,9 +54,6 @@ exercises
     const payload = c.get("jwtPayload");
     try {
       const deletedExercise = deleteExerciseById(db, exerciseId, payload.sub);
-      if (!deletedExercise) {
-        return c.json({ errors: ["Exercise not found"] }, 404);
-      }
       return c.json(
         {
           message: `Exercise with name: ${deletedExercise.name} as been deleted successfuly`,
@@ -64,7 +61,9 @@ exercises
         200
       );
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error && error.message === "EXERCISE_NOT_FOUND") {
+        return c.json({ errors: ["Exercise not found"] }, 404);
+      }
       return c.json({ errors: ["Internal server error"] }, 500);
     }
   })

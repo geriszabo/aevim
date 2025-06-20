@@ -54,7 +54,7 @@ workouts
       );
     }
   })
- .get("/workouts", async (c) => {
+  .get("/workouts", async (c) => {
     const db = dbConnect();
     const payload = c.get("jwtPayload");
     try {
@@ -120,7 +120,9 @@ workouts
         200
       );
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
+        return c.json({ errors: ["Workout not found"] }, 404);
+      }
       return c.json({ errors: ["Internal server error"] }, 500);
     }
   })

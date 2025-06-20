@@ -32,18 +32,42 @@ export const deleteExerciseById = (
   exerciseId: string,
   userId: string
 ) => {
-  const exerciseQuery = db.query(`
-    DELETE FROM exercises
-    WHERE id = ? AND user_id = ?
-    RETURNING name, id
-    `);
+  const transaction = db.transaction(() => {
+    // Verify the exercise exists for the user
+    const exercise = db.query(`
+      SELECT name, id FROM exercises 
+      WHERE id = ? AND user_id = ?
+    `).get(exerciseId, userId) as { name: string; id: string } | null;
 
-  const deletedExercise = exerciseQuery.get(exerciseId, userId) as {
-    name: string;
-    id: string;
-  } | null;
+    if (!exercise) {
+      throw new Error("EXERCISE_NOT_FOUND")
+    }
 
-  return deletedExercise;
+    //1: Delete all sets for this exercise
+    db.query(`
+      DELETE FROM sets 
+      WHERE workout_exercise_id IN (
+        SELECT id FROM workout_exercises 
+        WHERE exercise_id = ?
+      )
+    `).run(exerciseId);
+
+    //2: Delete all workout_exercises for this exercise
+    db.query(`
+      DELETE FROM workout_exercises 
+      WHERE exercise_id = ?
+    `).run(exerciseId);
+
+    //3: Delete the exercise itself
+    db.query(`
+      DELETE FROM exercises 
+      WHERE id = ? AND user_id = ?
+    `).run(exerciseId, userId);
+
+    return exercise;
+  });
+
+  return transaction();
 };
 
 export const getExerciseById = (
