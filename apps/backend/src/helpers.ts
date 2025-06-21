@@ -41,15 +41,15 @@ export const cookieOptions: CookieOptions = {
 };
 
 const ERROR_MAPPINGS = {
-  // Exercise errors
-  EXERCISE_NOT_FOUND: { status: 404, message: "Exercise not found" },
-  NO_EXERCISES_FOUND: { status: 404, message: "No exercises found" },
   // Workout errors
   WORKOUT_NOT_FOUND: { status: 404, message: "Workout not found" },
   WORKOUT_EXERCISE_NOT_FOUND: {
     status: 404,
     message: "Workout exercise not found",
   },
+  // Exercise errors
+  EXERCISE_NOT_FOUND: { status: 404, message: "Exercise not found" },
+  NO_EXERCISES_FOUND: { status: 404, message: "No exercises found" },
   // Set errors
   SET_NOT_FOUND: { status: 404, message: "Set not found" },
   // Auth errors
@@ -77,4 +77,25 @@ export const handleError = (
   }
 
   return c.json({ errors: [fallbackMessage] }, 500);
+};
+
+export const checkItemExists = (
+  db: Database,
+  table: "workouts" | "exercises" | "sets" | "users" | "workout_exercises",
+  conditions: Record<string, string>,
+  errorMessage?: string
+) => {
+  const whereClause = Object.keys(conditions)
+    .map((key) => `${key} = ?`)
+    .join(" AND ");
+
+  const values = Object.values(conditions);
+  const query = db.query(`SELECT id FROM ${table} WHERE ${whereClause}`);
+  const exists = query.get(...values);
+  const errorString = table.slice(0, -1).toUpperCase() + "_NOT_FOUND";
+  if (!exists) {
+    throw new Error(errorString || errorMessage);
+  }
+
+  return exists;
 };
