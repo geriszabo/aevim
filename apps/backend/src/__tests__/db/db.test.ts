@@ -137,7 +137,7 @@ describe("Cascade Deletion Tests", () => {
         const result = deleteWorkoutById(db, workout.id, otherUserId);
       } catch (error) {
         if (error instanceof Error) {
-          expect(error.message).toBe("WORKOUT_NOT_FOUND");
+          expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
         }
       }
 
@@ -234,7 +234,7 @@ describe("Cascade Deletion Tests", () => {
         deleteExerciseById(db, exercise.id, otherUserId);
       } catch (error) {
         if (error instanceof Error) {
-          expect(error.message).toBe("EXERCISE_NOT_FOUND");
+          expect(error.message).toMatch(/EXERCISE_NOT_FOUND/);
         }
       }
       const counts = getDataCounts(db, userId);

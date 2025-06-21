@@ -4,6 +4,7 @@ import type {
   ExerciseData,
   ExerciseWithouthUserId,
 } from "../../types/exercise";
+import { checkItemExists } from "../../helpers";
 
 export const insertExercise = (
   db: Database,
@@ -42,10 +43,7 @@ export const deleteExerciseById = (
     `
       )
       .get(exerciseId, userId) as { name: string; id: string } | null;
-
-    if (!exercise) {
-      throw new Error("EXERCISE_NOT_FOUND");
-    }
+    checkItemExists(db, "exercises", { id: exerciseId, user_id: userId });
 
     //1: Delete all sets for this exercise
     db.query(

@@ -5,6 +5,7 @@ import type {
   ExerciseWithouthUserId,
 } from "../../types/exercise";
 import type { ExerciseToWorkout } from "@aevim/shared-types";
+import { checkItemExists } from "../../helpers";
 
 type InsertExerciseResult = {
   exercise: ExerciseWithouthUserId;
@@ -39,14 +40,7 @@ export const insertExerciseToWorkout = (
   userId: string,
   workoutId: string
 ): InsertExerciseResult => {
-  const workoutExists = db
-    .query(`SELECT id FROM workouts WHERE id = ? AND user_id = ?`)
-    .get(workoutId, userId);
-
-  if (!workoutExists) {
-    throw new Error("WORKOUT_NOT_FOUND");
-  }
-
+  checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
   const exerciseId = randomUUID();
   const workoutExerciseId = randomUUID();
   const { name, category } = exerciseData;
