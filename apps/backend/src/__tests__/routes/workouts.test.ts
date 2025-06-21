@@ -134,7 +134,7 @@ describe("/workouts endpoint", () => {
       );
       expect(workoutRes.status).toBe(404);
       expect(workout).toEqual({
-        errors: ["Invalid workout id"],
+        errors: ["Workout not found"],
       });
     });
   });
@@ -270,7 +270,7 @@ describe("/workouts endpoint", () => {
         await getSingleWorkoutAndReturn(cookie!, workout.id);
       expect(foundWorkoutRes.status).toBe(404);
       expect(foundWorkout).toEqual({
-        errors: ["Invalid workout id"],
+        errors: ["Workout not found"],
       });
     });
 
