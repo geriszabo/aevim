@@ -10,6 +10,7 @@ import {
   deleteSetAndReturn,
   getAllSetsByExerciseIdAndReturn,
   loginFlow,
+  updateSetAndReturn,
 } from "../../test/test-helpers";
 import type { ExerciseWithouthUserId } from "../../types/exercise";
 import type { Set } from "@aevim/shared-types";
@@ -171,7 +172,7 @@ describe("/sets endpoint", () => {
         "fictionalExerciseId"
       );
       expect(setsRes.status).toBe(404);
-      expect(sets).toEqual({ errors: ["Could not find exercise with set"] });
+      expect(sets).toEqual({ errors: ["Exercise not found"] });
     });
   });
   describe("DELETE workouts/:workoutId/exercises/:exerciseId/sets/:setId", () => {
@@ -262,6 +263,139 @@ describe("/sets endpoint", () => {
         deleteSetRequest(workout.id, exercise.id, set.id, "")
       );
       expect(deleteRes.status).toBe(401);
+    });
+  });
+
+  describe("PUT /workouts/:workoutId/exercises/:exerciseId/sets/:setId", () => {
+    it("successfully updates a set with all fields", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        { name: "Bench Press", category: "chest" }
+      );
+
+      const successResponse = exercise as {
+        exercise: ExerciseWithouthUserId;
+      };
+      const { set } = await createSetAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        {
+          reps: 10,
+          weight: 135,
+          duration: 60,
+          distance: 0,
+          notes: "Original notes",
+        }
+      );
+      const setResponse = set as {
+        message: string;
+        set: Set;
+      };
+      const updateData = {
+        reps: 12,
+        weight: 155,
+        duration: 90,
+        distance: 5,
+        notes: "Updated notes",
+      };
+      const { updatedSet, updatedSetRes, success } = await updateSetAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        setResponse.set.id,
+        updateData
+      );
+      expect(updatedSetRes.status).toBe(200);
+      expect(success).toBe(true);
+      if (success) {
+        expect(updatedSet.message).toBe("Set updated successfully");
+        expect(updatedSet.set).toEqual({
+          id: setResponse.set.id,
+          workout_exercise_id: expect.any(String),
+          reps: 12,
+          weight: 155,
+          duration: 90,
+          distance: 5,
+          notes: "Updated notes",
+          order_index: 1,
+          created_at: expect.any(String),
+        });
+      }
+    });
+
+    it("successfully updates a set with partial fields", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        { name: "Squats", category: "legs" }
+      );
+      const successResponse = exercise as {
+        exercise: ExerciseWithouthUserId;
+      };
+      const { set } = await createSetAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        { reps: 8, weight: 200, duration: 45, distance: 0, notes: "Original" }
+      );
+      const setResponse = set as {
+        message: string;
+        set: Set;
+      };
+      const updateData = {
+        reps: 10,
+        weight: 225,
+      };
+      const { updatedSet, updatedSetRes, success } = await updateSetAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        setResponse.set.id,
+        updateData
+      );
+      expect(updatedSetRes.status).toBe(200);
+      expect(success).toBe(true);
+      if (success) {
+        expect(updatedSet.set.reps).toBe(10);
+        expect(updatedSet.set.weight).toBe(225);
+        // Other fields remain unchanged
+        expect(updatedSet.set.duration).toBe(45);
+        expect(updatedSet.set.distance).toBe(null);
+        expect(updatedSet.set.notes).toBe("Original");
+      }
+    });
+
+    it("returns 404 when set does not exist", async () => {
+      const { cookie } = await loginFlow();
+      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { exercise } = await createExerciseAddToWorkoutAndReturn(
+        cookie!,
+        workout.id,
+        { name: "Deadlifts", category: "back" }
+      );
+      const successResponse = exercise as {
+        exercise: ExerciseWithouthUserId;
+      };
+      const fakeSetId = "fake-set-id";
+      const updateData = { reps: 5 };
+      const { updatedSet, updatedSetRes, success } = await updateSetAndReturn(
+        cookie!,
+        workout.id,
+        successResponse.exercise.id,
+        fakeSetId,
+        updateData
+      );
+      expect(updatedSetRes.status).toBe(404);
+      expect(success).toBe(false);
+      if (!success) {
+        expect(updatedSet.errors).toEqual(["Set not found"]);
+      }
     });
   });
 });
