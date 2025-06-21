@@ -1,22 +1,23 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb, createTestUser } from "../../test/test-db";
-import { getUserByEmail, getUserById, insertUser } from "../../db/queries/auth-queries";
-
+import {
+  getUserByEmail,
+  getUserById,
+  insertUser,
+} from "../../db/queries/auth-queries";
 
 let db: Database;
 let userId: string;
 
 beforeEach(() => {
-    db = createTestDb();
-  userId = createTestUser(db)
+  db = createTestDb();
+  userId = createTestUser(db);
 });
 
 afterEach(() => {
   db.close();
 });
-
-
 
 describe("insertUser", () => {
   it("inserts user", async () => {
@@ -24,21 +25,46 @@ describe("insertUser", () => {
     const password = "password123";
     const userId = await insertUser(db, email, password);
     expect(userId).toBeDefined();
+    expect(userId).toEqual(expect.any(String));
   });
 
-  it("throws error if the user email is already taken", async () => {
+  it("hashes the password correctly", async () => {
     const email = "test@gmail.com";
     const password = "password123";
     await insertUser(db, email, password);
+
+    const user = getUserByEmail(db, email);
+    expect(user.password_hash).toBeDefined();
+    expect(user.password_hash).not.toBe(password);
+    expect(user.password_hash.length).toBeGreaterThan(password.length);
+  });
+
+  it("throws EMAIL_ALREADY_EXISTS if email is already taken", async () => {
+    const email = "test@gmail.com";
+    const password = "password123";
+    await insertUser(db, email, password);
+
+    expect(insertUser(db, email, password)).rejects.toThrow(
+      "EMAIL_ALREADY_EXISTS"
+    );
+  });
+
+  it("treats emails as case-insensitive", async () => {
+    const email1 = "test@gmail.com";
+    const email2 = "Test@Gmail.Com";
+    const password = "password123";
+
     try {
-      await insertUser(db, email, password);
+      await insertUser(db, email1, password);
+      await insertUser(db, email2, password);
     } catch (error) {
       if (error instanceof Error) {
         expect(error).toBeInstanceOf(Error);
-        expect(error.message).toMatch(/UNIQUE constraint failed/);
+        expect(error.message).toMatch(/EMAIL_ALREADY_EXISTS/);
       }
     }
   });
+
   it("throws an error if password is empty", async () => {
     const email = "testtest.com";
     const password = "";
@@ -51,6 +77,16 @@ describe("insertUser", () => {
       }
     }
   });
+});
+
+it("stores email in lowercase", async () => {
+  const email = "TunaSandwich@GmAiL.cOm";
+  const password = "password123";
+  
+  const userId = await insertUser(db, email, password);
+  const user = getUserById(db, userId);
+  
+  expect(user.email).toBe("tunasandwich@gmail.com");
 });
 
 describe("getUsersByEmail", () => {
@@ -66,9 +102,14 @@ describe("getUsersByEmail", () => {
   });
 
   it("returns null if user does not exist", async () => {
-    const email = "test@test.com";
-    const user = getUserByEmail(db, email);
-    expect(user).toBeNull();
+    try {
+      getUserByEmail(db, "test@test.com");
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/INVALID_CREDENTIALS/);
+      }
+    }
   });
 });
 
@@ -85,8 +126,13 @@ describe("getUsersById", () => {
   });
 
   it("returns null if user does not exist", async () => {
-    const user = getUserById(db, "anyId");
-    expect(user).toBeNull();
+    try {
+      getUserById(db, "anyId");
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/USER_NOT_FOUND/);
+      }
+    }
   });
 });
-

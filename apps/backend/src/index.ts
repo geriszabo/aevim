@@ -10,7 +10,7 @@ app
   .use("api/v1/auth/*", jwt({ secret: env.JWT_SECRET, cookie: "authToken" }))
   .route("api/v1", auth)
   .route("api/v1/auth", workouts)
-  .route("api/v1/auth", exercises)
+  .route("api/v1/auth", exercises);
 
 export default {
   port: env.PORT || 3000,

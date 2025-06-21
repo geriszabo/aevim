@@ -5,6 +5,7 @@ import app from "../../index";
 import { createTestDb } from "../../test/test-db";
 import {
   completeAuthFlow,
+  getAuthMeAndReturn,
   loginAndReturn,
   logoutAndReturn,
   signupAndReturn,
@@ -134,5 +135,82 @@ describe("/me endpoint", () => {
     });
     const res = await app.fetch(req);
     expect(res.status).toBe(401);
+  });
+});
+
+describe("/auth/me endpoint", () => {
+  it("returns user data for authenticated user", async () => {
+    const email = "test@test.com";
+    const { cookie } = await completeAuthFlow(email);
+    
+    const { authMeRes, user, success } = await getAuthMeAndReturn(cookie!);
+    
+    expect(authMeRes.status).toBe(200);
+    expect(success).toBe(true);
+    if (success) {
+      expect(user).toEqual({
+        id: expect.any(String),
+        email: email,
+      });
+      expect(user.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+    }
+  });
+
+  it("returns 401 when no auth token provided", async () => {
+    const { authMeRes, user, success } = await getAuthMeAndReturn("");
+    
+    expect(authMeRes.status).toBe(401);
+    expect(success).toBe(false);
+    if (!success) {
+      expect(user.errors).toBeDefined();
+    }
+  });
+
+  it("returns 401 when invalid auth token provided", async () => {
+    const { authMeRes, user, success } = await getAuthMeAndReturn("authToken=invalid.jwt.token");
+    
+    expect(authMeRes.status).toBe(401);
+    expect(success).toBe(false);
+    if (!success) {
+      expect(user.errors).toBeDefined();
+    }
+  });
+
+  it("returns correct user data for different users", async () => {
+    const user1Email = "user1@test.com";
+    const user2Email = "user2@test.com";
+    
+    const { cookie: cookie1 } = await completeAuthFlow(user1Email);
+    const { cookie: cookie2 } = await completeAuthFlow(user2Email);
+    
+    const { authMeRes: res1, user: user1, success: success1 } = await getAuthMeAndReturn(cookie1!);
+    const { authMeRes: res2, user: user2, success: success2 } = await getAuthMeAndReturn(cookie2!);
+    
+    expect(res1.status).toBe(200);
+    expect(res2.status).toBe(200);
+    expect(success1).toBe(true);
+    expect(success2).toBe(true);
+    
+    if (success1 && success2) {
+      expect(user1.email).toBe(user1Email);
+      expect(user2.email).toBe(user2Email);
+      expect(user1.id).not.toBe(user2.id);
+    }
+  });
+
+  it("does not return sensitive data", async () => {
+    const { cookie } = await completeAuthFlow();
+    const { authMeRes, user, success } = await getAuthMeAndReturn(cookie!);
+    
+    expect(authMeRes.status).toBe(200);
+    expect(success).toBe(true);
+    if (success) {
+      expect(user).not.toHaveProperty("password");
+      expect(user).not.toHaveProperty("password_hash");
+      expect(user).toEqual({
+        id: expect.any(String),
+        email: expect.any(String),
+      });
+    }
   });
 });
