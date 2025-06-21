@@ -84,7 +84,7 @@ export const logoutRequest = (): Request => {
 };
 
 export const addWorkoutRequest = ({
-  date = "2022.08.25",
+  date = "2022-08-25",
   name = "crossfit session",
   notes = "im dead",
   userId = "szabogeri69",

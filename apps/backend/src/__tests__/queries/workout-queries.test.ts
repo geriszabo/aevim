@@ -29,7 +29,7 @@ afterEach(() => {
 });
 
 const workoutData: WorkoutData = {
-  date: "now",
+  date: "2025-01-15",
   name: "gym session",
   notes: "just a couple of notes",
 };
@@ -73,7 +73,7 @@ describe("getWorkoutsByUserId", () => {
       id: expect.any(String),
       name: "gym session",
       created_at: expect.any(String),
-      date: "now",
+      date: "2025-01-15",
       notes: "just a couple of notes",
     };
 
@@ -104,12 +104,12 @@ describe("getWorkoutById", () => {
   it("returns workout with given id", async () => {
     insertWorkout(
       db,
-      { date: "today", name: "workout 1", notes: "note for workout 1" },
+      { date: "2025-02-10", name: "workout 1", notes: "note for workout 1" },
       userId
     );
     insertWorkout(
       db,
-      { date: "tomorrow", name: "workout 2", notes: "note for workout 2" },
+      { date: "2025-02-11", name: "workout 2", notes: "note for workout 2" },
       userId
     );
     const workouts = getWorkoutsByUserId(db, userId);
@@ -121,7 +121,7 @@ describe("getWorkoutById", () => {
       id: workouts[1]!.id,
       name: "workout 1",
       notes: "note for workout 1",
-      date: "today",
+      date: "2025-02-10",
       created_at: expect.any(String),
     });
   });
@@ -140,7 +140,7 @@ describe("getWorkoutById", () => {
   it("throws error if user id is invalid", async () => {
     const workoutId = insertWorkout(
       db,
-      { date: "today", name: "workout 1", notes: "note for workout 1" },
+      { date: "2025-02-10", name: "workout 1", notes: "note for workout 1" },
       userId
     ).id;
     try {
@@ -157,10 +157,10 @@ describe("getWorkoutById", () => {
 describe("updateWorkoutById", () => {
   const updatesArray = [
     { name: "updated name only" },
-    { date: "updated date only" },
+    { date: "2025-02-10" },
     { notes: "updated notes only" },
-    { name: "new name", date: "new date" },
-    { name: "new name", date: "new date", notes: "new notes too" },
+    { name: "new name", date: "2025-02-19" },
+    { name: "new name", date: "2025-02-19", notes: "new notes too" },
   ];
 
   it("updates a workout with given data", async () => {

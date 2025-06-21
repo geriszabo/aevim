@@ -51,7 +51,7 @@ describe("/workouts endpoint", () => {
       expect(workout).toEqual({
         id: expect.any(String),
         name: "crossfit session",
-        date: "2022.08.25",
+        date: "2022-08-25",
         created_at: expect.any(String),
         notes: "im dead",
       });
@@ -92,7 +92,7 @@ describe("/workouts endpoint", () => {
           id: expect.any(String),
           name: "crossfit session",
           notes: "im dead",
-          date: "2022.08.25",
+          date: "2022-08-25",
           created_at: expect.any(String),
         });
       });
@@ -121,7 +121,7 @@ describe("/workouts endpoint", () => {
           name: "crossfit session",
           notes: "im dead",
           created_at: expect.any(String),
-          date: "2022.08.25",
+          date: "2022-08-25",
         },
       });
     });
@@ -141,7 +141,7 @@ describe("/workouts endpoint", () => {
 
   describe("PUT /workouts/:id", async () => {
     const update = {
-      date: "updated date",
+      date: "2023-08-25",
       name: "updated name",
       notes: "updated notes",
     };
@@ -153,7 +153,7 @@ describe("/workouts endpoint", () => {
       expect(workout).toEqual({
         name: "crossfit session",
         notes: "im dead",
-        date: "2022.08.25",
+        date: "2022-08-25",
         id: expect.any(String),
         created_at: expect.any(String),
       });
@@ -617,7 +617,7 @@ describe("GET workouts/:id/overview", () => {
       expect(overview.workout).toEqual({
         id: workout.id,
         name: "crossfit session",
-        date: "2022.08.25",
+        date: "2022-08-25",
         notes: "im dead",
         created_at: expect.any(String),
       });

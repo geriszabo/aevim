@@ -30,7 +30,7 @@ afterEach(() => {
 
 describe("insertExerciseToWorkout", () => {
   const workoutData = {
-    date: "2025.08.03",
+    date: "2025-08-03",
     name: "Morning Workout",
     notes: "Felt great!",
   };
@@ -144,7 +144,7 @@ describe("getExerciseById", () => {
 
 describe("deleteExerciseById", () => {
   const workoutData = {
-    date: "2025.08.03",
+    date: "2025-08-03",
     name: "Morning Workout",
     notes: "Felt great!",
   };
@@ -205,7 +205,7 @@ describe("getAllExercises", () => {
 
 describe("updateExerciseById", () => {
   const workoutData = {
-    date: "2025.08.03",
+    date: "2025-08-03",
     name: "Morning Workout",
     notes: "Felt great!",
   };

@@ -1,10 +1,10 @@
 import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
+import * as z from "zod/v4";
 
 export const workoutSchema = z.object({
   name: z.string({ message: "You have to give the workout a name" }),
   notes: z.string().nullable().optional(),
-  date: z.string({ message: "Please pick a date for the workout" }),
+  date: z.iso.date({ message: "Please pick a date for the workout" }),
 });
 
 export const workoutValidator = zValidator(
