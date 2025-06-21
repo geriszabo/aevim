@@ -15,7 +15,7 @@ try {
   env = EnvSchema.parse(process.env);
 } catch (error) {
   const zodError = error as z.ZodError 
-  console.error("THE SHRIMP OF INVALID .ENV FILE HAS VISITE YOU✨🦐✨")
+  console.error("THE SHRIMP OF INVALID .ENV FILE VARIABLES HAS VISITED YOU✨🦐✨")
   console.error(z.prettifyError(zodError))
   process.exit(1);
 }
