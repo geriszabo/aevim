@@ -1,25 +1,48 @@
+import { API_ROUTES } from "../config/api-routes";
+import env from "../env";
 import type { SetData } from "../types/set";
 
-export interface AddWorkoutRequestProps {
-  date?: string;
-  name?: string;
-  notes?: string;
-  userId?: string;
+interface RequestOptions {
+  method?: RequestInit["method"];
+  body?: Record<string, any>;
   cookie?: string;
+  headers?: Record<string, string>;
 }
 
-export interface AddExerciseRequestProps {
-  category?: string;
-  name?: string;
-  userId?: string;
-  cookie?: string;
-}
+const createRequest = (
+  route: string,
+  options: RequestOptions = {}
+): Request => {
+  const { method = "GET", body, cookie, headers = {} } = options;
+  const requestHeaders: Record<string, string> = {
+    ...headers,
+  };
+  if (body) {
+    requestHeaders["Content-Type"] = "application/json";
+  }
+  if (cookie) {
+    requestHeaders["Cookie"] = cookie;
+  }
+  return new Request(env.API_BASE_URL + route, {
+    method,
+    headers: requestHeaders,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+};
+
+export const createAuthenticatedRequest = (
+  route: string,
+  cookie: string,
+  options: Omit<RequestOptions, "cookie"> = {}
+): Request => {
+  return createRequest(route, { ...options, cookie });
+};
 
 export const signupRequest = (
   email = "test@test.com",
   password = "password123"
-) => {
-  return new Request("http://localhost:3000/api/v1/signup", {
+): Request => {
+  return new Request(env.API_BASE_URL + API_ROUTES.auth.signup, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -34,8 +57,8 @@ export const signupRequest = (
 export const loginrequest = (
   email = "test@test.com",
   password = "password123"
-) => {
-  return new Request("http://localhost:3000/api/v1/login", {
+): Request => {
+  return new Request(env.API_BASE_URL + API_ROUTES.auth.login, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -47,8 +70,8 @@ export const loginrequest = (
   });
 };
 
-export const logoutRequest = () => {
-  return new Request("http://localhost:3000/api/v1/logout", {
+export const logoutRequest = (): Request => {
+  return new Request(env.API_BASE_URL + API_ROUTES.auth.logout, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -62,36 +85,24 @@ export const addWorkoutRequest = ({
   notes = "im dead",
   userId = "szabogeri69",
   cookie = "",
-}: AddWorkoutRequestProps) => {
-  return new Request("http://localhost:3000/api/v1/auth/workouts", {
+}): Request => {
+  return createAuthenticatedRequest(API_ROUTES.workouts.base, cookie, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Cookie: cookie,
-    },
-    body: JSON.stringify({
-      name,
-      notes,
-      date,
-      user_id: userId,
-    }),
+    body: { name, notes, date, user_id: userId },
   });
 };
 
-export const getAllWorkoutsRequest = (cookie: string) => {
-  return new Request("http://localhost:3000/api/v1/auth/workouts", {
-    method: "GET",
-    headers: { Cookie: cookie! },
-  });
+export const getAllWorkoutsRequest = (cookie: string): Request => {
+  return createAuthenticatedRequest(API_ROUTES.workouts.base, cookie);
 };
 
-export const getSingleWorkoutRequest = (workoutId: string, cookie: string) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}`,
-    {
-      method: "GET",
-      headers: { Cookie: cookie! },
-    }
+export const getSingleWorkoutRequest = (
+  workoutId: string,
+  cookie: string
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.workouts.single(workoutId),
+    cookie
   );
 };
 
@@ -99,24 +110,32 @@ export const updateWorkoutRequest = (
   workoutId: string,
   update: { name?: string; date?: string; notes?: string },
   cookie: string
-) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}`,
-    {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Cookie: cookie! },
-      body: JSON.stringify(update),
-    }
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.workouts.single(workoutId),
+    cookie,
+    { method: "PUT", body: update }
   );
 };
 
-export const deleteWorkoutRequest = (workoutId: string, cookie: string) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}`,
-    {
-      method: "DELETE",
-      headers: { Cookie: cookie! },
-    }
+export const deleteWorkoutRequest = (
+  workoutId: string,
+  cookie: string
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.workouts.single(workoutId),
+    cookie,
+    { method: "DELETE" }
+  );
+};
+
+export const getWorkoutOverviewRequest = (
+  workoutId: string,
+  cookie: string
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.workouts.overview(workoutId),
+    cookie
   );
 };
 
@@ -125,18 +144,10 @@ export const addExerciseRequest = ({
   category = "chest",
   userId = "szabogeri69",
   cookie = "",
-}: AddExerciseRequestProps) => {
-  return new Request("http://localhost:3000/api/v1/auth/exercises", {
+}): Request => {
+  return createAuthenticatedRequest(API_ROUTES.exercises.base, cookie, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Cookie: cookie,
-    },
-    body: JSON.stringify({
-      name,
-      category,
-      user_id: userId,
-    }),
+    body: { name, category, user_id: userId },
   });
 };
 
@@ -145,47 +156,39 @@ export const addExerciseToWorkoutRequest = ({
   category = "chest",
   cookie = "",
   workoutId = "workout123",
-}) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises`,
+}): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.exercises.workout(workoutId),
+    cookie,
     {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: cookie,
-      },
-      body: JSON.stringify({ name, category }),
+      body: { name, category },
     }
   );
 };
 
-export const deleteExerciseRequest = (exerciseId: string, cookie: string) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/exercises/${exerciseId}`,
-    {
-      method: "DELETE",
-      headers: { Cookie: cookie! },
-    }
+export const deleteExerciseRequest = (
+  exerciseId: string,
+  cookie: string
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.exercises.single(exerciseId),
+    cookie,
+    { method: "DELETE" }
   );
 };
 
-export const getAllExercisesRequest = (cookie: string) => {
-  return new Request("http://localhost:3000/api/v1/auth/exercises", {
-    method: "GET",
-    headers: { Cookie: cookie! },
-  });
+export const getAllExercisesRequest = (cookie: string): Request => {
+  return createAuthenticatedRequest(API_ROUTES.exercises.base, cookie);
 };
 
 export const getExercisesByWorkoutIdRequest = (
   cookie: string,
   workoutId: string
-) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises`,
-    {
-      method: "GET",
-      headers: { Cookie: cookie! },
-    }
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.exercises.workout(workoutId),
+    cookie
   );
 };
 
@@ -193,13 +196,11 @@ export const deleteExerciseFromWorkoutRequest = (
   cookie: string,
   workoutId: string,
   exerciseId: string
-) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}`,
-    {
-      method: "DELETE",
-      headers: { Cookie: cookie! },
-    }
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.exercises.workoutSingle(workoutId, exerciseId),
+    cookie,
+    { method: "DELETE" }
   );
 };
 
@@ -207,14 +208,11 @@ export const updateExerciseRequest = (
   exerciseId: string,
   update: { name?: string; category?: string },
   cookie: string
-) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/exercises/${exerciseId}`,
-    {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Cookie: cookie! },
-      body: JSON.stringify(update),
-    }
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.exercises.single(exerciseId),
+    cookie,
+    { method: "PUT", body: update }
   );
 };
 
@@ -227,22 +225,13 @@ export const addSetRequest = ({
   distance = 10,
   notes = "felt pretty good",
   cookie = "",
-}) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}/sets`,
+}): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.sets.base(workoutId, exerciseId),
+    cookie,
     {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: cookie,
-      },
-      body: JSON.stringify({
-        reps,
-        weight,
-        duration,
-        distance,
-        notes,
-      }),
+      body: { reps, weight, duration, distance, notes },
     }
   );
 };
@@ -251,26 +240,10 @@ export const getAllSetsByExerciseIdRequest = (
   cookie: string,
   workoutId: string,
   exerciseId: string
-) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}/sets`,
-    {
-      method: "GET",
-      headers: { Cookie: cookie! },
-    }
-  );
-};
-
-export const getWorkoutOverviewRequest = (
-  workoutId: string,
-  cookie: string
-) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/overview`,
-    {
-      method: "GET",
-      headers: { Cookie: cookie },
-    }
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.sets.base(workoutId, exerciseId),
+    cookie
   );
 };
 
@@ -279,13 +252,11 @@ export const deleteSetRequest = (
   exerciseId: string,
   setId: string,
   cookie: string
-) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}/sets/${setId}`,
-    {
-      method: "DELETE",
-      headers: { Cookie: cookie },
-    }
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.sets.single(workoutId, exerciseId, setId),
+    cookie,
+    { method: "DELETE" }
   );
 };
 
@@ -295,16 +266,10 @@ export const updateSetRequest = (
   setId: string,
   update: Partial<SetData>,
   cookie: string
-) => {
-  return new Request(
-    `http://localhost:3000/api/v1/auth/workouts/${workoutId}/exercises/${exerciseId}/sets/${setId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: cookie,
-      },
-      body: JSON.stringify(update),
-    }
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.sets.single(workoutId, exerciseId, setId),
+    cookie,
+    { method: "PUT", body: update }
   );
 };

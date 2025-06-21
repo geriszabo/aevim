@@ -3,10 +3,7 @@ import { Database } from "bun:sqlite";
 
 import { createTestDb } from "../../test/test-db";
 import app from "../../index";
-import {
-  addWorkoutRequest,
-  type AddWorkoutRequestProps,
-} from "../../test/test-request-helpers";
+import { addWorkoutRequest } from "../../test/test-request-helpers";
 import {
   createExerciseAddToWorkoutAndReturn,
   createSetAddToWorkoutAndReturn,
@@ -68,7 +65,7 @@ describe("/workouts endpoint", () => {
         name: null,
         notes: null,
         userId: null,
-      } as unknown as AddWorkoutRequestProps);
+      } as any);
       const res = await app.fetch(req);
       const json = await res.json();
       expect(res.status).toBe(400);
