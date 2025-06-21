@@ -25,6 +25,7 @@ import {
   insertSet,
   updateSetById,
 } from "../db/queries/set-queries";
+import { handleError } from "../helpers";
 
 const workouts = new Hono();
 
@@ -37,10 +38,7 @@ workouts
       const workout = insertWorkout(db, { date, name, notes }, payload.sub);
       return c.json({ message: "Workout created successfully", workout }, 201);
     } catch (error) {
-      return c.json(
-        { errors: ["Something went wrong creating the workout"] },
-        500
-      );
+      return handleError(c, error);
     }
   })
   .get("/workouts", async (c) => {
@@ -60,13 +58,9 @@ workouts
     const payload = c.get("jwtPayload");
     try {
       const workout = getWorkoutById(db, payload.sub, workoutId);
-      if (!workout) {
-        return c.json({ errors: ["Invalid workout id"] }, 404);
-      }
       return c.json({ workout }, 200);
     } catch (error) {
-      console.error(error);
-      return c.json({ errors: ["Failed to fetch workout"] }, 500);
+      return handleError(c, error);
     }
   })
   .put("workouts/:id", workoutUpdateValidator, async (c) => {
@@ -81,16 +75,13 @@ workouts
         payload.sub,
         update
       );
-      if (!updatedWorkout) {
-        return c.json({ errors: ["Workout not found"] }, 404);
-      }
+
       return c.json(
         { message: "Workout updated successfully", workout: updatedWorkout },
         200
       );
     } catch (error) {
-      console.error(error);
-      return c.json({ errors: ["Internal server error"] }, 500);
+      return handleError(c, error);
     }
   })
   .delete("workouts/:id", async (c) => {
@@ -99,9 +90,6 @@ workouts
     const payload = c.get("jwtPayload");
     try {
       const deletedWorkout = deleteWorkoutById(db, workoutId, payload.sub);
-      if (!deletedWorkout) {
-        return c.json({ errors: ["Workout not found"] }, 404);
-      }
       return c.json(
         {
           message: `Workout with name: ${deletedWorkout.name} as been deleted successfuly`,
@@ -109,10 +97,7 @@ workouts
         200
       );
     } catch (error) {
-      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
-        return c.json({ errors: ["Workout not found"] }, 404);
-      }
-      return c.json({ errors: ["Internal server error"] }, 500);
+      return handleError(c, error);
     }
   })
   .post("workouts/:id/exercises", exerciseValidator, async (c) => {
@@ -136,11 +121,7 @@ workouts
         201
       );
     } catch (error) {
-      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
-        return c.json({ errors: ["Workout not found"] }, 404);
-      }
-
-      return c.json({ errors: ["Failed to add exercise to workout"] }, 500);
+      return handleError(c, error);
     }
   })
   .delete("workouts/:id/exercises/:exerciseId", async (c) => {
@@ -163,11 +144,7 @@ workouts
         exercise: deletedExercise,
       });
     } catch (error) {
-      console.log(error);
-      return c.json(
-        { errors: ["Failed to delete exercise from workout"] },
-        500
-      );
+      return handleError(c, error);
     }
   })
   .get("workouts/:id/exercises", async (c) => {
@@ -182,10 +159,7 @@ workouts
       );
       return c.json({ exercises: exercisesInWorkout });
     } catch (error) {
-      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
-        return c.json({ errors: ["Workout not found"] }, 404);
-      }
-      return c.json({ errors: ["Failed to fetch exercises for workout"] }, 500);
+      return handleError(c, error);
     }
   })
   .post(
@@ -208,14 +182,7 @@ workouts
           201
         );
       } catch (error) {
-        if (
-          error instanceof Error &&
-          error.message === "WORKOUT_EXERCISE_NOT_FOUND"
-        ) {
-          return c.json({ errors: ["Workout exercise not found"] }, 404);
-        }
-        console.error(error);
-        return c.json({ errors: ["Failed to add set to exercise"] }, 500);
+        return handleError(c, error);
       }
     }
   )
@@ -234,13 +201,7 @@ workouts
 
       return c.json({ sets }, 200);
     } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message === "WORKOUT_EXERCISE_NOT_FOUND"
-      ) {
-        return c.json({ errors: ["Could not find exercise with set"] }, 404);
-      }
-      return c.json({ errors: ["Internal server error"] }, 500);
+      return handleError(c, error);
     }
   })
   .delete(
@@ -253,10 +214,7 @@ workouts
         deleteSetBySetId(db, setId, payload.sub);
         return c.json({ message: "Set successfully deleted" }, 200);
       } catch (error) {
-        if (error instanceof Error && error.message === "SET_NOT_FOUND") {
-          return c.json({ errors: ["Set not found"] }, 404);
-        }
-        return c.json({ errors: ["Internal server error"] }, 500);
+        return handleError(c, error);
       }
     }
   )
@@ -272,10 +230,7 @@ workouts
         const updatedSet = updateSetById(db, setId, update, payload.sub);
         return c.json({ message: "Set updated successfully", set: updatedSet });
       } catch (error) {
-        if (error instanceof Error && error.message === "SET_NOT_FOUND") {
-          return c.json({ errors: ["Set not found"] }, 404);
-        }
-        return c.json({ errors: ["Internal server error"] }, 500);
+        return handleError(c, error);
       }
     }
   )
@@ -291,10 +246,7 @@ workouts
       );
       return c.json({ overview: workoutOverview }, 200);
     } catch (error) {
-      if (error instanceof Error && error.message === "WORKOUT_NOT_FOUND") {
-        return c.json({ errors: ["Workout not found"] }, 404);
-      }
-      return c.json({ errors: ["Internal server error"] }, 500);
+      return handleError(c, error);
     }
   });
 
