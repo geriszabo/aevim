@@ -10,6 +10,7 @@ import {
   insertExercise,
   updateExerciseById,
 } from "../db/queries/exercise-queries";
+import { handleError } from "../helpers";
 
 const exercises = new Hono();
 
@@ -25,16 +26,7 @@ exercises
         201
       );
     } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message.includes("SQLITE_CONSTRAINT_NOTNULL")
-      ) {
-      }
-      console.error(error);
-      return c.json(
-        { errors: ["Something went wrong creating the exercise"] },
-        500
-      );
+      return handleError(c, error);
     }
   })
   .get("/exercises", async (c) => {
@@ -44,8 +36,7 @@ exercises
       const exercises = getAllExercises(db, payload.sub);
       return c.json({ exercises }, 200);
     } catch (error) {
-      console.error(error);
-      return c.json({ errors: ["Error fetching exercises"] }, 500);
+      return handleError(c, error);
     }
   })
   .delete("/exercises/:id", async (c) => {
@@ -61,10 +52,7 @@ exercises
         200
       );
     } catch (error) {
-      if (error instanceof Error && error.message === "EXERCISE_NOT_FOUND") {
-        return c.json({ errors: ["Exercise not found"] }, 404);
-      }
-      return c.json({ errors: ["Internal server error"] }, 500);
+      return handleError(c, error);
     }
   })
   .put("/exercises/:id", exerciseUpdateValidator, async (c) => {
@@ -79,16 +67,12 @@ exercises
         payload.sub,
         updates
       );
-      if (!updatedExercise) {
-        return c.json({ errors: ["Failed to find exercise"] }, 404);
-      }
       return c.json({
         message: "Exercise updated successfully",
         exercise: updatedExercise,
       });
     } catch (error) {
-      console.error(error);
-      return c.json({ errors: ["Internal server error"] }, 500);
+      return handleError(c, error);
     }
   });
 

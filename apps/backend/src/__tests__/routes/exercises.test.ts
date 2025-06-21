@@ -178,7 +178,7 @@ describe("/exercises endpoint", () => {
         });
 
       expect(updatedExerciseRes.status).toBe(404);
-      expect(updatedExercise).toEqual({ errors: ["Failed to find exercise"] });
+      expect(updatedExercise).toEqual({ errors: ["Exercise not found"] });
     });
     it("returns 400 if invalid data is provided", async () => {
       const { cookie } = await loginFlow();

@@ -230,11 +230,17 @@ describe("updateExerciseById", () => {
     });
   });
 
-  it("returns null if exercise does not exist", () => {
-    const updated = updateExerciseById(db, "non-existent-id", userId, {
-      name: "new name",
-    });
-    expect(updated).toBeNull();
+  it("throws error exercise does not exist", () => {
+    try {
+      updateExerciseById(db, "non-existent-id", userId, {
+        name: "new name",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/EXERCISE_NOT_FOUND/);
+      }
+    }
   });
 
   it("returns null if exercise belongs to another user", () => {
@@ -246,10 +252,16 @@ describe("updateExerciseById", () => {
       workout.id
     );
     const otherUserId = "other-user";
-    const updated = updateExerciseById(db, exercise.id, otherUserId, {
-      name: "new name",
-    });
-    expect(updated).toBeNull();
+    try {
+      updateExerciseById(db, exercise.id, otherUserId, {
+        name: "new name",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/EXERCISE_NOT_FOUND/);
+      }
+    }
   });
 
   it("updates only the name if only name is provided", () => {

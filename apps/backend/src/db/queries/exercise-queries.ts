@@ -34,35 +34,45 @@ export const deleteExerciseById = (
 ) => {
   const transaction = db.transaction(() => {
     // Verify the exercise exists for the user
-    const exercise = db.query(`
+    const exercise = db
+      .query(
+        `
       SELECT name, id FROM exercises 
       WHERE id = ? AND user_id = ?
-    `).get(exerciseId, userId) as { name: string; id: string } | null;
+    `
+      )
+      .get(exerciseId, userId) as { name: string; id: string } | null;
 
     if (!exercise) {
-      throw new Error("EXERCISE_NOT_FOUND")
+      throw new Error("EXERCISE_NOT_FOUND");
     }
 
     //1: Delete all sets for this exercise
-    db.query(`
+    db.query(
+      `
       DELETE FROM sets 
       WHERE workout_exercise_id IN (
         SELECT id FROM workout_exercises 
         WHERE exercise_id = ?
       )
-    `).run(exerciseId);
+    `
+    ).run(exerciseId);
 
     //2: Delete all workout_exercises for this exercise
-    db.query(`
+    db.query(
+      `
       DELETE FROM workout_exercises 
       WHERE exercise_id = ?
-    `).run(exerciseId);
+    `
+    ).run(exerciseId);
 
     //3: Delete the exercise itself
-    db.query(`
+    db.query(
+      `
       DELETE FROM exercises 
       WHERE id = ? AND user_id = ?
-    `).run(exerciseId, userId);
+    `
+    ).run(exerciseId, userId);
 
     return exercise;
   });
@@ -98,6 +108,10 @@ export const getAllExercises = (db: Database, userId: string) => {
   const exercises = exercisesQuery.all(userId) as
     | ExerciseWithouthUserId[]
     | null;
+
+  if (!exercises) {
+    throw new Error("NO_EXERCISES_FOUND");
+  }
   return exercises;
 };
 
@@ -107,6 +121,18 @@ export const updateExerciseById = (
   userId: string,
   updates: Partial<ExerciseData>
 ) => {
+  const exerciseExists = db
+    .query(
+      `
+    SELECT id FROM exercises WHERE id = ? AND user_id = ?
+  `
+    )
+    .get(exerciseId, userId);
+
+  if (!exerciseExists) {
+    throw new Error("EXERCISE_NOT_FOUND");
+  }
+
   const filteredUpdates = Object.fromEntries(
     Object.entries(updates).filter(([_key, value]) => value !== undefined)
   );
