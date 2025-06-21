@@ -37,9 +37,6 @@ auth
     const { email, password } = c.req.valid("json");
     try {
       const user = getUserByEmail(db, email);
-      if (!user) {
-        return c.json({ errors: ["Invalid credentials"] }, 401);
-      }
       const passwordMatch = await Bun.password.verify(
         password,
         user.password_hash
