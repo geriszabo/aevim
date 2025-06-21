@@ -30,6 +30,10 @@ const createRequest = (
   });
 };
 
+export const authMeRequest = (cookie: string): Request => {
+  return createAuthenticatedRequest(API_ROUTES.auth.me, cookie);
+};
+
 export const createAuthenticatedRequest = (
   route: string,
   cookie: string,

@@ -41,14 +41,25 @@ export const cookieOptions: CookieOptions = {
 };
 
 const ERROR_MAPPINGS = {
+  // Exercise errors
   EXERCISE_NOT_FOUND: { status: 404, message: "Exercise not found" },
-  WORKOUT_NOT_FOUND: { status: 404, message: "Workout not found" },
-  SET_NOT_FOUND: { status: 404, message: "Set not found" },
   NO_EXERCISES_FOUND: { status: 404, message: "No exercises found" },
+  // Workout errors
+  WORKOUT_NOT_FOUND: { status: 404, message: "Workout not found" },
   WORKOUT_EXERCISE_NOT_FOUND: {
     status: 404,
     message: "Workout exercise not found",
   },
+  // Set errors
+  SET_NOT_FOUND: { status: 404, message: "Set not found" },
+  // Auth errors
+  USER_NOT_FOUND: { status: 404, message: "User not found" },
+  EMAIL_ALREADY_EXISTS: {
+    status: 409,
+    message: "Email address already exists",
+  },
+  INVALID_CREDENTIALS: { status: 401, message: "Invalid credentials" },
+  PASSWORD_MISMATCH: { status: 401, message: "Password mismatch" },
 } as const;
 
 export const handleError = (

@@ -12,6 +12,7 @@ import {
   addExerciseToWorkoutRequest,
   addSetRequest,
   addWorkoutRequest,
+  authMeRequest,
   deleteExerciseFromWorkoutRequest,
   deleteExerciseRequest,
   deleteSetRequest,
@@ -36,6 +37,25 @@ export async function loginFlow() {
   const cookie = loginRes.headers.get("Set-Cookie");
   return { loginRes, cookie };
 }
+
+export const getAuthMeAndReturn = async (cookie: string) => {
+  const authMeRes = await app.fetch(authMeRequest(cookie));
+
+  let json;
+  try {
+    json = await authMeRes.json();
+  } catch (error) {
+    json = { errors: ["Invalid response format"] };
+  }
+
+  if (authMeRes.ok) {
+    const user = json as { id: string; email: string };
+    return { authMeRes, user, success: true as const };
+  } else {
+    const user = json as { errors: string[] };
+    return { authMeRes, user, success: false as const };
+  }
+};
 
 export const createWorkoutAndReturn = async (
   cookie: string,
