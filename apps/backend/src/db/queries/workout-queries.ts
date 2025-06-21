@@ -6,6 +6,7 @@ import {
   type WorkoutOverview,
 } from "@aevim/shared-types";
 import type { WorkoutData, WorkoutWithoutUserId } from "../../types/workout";
+import { checkItemExists } from "../../helpers";
 
 export const insertWorkout = (
   db: Database,
@@ -46,7 +47,7 @@ export const getWorkoutById = (
   userId: string,
   workoutId: string
 ) => {
-  
+  checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
   const userWorkoutQuery = db.query(`
     SELECT id, name, notes, date, created_at FROM workouts
     WHERE user_id = ? AND id = ?
@@ -55,7 +56,7 @@ export const getWorkoutById = (
   const workout = userWorkoutQuery.get(
     userId,
     workoutId
-  ) as WorkoutWithoutUserId | null;
+  ) as WorkoutWithoutUserId;
   return workout;
 };
 
@@ -65,6 +66,8 @@ export const updateWorkoutById = (
   userId: string,
   updates: Partial<WorkoutData>
 ) => {
+  checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
+
   const filteredUpdates = Object.fromEntries(
     Object.entries(updates).filter(([_key, value]) => value !== undefined)
   );
@@ -96,49 +99,58 @@ export const deleteWorkoutById = (
 ) => {
   const transaction = db.transaction(() => {
     //verify the workout exists for the user
-    const workout = db.query(`
+    const workout = db
+      .query(
+        `
       SELECT name, id FROM workouts 
       WHERE id = ? AND user_id = ?
-    `).get(workoutId, userId) as { name: string; id: string } | null;
+    `
+      )
+      .get(workoutId, userId) as { name: string; id: string } | null;
 
-    if (!workout) {
-      throw new Error("WORKOUT_NOT_FOUND");
-    }
-
+    checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
     //1: Get all exercise IDs for this workout (BEFORE deleting workout_exercises)
-    const exerciseIds = db.query(`
+    const exerciseIds = db
+      .query(
+        `
       SELECT exercise_id FROM workout_exercises 
       WHERE workout_id = ?
-    `).all(workoutId) as { exercise_id: string }[];
-
+    `
+      )
+      .all(workoutId) as { exercise_id: string }[];
     //2: Delete all sets for this workout
-    db.query(`
+    db.query(
+      `
       DELETE FROM sets 
       WHERE workout_exercise_id IN (
         SELECT id FROM workout_exercises 
         WHERE workout_id = ?
       )
-    `).run(workoutId);
-
+    `
+    ).run(workoutId);
     //3: Delete all workout_exercises for this workout
-    db.query(`
+    db.query(
+      `
       DELETE FROM workout_exercises 
       WHERE workout_id = ?
-    `).run(workoutId);
-
+    `
+    ).run(workoutId);
     //4: Delete all exercises that belonged to this workout
     for (const { exercise_id } of exerciseIds) {
-      db.query(`
+      db.query(
+        `
         DELETE FROM exercises 
         WHERE id = ? AND user_id = ?
-      `).run(exercise_id, userId);
+      `
+      ).run(exercise_id, userId);
     }
-
     //5: Delete the workout itself
-    db.query(`
+    db.query(
+      `
       DELETE FROM workouts 
       WHERE id = ? AND user_id = ?
-    `).run(workoutId, userId);
+    `
+    ).run(workoutId, userId);
 
     return workout;
   });
@@ -151,10 +163,7 @@ export const getExercisesByWorkoutId = (
   workoutId: string,
   userId: string
 ) => {
-    const workout = getWorkoutById(db, userId, workoutId);
-  if (!workout) {
-    throw new Error("WORKOUT_NOT_FOUND");
-  }
+  checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
 
   const workoutExerciseQuery = db.query(`
     SELECT
@@ -184,11 +193,9 @@ export const getWorkoutOverviewByWorkoutId = (
   db: Database,
   workoutId: string,
   userId: string
-): WorkoutOverview | null => {
+): WorkoutOverview => {
+  checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
   const workout = getWorkoutById(db, userId, workoutId);
-  if (!workout) {
-    throw new Error("WORKOUT_NOT_FOUND");
-  }
 
   // Use column aliases to avoid confusion with array indices
   const query = db.query(`

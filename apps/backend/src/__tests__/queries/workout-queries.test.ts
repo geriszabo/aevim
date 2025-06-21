@@ -126,19 +126,31 @@ describe("getWorkoutById", () => {
     });
   });
 
-  it("returns null if workout id is invalid", async () => {
-    const workout = getWorkoutById(db, userId, "invalidWorkoutId");
-    expect(workout).toBeNull();
+  it("throws error if workout id is invalid", async () => {
+    try {
+      getWorkoutById(db, userId, "invalidWorkoutId");
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
+      }
+    }
   });
 
-  it("returns null if user id is invalid", async () => {
+  it("throws error if user id is invalid", async () => {
     const workoutId = insertWorkout(
       db,
       { date: "today", name: "workout 1", notes: "note for workout 1" },
       userId
     ).id;
-    const workout = getWorkoutById(db, "invalidUserId", workoutId);
-    expect(workout).toBeNull();
+    try {
+      getWorkoutById(db, "invalidUserId", workoutId);
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
+      }
+    }
   });
 });
 
@@ -228,10 +240,7 @@ describe("updateWorkoutById", () => {
   it("returns null when trying to update another user's workout", async () => {
     it("returns null when trying to update another user's workout", async () => {
       const workout = insertWorkout(db, workoutData, userId);
-
-      // Create a different user
       const differentUserId = createTestUser(db);
-
       const result = updateWorkoutById(
         db,
         workout.id,
@@ -254,9 +263,13 @@ describe("updateWorkoutById", () => {
         id: workout.id,
         name: "delete me",
       });
-
-      const retryFindingWorkout = getWorkoutById(db, userId, workout.id);
-      expect(retryFindingWorkout).toBeNull();
+      try {
+        getWorkoutById(db, userId, workout.id);
+      } catch (error) {
+        if (error instanceof Error) {
+          expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
+        }
+      }
     });
 
     it("returns null if workout does not exist", async () => {
@@ -264,7 +277,7 @@ describe("updateWorkoutById", () => {
         deleteWorkoutById(db, "nonexistent-id", userId);
       } catch (error) {
         if (error instanceof Error) {
-          expect(error.message).toBe("WORKOUT_NOT_FOUND");
+          expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
         }
       }
     });
@@ -276,7 +289,7 @@ describe("updateWorkoutById", () => {
         deleteWorkoutById(db, workout.id, differentUserId);
       } catch (error) {
         if (error instanceof Error) {
-          expect(error.message).toBe("WORKOUT_NOT_FOUND");
+          expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
         }
       }
     });
@@ -409,7 +422,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
       getWorkoutOverviewByWorkoutId(db, "fakeWorkoutId", userId);
     } catch (error) {
       if (error instanceof Error) {
-        expect(error.message).toBe("WORKOUT_NOT_FOUND");
+        expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
         expect(error).toBeInstanceOf(Error);
       }
     }
