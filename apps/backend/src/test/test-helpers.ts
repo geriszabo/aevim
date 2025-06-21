@@ -57,6 +57,7 @@ export const getAuthMeAndReturn = async (cookie: string) => {
   }
 };
 
+
 export const createWorkoutAndReturn = async (
   cookie: string,
   workoutData: {
@@ -69,11 +70,18 @@ export const createWorkoutAndReturn = async (
   const workoutRes = await app.fetch(
     addWorkoutRequest({ cookie, ...workoutData })
   );
-  const { workout } = (await workoutRes.json()) as {
-    workout: WorkoutWithoutUserId;
-  };
+  const json = await workoutRes.json();
 
-  return { workoutRes, workout };
+  if (workoutRes.ok) {
+    const workout = json as {
+      message: string;
+      workout: WorkoutWithoutUserId;
+    };
+    return { workoutRes, workout: workout.workout, success: true as const };
+  } else {
+    const workout = json as { errors: string[] };
+    return { workoutRes, workout, success: false as const };
+  }
 };
 
 export const createExerciseAddToWorkoutAndReturn = async (

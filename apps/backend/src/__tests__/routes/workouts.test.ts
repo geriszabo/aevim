@@ -72,8 +72,20 @@ describe("/workouts endpoint", () => {
       expect(json).toEqual({
         errors: [
           "You have to give the workout a name",
-          "Please pick a date for the workout",
+          "Please pick a date for the workout in YYYY-MM-DD format",
         ],
+      });
+    });
+
+    it("returns 400 for invalid date format", async () => {
+      const { cookie } = await loginFlow();
+      const { workoutRes, workout } = await createWorkoutAndReturn(cookie!, {
+        date: "invalid date",
+      });
+
+      expect(workoutRes.status).toBe(400);
+      expect(workout).toEqual({
+        errors: ["Please pick a date for the workout in YYYY-MM-DD format"],
       });
     });
   });
@@ -111,7 +123,8 @@ describe("/workouts endpoint", () => {
   describe("GET /workouts/:id", async () => {
     it("returns a workout based on the workoutId", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { workoutRes, workout: retrievedWorkout } =
         await getSingleWorkoutAndReturn(cookie!, workout.id);
       expect(workoutRes.status).toBe(200);
@@ -148,7 +161,8 @@ describe("/workouts endpoint", () => {
 
     it("updates a workout if data is provided", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
 
       expect(workout).toEqual({
         name: "crossfit session",
@@ -175,10 +189,11 @@ describe("/workouts endpoint", () => {
 
     it("updates a workout with partially provided data", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       // Define partial updates and expected results
       const partialUpdates = [
-        { date: "updated date" },
+        { date: "1980-11-19" },
         { name: "updated name" },
         { notes: "updated notes" },
       ];
@@ -204,7 +219,8 @@ describe("/workouts endpoint", () => {
 
     it("returns 400 if no update data is provided", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { updateWorkoutRes, updatedWorkout } = await updateWorkoutAndReturn(
         cookie!,
         workout.id,
@@ -218,7 +234,8 @@ describe("/workouts endpoint", () => {
 
     it("returns 400 if update data is invalid", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
 
       const { updatedWorkout, updateWorkoutRes } = await updateWorkoutAndReturn(
         cookie!,
@@ -256,7 +273,8 @@ describe("/workouts endpoint", () => {
   describe("DELETE /workouts/:id", () => {
     it("deletes a workout by id for the authenticated user", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { deleteRes, deletedWorkout } = await deleteWorkoutAndReturn(
         cookie!,
         workout.id
@@ -289,7 +307,10 @@ describe("/workouts endpoint", () => {
   describe("GET /workouts/:id/exercises", () => {
     it("returns all exercises of a workout", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
       await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
       const { exercises, exercisesRes, success } =
@@ -327,7 +348,8 @@ describe("/workouts endpoint", () => {
   describe("POST /workouts/:id/exercises", () => {
     it("adds an exercise to a workout", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { exercise } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id
@@ -353,7 +375,8 @@ describe("/workouts endpoint", () => {
 
     it("returns 400 if exercise data is invalid", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { exercise, exerciseRes } =
         await createExerciseAddToWorkoutAndReturn(cookie!, workout.id, {
           name: null as any,
@@ -377,7 +400,8 @@ describe("/workouts endpoint", () => {
 
     it("increments order_index for multiple exercises", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       // first exercise
       await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
       // second exercise
@@ -408,9 +432,9 @@ describe("/workouts endpoint", () => {
   describe("DELETE workouts/:id/exercises/:exerciseId", () => {
     it("deletes an exercise from a workout", async () => {
       const { cookie } = await loginFlow();
-      const {
-        workout: { id: workoutId },
-      } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(cookie!);
+      if (!workoutSuccess) return;
+      const { id: workoutId } = workout;
       await createExerciseAddToWorkoutAndReturn(cookie!, workoutId);
       const { exercises, success } = await getAllExercisesOfWorkoutAndReturn(
         cookie!,
@@ -438,7 +462,8 @@ describe("/workouts endpoint", () => {
 
     it("returns 404 if the exercise is not in the workout", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const fakeExerciseId = "non-existent-exercise";
       const { deletedExerciseRes, deletedExercise } =
         await deleteExerciseFromWorkoutAndReturn(
@@ -456,7 +481,8 @@ describe("/workouts endpoint", () => {
   describe("PUT /workouts/:workoutId/exercises/:exerciseId/sets/:setId", () => {
     it("updates a set successfully", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { exercise, success: exerciseSuccess } =
         await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
       if (!exerciseSuccess) return;
@@ -500,7 +526,8 @@ describe("/workouts endpoint", () => {
 
     it("returns 400 if no update data is provided", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { exercise, success: exerciseSuccess } =
         await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
       if (!exerciseSuccess) return;
@@ -526,7 +553,8 @@ describe("/workouts endpoint", () => {
 
     it("returns 400 if update data is invalid", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { exercise, success: exerciseSuccess } =
         await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
       if (!exerciseSuccess) return;
@@ -553,7 +581,8 @@ describe("/workouts endpoint", () => {
 
     it("returns 404 if set does not exist", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { exercise, success: exerciseSuccess } =
         await createExerciseAddToWorkoutAndReturn(cookie!, workout.id);
 
@@ -576,7 +605,8 @@ describe("/workouts endpoint", () => {
 describe("GET workouts/:id/overview", () => {
   it("returns a workout with its exercises and sets", async () => {
     const { cookie } = await loginFlow();
-    const { workout } = await createWorkoutAndReturn(cookie!);
+    const { workout, success: workoutSuccess } = await createWorkoutAndReturn(cookie!);
+    if (!workoutSuccess) return;
 
     const exercisesArray = [
       { name: "Bench Press", category: "chest" },
