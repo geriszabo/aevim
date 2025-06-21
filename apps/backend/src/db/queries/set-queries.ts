@@ -2,6 +2,7 @@ import { Database } from "bun:sqlite";
 import type { SetData } from "../../types/set";
 import { randomUUID } from "crypto";
 import type { Set } from "@aevim/shared-types";
+import { checkItemExists } from "../../helpers";
 
 export const insertSet = (
   db: Database,
@@ -72,23 +73,12 @@ export const getAllSetsByExerciseId = (
   workoutId: string,
   exerciseId: string
 ) => {
-  const workoutExerciseExists = db
-    .query(
-      `
-      SELECT workout_exercises.id 
-      FROM workout_exercises
-      JOIN workouts ON workout_exercises.workout_id = workouts.id
-      WHERE workout_exercises.workout_id = ?
-        AND workout_exercises.exercise_id = ?
-        AND workouts.user_id = ?
-    `
-    )
-    .get(workoutId, exerciseId, userId) as { id: string } | null;
-
-  if (!workoutExerciseExists) {
-    throw new Error("WORKOUT_EXERCISE_NOT_FOUND");
-  }
-
+  checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
+  checkItemExists(db, "exercises", { id: exerciseId, user_id: userId });
+  checkItemExists(db, "workout_exercises", {
+    workout_id: workoutId,
+    exercise_id: exerciseId,
+  });
   const setsQuery = db.query(`
     SELECT 
       sets.id,

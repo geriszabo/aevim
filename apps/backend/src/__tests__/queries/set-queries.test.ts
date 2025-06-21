@@ -137,7 +137,7 @@ describe("getAllSetsByExerciseId", () => {
       getAllSetsByExerciseId(db, userId, workout.id, "fictionalExerciseId");
     } catch (error) {
       if (error instanceof Error) {
-        expect(error.message).toMatch(/WORKOUT_EXERCISE_NOT_FOUND/);
+        expect(error.message).toMatch(/EXERCISE_NOT_FOUND/);
       }
     }
   });
