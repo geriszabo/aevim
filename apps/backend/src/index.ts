@@ -8,7 +8,15 @@ import { cors } from "hono/cors";
 const app = new Hono();
 
 app
-  .use("/api/*", cors())
+  .use(
+    "*",
+    cors({
+      origin: env.FRONTEND_BASE_UR,
+      credentials: true,
+      allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowHeaders: ["Content-Type", "Authorization"],
+    })
+  )
   .use("api/v1/auth/*", jwt({ secret: env.JWT_SECRET, cookie: "authToken" }))
   .route("api/v1", auth)
   .route("api/v1/auth", workouts)
