@@ -1,30 +1,22 @@
+"use client";
 
-export default async function Home() {
-  async function getWorkoutOverview() {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/v1/auth/workouts/7bf2134c-793f-4aee-9b6b-a29980d9b027/overview`,
-        {
-          cache: "no-store", // or 'force-cache' for caching
-        }
-      );
-      console.log(response);
-      return response.json();
-    } catch (error) {
-      console.log(error);
-    }
-  }
+import React from "react";
+import { Footer } from "./hero/Footer";
+import { Header } from "./hero/Header";
+import { HeroSection } from "./hero/HeroSection";
+import { FeatureSection } from "./hero/FeatureSection";
+import { MindsetSection } from "./hero/MindsetSection";
+import { AuthCtaSection } from "./hero/AuthCtaSection";
 
-  try {
-    const res = await getWorkoutOverview();
-    console.log("Workout Overview:", res);
-  } catch (error) {
-    console.log(error);
-  }
-
+export default function Home() {
   return (
-    <div>
-      <h1 className="text-3xl" >heyyy</h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <Header />
+      <HeroSection />
+      <FeatureSection />
+      <MindsetSection />
+      <AuthCtaSection />
+      <Footer />
     </div>
   );
 }
