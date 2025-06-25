@@ -1,4 +1,4 @@
-import { API_ROUTES } from "../config/api-routes";
+import { API_ROUTES } from "@aevim/shared-types/api-routes";
 import env from "../env";
 import type { SetData } from "../types/set";
 
