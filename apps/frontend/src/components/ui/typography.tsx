@@ -17,7 +17,7 @@ export const Typography = ({
     return (
       <h1
         className={`${
-          size ? `text-${size}` : "text-6xl"
+          size ? `text-${size}` : "text-4xl"
         } font-bold font-heading leading-tight bg-gradient-to-r from-gray-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent ${className}`}
       >
         {children}
