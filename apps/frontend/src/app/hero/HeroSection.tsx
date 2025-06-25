@@ -7,7 +7,7 @@ export const HeroSection = () => {
     <section className="py-12 md:py-20">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <Typography variant="hero" size="4xl" className="md:text-6xl">
+            <Typography variant="hero" size="5xl" className="md:text-6xl">
               Log with Power,
               <br />
               Train with Purpose
