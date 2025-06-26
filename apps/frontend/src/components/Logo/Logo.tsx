@@ -1,10 +1,12 @@
 import { TypographySize } from "@/types/utils";
+import { getTextSize } from "@/utils/typography";
 
 export const Logo = ({ size = "5xl" }: { size?: TypographySize }) => {
+  const textSize = getTextSize(size)
   return (
-    <span className={`relative text-${size} font-bold font-heading`}>
+    <span className={`relative ${textSize} font-bold font-heading`}>
       <span
-        className={`absolute text-${size} font-bold font-heading text-hotpink`}
+        className={`absolute ${textSize} font-bold font-heading text-hotpink`}
         style={{
           transform: "translate(-3px, -2px)",
           mixBlendMode: "multiply",
@@ -13,7 +15,7 @@ export const Logo = ({ size = "5xl" }: { size?: TypographySize }) => {
         aevim
       </span>
       <span
-        className={`absolute text-${size} font-bold font-heading text-neongreen`}
+        className={`absolute ${textSize} font-bold font-heading text-neongreen`}
         style={{
           transform: "translate(3px, 2px)",
           mixBlendMode: "multiply",
