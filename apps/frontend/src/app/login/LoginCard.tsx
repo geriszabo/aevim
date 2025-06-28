@@ -11,11 +11,13 @@ import { useForm } from "react-hook-form";
 import { Label } from "@radix-ui/react-label";
 import { Mail, EyeOff, Eye, Lock } from "lucide-react";
 import React, { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
+
 import { LoginFormData, loginSchema } from "@/schemas/login-schema";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { useRouter } from "next/navigation";
 import { postLogin } from "@/hooks/api/postLogin";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 
 export const LoginCard = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +29,7 @@ export const LoginCard = () => {
     handleSubmit,
     formState: { isValid, errors },
   } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+    resolver: standardSchemaResolver(loginSchema),
     mode: "onChange",
     defaultValues: {
       email: "",
