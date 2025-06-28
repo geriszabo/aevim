@@ -10,7 +10,11 @@ export const signupSchema = z
       .min(6, "Password must be at least 6 characters"),
   })
   .check((ctx) => {
-    if (ctx.value.password !== ctx.value.confirmPassword) {
+    if (
+      ctx.value.password &&
+      ctx.value.confirmPassword &&
+      ctx.value.password !== ctx.value.confirmPassword
+    ) {
       ctx.issues.push({
         code: "custom",
         message: "Passwords must match",
