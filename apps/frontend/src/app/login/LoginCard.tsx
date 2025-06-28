@@ -11,8 +11,6 @@ import { useForm } from "react-hook-form";
 import { Label } from "@radix-ui/react-label";
 import { Mail, EyeOff, Eye, Lock } from "lucide-react";
 import React, { useState } from "react";
-// import { zodResolver } from "@hookform/resolvers/zod";
-
 import { LoginFormData, loginSchema } from "@/schemas/login-schema";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { useRouter } from "next/navigation";
@@ -22,7 +20,7 @@ import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 export const LoginCard = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
@@ -38,29 +36,27 @@ export const LoginCard = () => {
   });
 
   const handleRouteTo = (page: string) => {
-    router.push(page)
-  }
+    router.push(page);
+  };
 
   const onSubmit = async (data: LoginFormData) => {
-    const {email, password} = data
+    const { email, password } = data;
     setIsLoading(true);
     try {
-      const res = await postLogin({email, password})
-      if(res.ok) {
-        const {message} = await res.json()
-        alert(message)
+      const res = await postLogin({ email, password });
+      if (res.ok) {
+        const { message } = await res.json();
+        alert(message);
       } else {
-        const {errors} = await res.json()
-        errors.map((error: string) => alert(error))
+        const { errors } = await res.json();
+        errors.map((error: string) => alert(error));
       }
-
     } catch (error) {
-     console.log("Could not fetch login", error)
+      console.log("Could not fetch login", error);
     } finally {
       setIsLoading(false);
     }
   };
-
 
   return (
     <Card className="shadow-lg">
@@ -132,7 +128,7 @@ export const LoginCard = () => {
             )}
           </Button>
         </form>
-  
+
         <div className="relative mt-6">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -144,7 +140,6 @@ export const LoginCard = () => {
           </div>
         </div>
 
-       
         <Button
           variant="outline"
           className="w-full h-12 text-base mt-4"
