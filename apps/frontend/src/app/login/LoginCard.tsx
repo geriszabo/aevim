@@ -6,19 +6,17 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { Label } from "@radix-ui/react-label";
-import { Mail, EyeOff, Eye, Lock } from "lucide-react";
+import { Mail } from "lucide-react";
 import React, { useState } from "react";
 import { LoginFormData, loginSchema } from "@/schemas/login-schema";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { useRouter } from "next/navigation";
 import { postLogin } from "@/hooks/api/postLogin";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { FormPasswordInputField } from "@/components/Form/FormPasswordInputField";
 
 export const LoginCard = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -77,42 +75,14 @@ export const LoginCard = () => {
             placeholder="your@email.com bitch"
             error={errors.email}
           />
-
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-sm font-medium">
-              Password
-            </Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                className="pl-10 pr-12 h-12"
-                autoComplete="current-password"
-                {...register("password")}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-transparent"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4 text-muted-foreground" />
-                ) : (
-                  <Eye className="h-4 w-4 text-muted-foreground" />
-                )}
-              </Button>
-            </div>
-            {errors.password && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-
+          <FormPasswordInputField
+            id="password"
+            label="Password"
+            register={register}
+            placeholder="••••••••"
+            icon
+            error={errors.password}
+          />
           <Button
             type="submit"
             disabled={isLoading || !isValid}
