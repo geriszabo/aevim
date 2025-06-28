@@ -9,9 +9,21 @@ export const signupSchema = z
       .string()
       .min(6, "Password must be at least 6 characters"),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-    path: ["confirmPassword"],
+  .check((ctx) => {
+    if (ctx.value.password !== ctx.value.confirmPassword) {
+      ctx.issues.push({
+        code: "custom",
+        message: "Passwords must match",
+        path: ["password"],
+        input: ctx.value,
+      });
+      ctx.issues.push({
+        code: "custom",
+        message: "Passwords must match",
+        path: ["confirmPassword"],
+        input: ctx.value,
+      });
+    }
   });
 
 export type SignupFormData = z.infer<typeof signupSchema>;
