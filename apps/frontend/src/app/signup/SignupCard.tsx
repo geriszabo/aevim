@@ -14,6 +14,7 @@ import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import router from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast, Toaster } from "sonner";
 
 export const SignupCard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,10 +42,10 @@ export const SignupCard = () => {
       const res = await postSignup({ email, password });
       if (res.ok) {
         const { message } = await res.json();
-        alert(message);
+        toast.success(message);
       } else {
         const { errors } = await res.json();
-        errors.map((error: string) => alert(error));
+        toast.error(errors);
       }
     } catch (error) {
       console.log("Couldt not signup", error);
@@ -53,83 +54,88 @@ export const SignupCard = () => {
     }
   };
   return (
-    <Card className="shadow-lg">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Join the Movement</CardTitle>
-        <CardDescription>Start logging with power</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          <FormInputField
-            id="name"
-            label="Name"
-            register={register}
-            type="text"
-            autoComplete="name"
-            autoFocus
-            placeholder="Your name"
-            error={errors.name}
-          />
-          <FormInputField
-            id="email"
-            label="Email"
-            register={register}
-            type="text"
-            autoComplete="email"
-            autoFocus
-            placeholder="Your email"
-            error={errors.email}
-          />
-          <FormPasswordInputField
-            id="password"
-            label="Password"
-            register={register}
-            placeholder="••••••••"
-            icon
-            error={errors.password}
-          />
-          <FormPasswordInputField
-            id="confirmPassword"
-            label="Confirm Password"
-            register={register}
-            placeholder="••••••••"
-            icon
-            error={errors.confirmPassword}
-          />
-          {/* TODO: extract this button */}
+    <>
+      <Card className="shadow-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold">
+            Join the Movement
+          </CardTitle>
+          <CardDescription>Start logging with power</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-6">
+            <FormInputField
+              id="name"
+              label="Name"
+              register={register}
+              type="text"
+              autoComplete="name"
+              autoFocus
+              placeholder="Your name"
+              error={errors.name}
+            />
+            <FormInputField
+              id="email"
+              label="Email"
+              register={register}
+              type="text"
+              autoComplete="email"
+              autoFocus
+              placeholder="Your email"
+              error={errors.email}
+            />
+            <FormPasswordInputField
+              id="password"
+              label="Password"
+              register={register}
+              placeholder="••••••••"
+              icon
+              error={errors.password}
+            />
+            <FormPasswordInputField
+              id="confirmPassword"
+              label="Confirm Password"
+              register={register}
+              placeholder="••••••••"
+              icon
+              error={errors.confirmPassword}
+            />
+            {/* TODO: extract this button */}
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              disabled={isLoading || !isValid}
+              className="w-full h-12 text-base font-bold font-heading"
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current"></div>
+                  Creating Account...
+                </div>
+              ) : (
+                "START LOGGING"
+              )}
+            </Button>
+          </div>
+          <div className="relative mt-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">
+                Already crushing it?
+              </span>
+            </div>
+          </div>
           <Button
-            onClick={handleSubmit(onSubmit)}
-            disabled={isLoading || !isValid}
-            className="w-full h-12 text-base font-bold font-heading"
+            variant="outline"
+            className="w-full h-12 text-base mt-4"
+            onClick={() => router.push("/login")}
           >
-            {isLoading ? (
-              <div className="flex items-center gap-2">
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current"></div>
-                Creating Account...
-              </div>
-            ) : (
-              "START LOGGING"
-            )}
+            LOG IN
           </Button>
-        </div>
-        <div className="relative mt-6">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">
-              Already crushing it?
-            </span>
-          </div>
-        </div>
-        <Button
-          variant="outline"
-          className="w-full h-12 text-base mt-4"
-          onClick={() => router.push("/login")}
-        >
-          LOG IN
-        </Button>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      <Toaster position="top-center" richColors />
+    </>
   );
 };
