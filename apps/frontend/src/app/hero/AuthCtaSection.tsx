@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography";
@@ -5,8 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export const AuthCtaSection = () => {
-
-      const router = useRouter();
+  const router = useRouter();
   return (
     <section id="auth" className="py-16 bg-white dark:bg-slate-900">
       <div className="container mx-auto px-4">
