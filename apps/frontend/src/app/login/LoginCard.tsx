@@ -46,6 +46,7 @@ export const LoginCard = () => {
       if (res.ok) {
         const { message } = await res.json();
         toast.success(message);
+        router.push("/dashboard");
       } else {
         const { errors } = await res.json();
         toast.error(errors);
@@ -92,7 +93,7 @@ export const LoginCard = () => {
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current"/>
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current" />
                   Logging In...
                 </div>
               ) : (

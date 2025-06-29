@@ -18,7 +18,7 @@ import { toast, Toaster } from "sonner";
 
 export const SignupCard = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -43,6 +43,7 @@ export const SignupCard = () => {
       if (res.ok) {
         const { message } = await res.json();
         toast.success(message);
+        router.push("/dashboard");
       } else {
         const { errors } = await res.json();
         toast.error(errors);
