@@ -6,12 +6,13 @@ import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/Logo/Logo";
 import { useRouter } from "next/navigation";
 import { SignupCard } from "./SignupCard";
+import { PageContainer } from "@/components/layouts/PageContainer";
 
 export default function SignupPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
+    <PageContainer>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Logo />
@@ -19,7 +20,6 @@ export default function SignupPage() {
             Log with power, train with purpose
           </p>
         </div>
-
         <SignupCard />
         <div className="text-center mt-6">
           <Button
@@ -32,6 +32,6 @@ export default function SignupPage() {
           </Button>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

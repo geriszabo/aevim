@@ -6,10 +6,16 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/Logo/Logo";
 import { LoginCard } from "./LoginCard";
+import { PageContainer } from "@/components/layouts/PageContainer";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
+    <PageContainer
+      alignItems="center"
+      justifyContent="center"
+      padding="md"
+      spacing="none"
+    >
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Logo/>
@@ -29,6 +35,6 @@ export default function LoginPage() {
           </Button>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
