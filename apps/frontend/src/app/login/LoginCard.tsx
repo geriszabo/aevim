@@ -88,11 +88,11 @@ export const LoginCard = () => {
             <Button
               type="submit"
               disabled={isLoading || !isValid}
-              className="w-full h-12 text-base font-semibold"
+              className="w-full h-12 text-base font-heading"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current"></div>
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current"/>
                   Logging In...
                 </div>
               ) : (

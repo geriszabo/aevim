@@ -7,8 +7,10 @@ import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/Logo/Logo";
 import { LoginCard } from "./LoginCard";
 import { PageContainer } from "@/components/layouts/PageContainer";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter()
   return (
     <PageContainer
       alignItems="center"
@@ -28,7 +30,7 @@ export default function LoginPage() {
           <Button
             variant="ghost"
             className="text-sm text-muted-foreground hover:text-foreground"
-            onClick={() => (window.location.href = "/")}
+            onClick={() => router.push("/")}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home

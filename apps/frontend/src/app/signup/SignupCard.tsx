@@ -11,14 +11,14 @@ import {
 import { postSignup } from "@/hooks/api/postSignup";
 import { SignupFormData, signupSchema } from "@/schemas/signup-schema";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 
 export const SignupCard = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -57,7 +57,7 @@ export const SignupCard = () => {
     <>
       <Card className="shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">
+          <CardTitle className="text-2xl font-bold font-heading">
             Join the Movement
           </CardTitle>
           <CardDescription>Start logging with power</CardDescription>
