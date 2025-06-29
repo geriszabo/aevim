@@ -6,7 +6,7 @@ const EnvSchema = z.object({
   FOREIGN_KEY_CHECKS: z.enum(["ON", "OFF"]),
   BASE_URL: z.url().default("http://localhost:3000"),
   API_BASE_URL: z.url().default("http://localhost:3000/api/v1"),
-  FRONTEND_BASE_UR: z.url().default("http://localhost:4000"),
+  FRONTEND_BASE_URL: z.url().default("http://localhost:4000"),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
