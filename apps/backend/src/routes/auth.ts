@@ -8,6 +8,7 @@ import {
 } from "../db/queries/auth-queries";
 import { cookieOptions, generateToken, handleError } from "../helpers";
 import { deleteCookie, setCookie } from "hono/cookie";
+import { loginValidator } from "../db/schemas/login-schema";
 
 const auth = new Hono();
 
@@ -32,7 +33,7 @@ auth
       return handleError(c, error);
     }
   })
-  .post("/login", signupValidator, async (c) => {
+  .post("/login", loginValidator, async (c) => {
     const db = dbConnect();
     const { email, password } = c.req.valid("json");
     try {
