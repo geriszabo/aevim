@@ -49,10 +49,27 @@ describe("/signup endpoint", () => {
   it("returns a 409 if email already exists", async () => {
     const { signupRes: firstRes } = await signupAndReturn();
     expect(firstRes.status).toBe(200);
-    const { signupRes: secondRes, json } = await signupAndReturn();
+    const { signupRes: secondRes, json } = await signupAndReturn(
+      "test@test.com",
+      "password123",
+      "secondUsername"
+    );
     expect(secondRes.status).toBe(409);
     expect(json).toEqual({
       errors: ["Email address already exists"],
+    });
+  });
+  it("returns a 409 if username already exists", async () => {
+    const { signupRes: firstRes } = await signupAndReturn();
+    expect(firstRes.status).toBe(200);
+    const { signupRes: secondRes, json } = await signupAndReturn(
+      "differenttest@test.com",
+      "password123",
+      "testuser69"
+    );
+    expect(secondRes.status).toBe(409);
+    expect(json).toEqual({
+      errors: ["Username already exists"],
     });
   });
 });
@@ -126,6 +143,7 @@ describe("/me endpoint", () => {
     expect(json).toEqual({
       id: expect.any(String),
       email: "test@test.com",
+      username: "testuser69",
     });
   });
 
@@ -142,23 +160,26 @@ describe("/auth/me endpoint", () => {
   it("returns user data for authenticated user", async () => {
     const email = "test@test.com";
     const { cookie } = await completeAuthFlow(email);
-    
+
     const { authMeRes, user, success } = await getAuthMeAndReturn(cookie!);
-    
+
     expect(authMeRes.status).toBe(200);
     expect(success).toBe(true);
     if (success) {
       expect(user).toEqual({
         id: expect.any(String),
         email: email,
+        username: "testuser69",
       });
-      expect(user.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+      expect(user.id).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+      );
     }
   });
 
   it("returns 401 when no auth token provided", async () => {
     const { authMeRes, user, success } = await getAuthMeAndReturn("");
-    
+
     expect(authMeRes.status).toBe(401);
     expect(success).toBe(false);
     if (!success) {
@@ -167,8 +188,10 @@ describe("/auth/me endpoint", () => {
   });
 
   it("returns 401 when invalid auth token provided", async () => {
-    const { authMeRes, user, success } = await getAuthMeAndReturn("authToken=invalid.jwt.token");
-    
+    const { authMeRes, user, success } = await getAuthMeAndReturn(
+      "authToken=invalid.jwt.token"
+    );
+
     expect(authMeRes.status).toBe(401);
     expect(success).toBe(false);
     if (!success) {
@@ -179,18 +202,30 @@ describe("/auth/me endpoint", () => {
   it("returns correct user data for different users", async () => {
     const user1Email = "user1@test.com";
     const user2Email = "user2@test.com";
-    
+
     const { cookie: cookie1 } = await completeAuthFlow(user1Email);
-    const { cookie: cookie2 } = await completeAuthFlow(user2Email);
-    
-    const { authMeRes: res1, user: user1, success: success1 } = await getAuthMeAndReturn(cookie1!);
-    const { authMeRes: res2, user: user2, success: success2 } = await getAuthMeAndReturn(cookie2!);
-    
+    const { cookie: cookie2 } = await completeAuthFlow(
+      user2Email,
+      "password123",
+      "differentTestuser"
+    );
+
+    const {
+      authMeRes: res1,
+      user: user1,
+      success: success1,
+    } = await getAuthMeAndReturn(cookie1!);
+    const {
+      authMeRes: res2,
+      user: user2,
+      success: success2,
+    } = await getAuthMeAndReturn(cookie2!);
+
     expect(res1.status).toBe(200);
     expect(res2.status).toBe(200);
     expect(success1).toBe(true);
     expect(success2).toBe(true);
-    
+
     if (success1 && success2) {
       expect(user1.email).toBe(user1Email);
       expect(user2.email).toBe(user2Email);
@@ -201,7 +236,6 @@ describe("/auth/me endpoint", () => {
   it("does not return sensitive data", async () => {
     const { cookie } = await completeAuthFlow();
     const { authMeRes, user, success } = await getAuthMeAndReturn(cookie!);
-    
     expect(authMeRes.status).toBe(200);
     expect(success).toBe(true);
     if (success) {
@@ -210,6 +244,7 @@ describe("/auth/me endpoint", () => {
       expect(user).toEqual({
         id: expect.any(String),
         email: expect.any(String),
+        username: "testuser69",
       });
     }
   });

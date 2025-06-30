@@ -112,7 +112,6 @@ export default function Dashboard() {
   };
 
   const handleTestWorkoutOverview = async () => {
-    console.log("PRESSED");
     console.log(env.API_BASE_URL + "/auth/me");
     try {
       const res = await fetch(env.API_BASE_URL + "/auth/me", {

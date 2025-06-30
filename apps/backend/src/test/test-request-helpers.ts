@@ -44,7 +44,8 @@ export const createAuthenticatedRequest = (
 
 export const signupRequest = (
   email = "test@test.com",
-  password = "password123"
+  password = "password123",
+  username = "testuser69"
 ): Request => {
   return new Request(env.API_BASE_URL + API_ROUTES.auth.signup, {
     method: "POST",
@@ -54,13 +55,15 @@ export const signupRequest = (
     body: JSON.stringify({
       email,
       password,
+      username
     }),
   });
 };
 
 export const loginrequest = (
   email = "test@test.com",
-  password = "password123"
+  password = "password123",
+  username = "testuser69"
 ): Request => {
   return new Request(env.API_BASE_URL + API_ROUTES.auth.login, {
     method: "POST",
@@ -70,6 +73,7 @@ export const loginrequest = (
     body: JSON.stringify({
       email,
       password,
+      username
     }),
   });
 };

@@ -25,6 +25,7 @@ export const applySchema = (dbInstance: Database) => {
           id TEXT PRIMARY KEY,
           email TEXT UNIQUE NOT NULL,
           password_hash TEXT NOT NULL,
+          username TEXT UNIQUE NOT NULL,
           createdAt TEXT DEFAULT CURRENT_TIMESTAMP
         `,
     },

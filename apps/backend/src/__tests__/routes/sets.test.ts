@@ -33,7 +33,10 @@ describe("/sets endpoint", () => {
   describe("POST /workouts/:workoutId/exercises/:exerciseId/sets", () => {
     it("creates a set for an exercise", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id
@@ -77,7 +80,10 @@ describe("/sets endpoint", () => {
 
     it("returns error if set data are invalid", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id
@@ -114,7 +120,10 @@ describe("/sets endpoint", () => {
         { distance: 24, reps: 1, notes: "just a small jog" },
       ];
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id
@@ -165,7 +174,8 @@ describe("/sets endpoint", () => {
     });
     it("throws error if exercise id does not exist", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { sets, setsRes } = await getAllSetsByExerciseIdAndReturn(
         cookie!,
         workout.id,
@@ -178,8 +188,8 @@ describe("/sets endpoint", () => {
   describe("DELETE workouts/:workoutId/exercises/:exerciseId/sets/:setId", () => {
     it("successfully deletes a set", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
-
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       // Create exercise
       const { exercise } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
@@ -204,7 +214,7 @@ describe("/sets endpoint", () => {
         set: Set;
       };
 
-      const { deletedSet, deletedSetRes, success } = await deleteSetAndReturn(
+      const { deletedSet, deletedSetRes } = await deleteSetAndReturn(
         cookie!,
         workout.id,
         successResponse.exercise.id,
@@ -216,8 +226,10 @@ describe("/sets endpoint", () => {
 
     it("returns 404 when set does not exist", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
-
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id,
@@ -241,8 +253,8 @@ describe("/sets endpoint", () => {
 
     it("returns 401 when no auth token provided", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
-
+      const { workout, success } = await createWorkoutAndReturn(cookie!);
+      if (!success) return;
       const { exercise: exerciseObject } =
         await createExerciseAddToWorkoutAndReturn(cookie!, workout.id, {
           name: "Push Ups",
@@ -269,7 +281,10 @@ describe("/sets endpoint", () => {
   describe("PUT /workouts/:workoutId/exercises/:exerciseId/sets/:setId", () => {
     it("successfully updates a set with all fields", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id,
@@ -329,7 +344,10 @@ describe("/sets endpoint", () => {
 
     it("successfully updates a set with partial fields", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id,
@@ -373,7 +391,10 @@ describe("/sets endpoint", () => {
 
     it("returns 404 when set does not exist", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id,

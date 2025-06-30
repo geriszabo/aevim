@@ -18,6 +18,8 @@ import {
 
 let db: Database;
 let userId: string;
+const secondUserId = "otherUserId"
+const secondUsername = "testuser70"
 
 beforeEach(() => {
   db = createTestDb();
@@ -130,7 +132,7 @@ describe("Cascade Deletion Tests", () => {
 
     it("should not delete workout that doesn't belong to user", () => {
       const { workout } = createCompleteWorkout(db, userId);
-      const otherUserId = createTestUser(db);
+      const otherUserId = createTestUser(db, secondUserId, secondUsername);
 
       // Try to delete with wrong user
       try {
@@ -226,9 +228,9 @@ describe("Cascade Deletion Tests", () => {
       expect(orphans.hasOrphans).toBe(false);
     });
 
-    it("should not delete exercise that doesn't belong to user", () => {
+    it("does not delete exercise that doesn't belong to user", () => {
       const { exercise } = createCompleteWorkout(db, userId);
-      const otherUserId = createTestUser(db);
+      const otherUserId = createTestUser(db, secondUserId, secondUsername);
 
       try {
         deleteExerciseById(db, exercise.id, otherUserId);

@@ -49,7 +49,7 @@ export const getAuthMeAndReturn = async (cookie: string) => {
   }
 
   if (authMeRes.ok) {
-    const user = json as { id: string; email: string };
+    const user = json as { id: string; email: string, username: string };
     return { authMeRes, user, success: true as const };
   } else {
     const user = json as { errors: string[] };
@@ -186,8 +186,8 @@ export const getAllWorkoutsAndReturn = async (cookie: string) => {
   return { workoutsRes, workouts };
 };
 
-export const signupAndReturn = async (email?: string, password?: string) => {
-  const signupRes = await app.fetch(signupRequest(email, password));
+export const signupAndReturn = async (email?: string, password?: string, username?: string) => {
+  const signupRes = await app.fetch(signupRequest(email, password, username));
   const json = await signupRes.json();
   return { signupRes, json };
 };
@@ -205,8 +205,8 @@ export const logoutAndReturn = async () => {
   return { logoutRes, cookie };
 };
 
-export const completeAuthFlow = async (email?: string, password?: string) => {
-  await signupAndReturn(email, password);
+export const completeAuthFlow = async (email?: string, password?: string, username?: string) => {
+  await signupAndReturn(email, password, username);
   return await loginAndReturn(email, password);
 };
 

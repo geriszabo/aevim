@@ -58,6 +58,10 @@ const ERROR_MAPPINGS = {
     status: 409,
     message: "Email address already exists",
   },
+  USERNAME_ALREADY_EXISTS: {
+    status: 409,
+    message: "Username already exists",
+  },
   INVALID_CREDENTIALS: { status: 401, message: "Invalid credentials" },
   PASSWORD_MISMATCH: { status: 401, message: "Password mismatch" },
 } as const;

@@ -3,9 +3,7 @@ import { Database } from "bun:sqlite";
 
 import { createTestDb } from "../../test/test-db";
 import app from "../../index";
-import {
-  addExerciseRequest,
-} from "../../test/test-request-helpers";
+import { addExerciseRequest } from "../../test/test-request-helpers";
 import {
   createExerciseAddToWorkoutAndReturn,
   createExerciseAndReturn,
@@ -107,7 +105,10 @@ describe("/exercises endpoint", () => {
   describe("PUT /exercises/:id", () => {
     it("updates an exercise", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id
@@ -132,7 +133,10 @@ describe("/exercises endpoint", () => {
 
     it("updates only 1 field if needed", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id
@@ -182,7 +186,10 @@ describe("/exercises endpoint", () => {
     });
     it("returns 400 if invalid data is provided", async () => {
       const { cookie } = await loginFlow();
-      const { workout } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
+      if (!workoutSuccess) return;
       const { exercise, success } = await createExerciseAddToWorkoutAndReturn(
         cookie!,
         workout.id

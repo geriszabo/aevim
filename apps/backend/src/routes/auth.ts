@@ -14,10 +14,10 @@ const auth = new Hono();
 auth
   .post("/signup", signupValidator, async (c) => {
     const db = dbConnect();
-    const { email, password } = c.req.valid("json");
+    const { email, password, username } = c.req.valid("json");
     try {
       //Get userId
-      const userId = await insertUser(db, email, password);
+      const userId = await insertUser(db, email, password, username);
       //Generate token
       const token = await generateToken(userId);
       //Set to cookie
@@ -73,8 +73,8 @@ auth
       if (!user) {
         return c.json({ errors: ["User not found"] }, 404);
       }
-      const { email, id } = user;
-      return c.json({ id, email }, 200);
+      const { email, id, username } = user;
+      return c.json({ id, email, username }, 200);
     } catch (error) {
       return handleError(c, error);
     }

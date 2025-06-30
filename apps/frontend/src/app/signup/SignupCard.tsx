@@ -29,17 +29,17 @@ export const SignupCard = () => {
     defaultValues: {
       confirmPassword: "",
       email: "",
-      name: "",
+      username: "",
       password: "",
     },
   });
 
   const onSubmit = async (data: SignupFormData) => {
-    const { email, password } = data;
+    const { email, password, username } = data;
     setIsLoading(true);
-
+    console.log(data)
     try {
-      const res = await postSignup({ email, password });
+      const res = await postSignup({ email, password, username });
       if (res.ok) {
         const { message } = await res.json();
         toast.success(message);
@@ -66,14 +66,14 @@ export const SignupCard = () => {
         <CardContent>
           <div className="space-y-6">
             <FormInputField
-              id="name"
-              label="Name"
+              id="username"
+              label="Username"
               register={register}
               type="text"
-              autoComplete="name"
+              autoComplete="username"
               autoFocus
-              placeholder="Your name"
-              error={errors.name}
+              placeholder="Your username"
+              error={errors.username}
             />
             <FormInputField
               id="email"
