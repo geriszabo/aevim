@@ -16,9 +16,11 @@ import { postLogin } from "@/hooks/api/postLogin";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { FormPasswordInputField } from "@/components/Form/FormPasswordInputField";
 import { toast, Toaster } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const LoginCard = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const {fetchUser} = useAuth()
   const router = useRouter();
 
   const {
@@ -45,6 +47,7 @@ export const LoginCard = () => {
       const res = await postLogin({ email, password });
       if (res.ok) {
         const { message } = await res.json();
+         await fetchUser();
         toast.success(message);
         router.push("/dashboard");
       } else {
