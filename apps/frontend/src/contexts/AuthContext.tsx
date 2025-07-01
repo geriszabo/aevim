@@ -6,6 +6,7 @@ import env from "@/env";
 interface User {
   id: string;
   email: string;
+  username: string
 }
 
 interface AuthContextType {
@@ -13,6 +14,7 @@ interface AuthContextType {
   isLoading: boolean;
   logout: () => Promise<void>;
   fetchUser: () => Promise<void>;
+  isLoggedIn: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +22,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const isLoggedIn = !!user
 
   // Fetch user data from your /auth/me endpoint
   const fetchUser = async () => {
@@ -71,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, logout, fetchUser }}>
+    <AuthContext.Provider value={{ user, isLoading, logout, fetchUser, isLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );
