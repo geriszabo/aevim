@@ -1,7 +1,7 @@
 import { TypographySize } from "@/types/utils";
 import { getTextSize } from "@/utils/typography";
 
-export const Logo = ({ size = "5xl" }: { size?: TypographySize }) => {
+export const Logo = ({ size = "5xl", text = "aevim" }: { size?: TypographySize, text?: string }) => {
   const textSize = getTextSize(size)
   return (
     <span className={`relative ${textSize} font-bold font-heading`}>
@@ -12,7 +12,7 @@ export const Logo = ({ size = "5xl" }: { size?: TypographySize }) => {
           mixBlendMode: "multiply",
         }}
       >
-        aevim
+        {text}
       </span>
       <span
         className={`absolute ${textSize} font-bold font-heading text-neongreen`}
@@ -21,9 +21,9 @@ export const Logo = ({ size = "5xl" }: { size?: TypographySize }) => {
           mixBlendMode: "multiply",
         }}
       >
-        aevim
+        {text}
       </span>
-      <span className="relative z-10 text-foreground">aevim</span>
+      <span className="relative z-10 text-foreground">{text}</span>
     </span>
   );
 };
