@@ -49,7 +49,7 @@ export const SignupCard = () => {
         toast.error(errors);
       }
     } catch (error) {
-      console.log("Couldt not signup", error);
+      console.log("Could not signup", error);
     } finally {
       setIsLoading(false);
     }
