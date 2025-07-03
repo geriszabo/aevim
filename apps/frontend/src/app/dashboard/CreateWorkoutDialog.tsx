@@ -9,6 +9,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Typography } from "@/components/ui/typography";
 import {
@@ -62,9 +63,11 @@ export const CreateWorkoutDialog = ({
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <DialogHeader>
-            <Typography variant="heading" size="2xl">
-              Create workout
-            </Typography>
+            <DialogTitle>
+              <Typography variant="heading" size="2xl">
+                Create workout
+              </Typography>
+            </DialogTitle>
             <DialogDescription>
               Log your next training session
             </DialogDescription>
