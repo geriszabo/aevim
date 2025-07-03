@@ -12,14 +12,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { PageContainer } from "@/components/layouts/PageContainer";
 import { Logo } from "@/components/Logo/Logo";
-import env from "@/env";
 import { useAuth } from "@/contexts/AuthContext";
 import { postLogout } from "@/hooks/api/postLogout";
 import { useRouter } from "next/navigation";
 import { WorkoutTemplateCard } from "./WorkoutTemplateCard";
 import { RecentWorkoutsCard } from "./RecentWorkoutsCard";
+import { useState } from "react";
+import { CreateWorkoutDialog } from "./CreateWorkoutDialog";
 
 export default function Dashboard() {
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const { user, isLoading } = useAuth();
@@ -50,21 +52,10 @@ export default function Dashboard() {
     }
   };
 
-  const handleTestWorkoutOverview = async () => {
-    console.log(env.API_BASE_URL + "/auth/me");
-    try {
-      const res = await fetch(env.API_BASE_URL + "/auth/me", {
-        method: "GET",
-        credentials: "include",
-      });
-      if (res.ok) {
-        const data = await res.json();
-        console.log(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  function handleOpenCreateWorkoutDialog() {
+    console.log("clicked");
+    setIsOpen(true);
+  }
 
   return (
     <PageContainer display="block">
@@ -116,7 +107,7 @@ export default function Dashboard() {
             <Button
               size="lg"
               className="w-full h-14 text-lg font-bold font-heading"
-              onClick={handleTestWorkoutOverview}
+              onClick={handleOpenCreateWorkoutDialog}
             >
               <Play className="mr-2 h-5 w-5" />
               QUICK START
@@ -168,6 +159,7 @@ export default function Dashboard() {
         </div>
         <div className="h-20"></div>
       </main>
+      <CreateWorkoutDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </PageContainer>
   );
 }
