@@ -53,7 +53,6 @@ export default function Dashboard() {
   };
 
   function handleOpenCreateWorkoutDialog() {
-    console.log("clicked");
     setIsOpen(true);
   }
 
