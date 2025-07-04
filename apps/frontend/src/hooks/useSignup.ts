@@ -14,6 +14,6 @@ export const useSignup = () => {
       toast.success(data.message);
       router.push('/dashboard');
     },
-    onError: (error) => handleApiError(error, 'Signup failed. Please try again.'),
+    onError: (error) => handleApiError(error),
   });
 };
