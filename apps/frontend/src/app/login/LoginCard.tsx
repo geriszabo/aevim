@@ -8,20 +8,18 @@ import {
 } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { Mail } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { LoginFormData, loginSchema } from "@/schemas/login-schema";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { useRouter } from "next/navigation";
-import { postLogin } from "@/hooks/api/postLogin";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { FormPasswordInputField } from "@/components/Form/FormPasswordInputField";
-import { toast, Toaster } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
+import { Toaster } from "sonner";
+import { useLogin } from "@/hooks/useLogin";
 
 export const LoginCard = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const {fetchUser} = useAuth()
   const router = useRouter();
+  const {mutate, isPending} = useLogin()
 
   const {
     register,
@@ -36,29 +34,9 @@ export const LoginCard = () => {
     },
   });
 
-  const handleRouteTo = (page: string) => {
-    router.push(page);
-  };
 
   const onSubmit = async (data: LoginFormData) => {
-    const { email, password } = data;
-    setIsLoading(true);
-    try {
-      const res = await postLogin({ email, password });
-      if (res.ok) {
-        const { message } = await res.json();
-         await fetchUser();
-        toast.success(message);
-        router.push("/dashboard");
-      } else {
-        const { errors } = await res.json();
-        toast.error(errors);
-      }
-    } catch (error) {
-      console.log("Could not fetch login", error);
-    } finally {
-      setIsLoading(false);
-    }
+    mutate({...data})
   };
 
   return (
@@ -91,10 +69,10 @@ export const LoginCard = () => {
             />
             <Button
               type="submit"
-              disabled={isLoading || !isValid}
+              disabled={isPending || !isValid}
               className="w-full h-12 text-base font-heading"
             >
-              {isLoading ? (
+              {isPending ? (
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current" />
                   Logging In...
@@ -119,7 +97,7 @@ export const LoginCard = () => {
           <Button
             variant="outline"
             className="w-full h-12 text-base mt-4"
-            onClick={() => handleRouteTo("/signup")}
+            onClick={() => router.push("/signup")}
           >
             CREATE ACCOUNT
           </Button>

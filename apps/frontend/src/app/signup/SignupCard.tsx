@@ -8,17 +8,17 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { postSignup } from "@/hooks/api/postSignup";
+import { useSignup } from "@/hooks/useSignup";
 import { SignupFormData, signupSchema } from "@/schemas/signup-schema";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { toast, Toaster } from "sonner";
+import { Toaster } from "sonner";
 
 export const SignupCard = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const {mutate, isPending} = useSignup();
   const {
     register,
     handleSubmit,
@@ -34,25 +34,9 @@ export const SignupCard = () => {
     },
   });
 
-  const onSubmit = async (data: SignupFormData) => {
-    const { email, password, username } = data;
-    setIsLoading(true);
-    console.log(data)
-    try {
-      const res = await postSignup({ email, password, username });
-      if (res.ok) {
-        const { message } = await res.json();
-        toast.success(message);
-        router.push("/dashboard");
-      } else {
-        const { errors } = await res.json();
-        toast.error(errors);
-      }
-    } catch (error) {
-      console.log("Could not signup", error);
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (data: SignupFormData) => {
+    const {email, password, username} = data
+   mutate({email, password, username});
   };
   return (
     <>
@@ -104,10 +88,10 @@ export const SignupCard = () => {
             {/* TODO: extract this button */}
             <Button
               onClick={handleSubmit(onSubmit)}
-              disabled={isLoading || !isValid}
+              disabled={isPending || !isValid}
               className="w-full h-12 text-base font-bold font-heading"
             >
-              {isLoading ? (
+              {isPending ? (
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current"></div>
                   Creating Account...
