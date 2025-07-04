@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postWorkout } from "./api/postWorkout";
+import { postWorkout } from "./api/workouts/postWorkout";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { handleApiError } from "@/utils/handleApiError";
