@@ -12,16 +12,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Typography } from "@/components/ui/typography";
-import { postWorkout } from "@/hooks/api/postWorkout";
+import { useCreateWorkout } from "@/hooks/useCreateWorkout";
 import {
   CreateWorkoutData,
   createWorkoutSchema,
 } from "@/schemas/create-workout-schema";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { toast, Toaster } from "sonner";
+import { Toaster } from "sonner";
 
 interface CreateWorkoutDialogProps {
   isOpen: boolean;
@@ -32,8 +31,7 @@ export const CreateWorkoutDialog = ({
   isOpen,
   setIsOpen,
 }: CreateWorkoutDialogProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter()
+  const {mutate, isPending} = useCreateWorkout()
   const {
     register,
     handleSubmit,
@@ -51,23 +49,7 @@ export const CreateWorkoutDialog = ({
   });
 
   const onSubmit = async (data: CreateWorkoutData) => {
-    setIsLoading(true);
-    const { date, name, notes } = data;
-    try {
-      const res = await postWorkout({ date, name, notes });
-      if (res.ok) {
-        const { message, workout } = await res.json();
-        toast.success(message);
-        console.log(workout);
-        router.push(`/workouts/${workout.id}`)
-      } else {
-        const { errors } = await res.json();
-        toast.error(errors);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    setIsLoading(false);
+    mutate({...data})
   };
 
   const handleClose = () => {
@@ -123,10 +105,10 @@ export const CreateWorkoutDialog = ({
               </DialogClose>
               <Button
                 type="submit"
-                disabled={isLoading || !isValid}
+                disabled={isPending || !isValid}
                 className="w-full h-12 text-base font-heading"
               >
-                {isLoading ? (
+                {isPending ? (
                   <div className="flex items-center gap-2">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current" />
                     Creating workout...
