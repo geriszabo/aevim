@@ -14,12 +14,11 @@ import { FormInputField } from "@/components/Form/FormInputField";
 import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { FormPasswordInputField } from "@/components/Form/FormPasswordInputField";
-import { Toaster } from "sonner";
 import { useLogin } from "@/hooks/useLogin";
 
 export const LoginCard = () => {
   const router = useRouter();
-  const {mutate, isPending} = useLogin()
+  const { mutate, isPending } = useLogin();
 
   const {
     register,
@@ -34,9 +33,8 @@ export const LoginCard = () => {
     },
   });
 
-
   const onSubmit = async (data: LoginFormData) => {
-    mutate({...data})
+    mutate({ ...data });
   };
 
   return (
@@ -103,7 +101,6 @@ export const LoginCard = () => {
           </Button>
         </CardContent>
       </Card>
-      <Toaster position="top-center" richColors />
     </>
   );
 };

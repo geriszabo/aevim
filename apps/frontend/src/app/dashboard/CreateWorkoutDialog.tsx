@@ -20,7 +20,6 @@ import {
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { Toaster } from "sonner";
 
 interface CreateWorkoutDialogProps {
   isOpen: boolean;
@@ -121,7 +120,6 @@ export const CreateWorkoutDialog = ({
           </form>
         </DialogContent>
       </Dialog>
-      <Toaster position="top-center" richColors />
     </>
   );
 };
