@@ -1,10 +1,27 @@
+"use client";
+
 import { TypographySize } from "@/types/utils";
 import { getTextSize } from "@/utils/typography";
+import { useRouter } from "next/navigation";
 
-export const Logo = ({ size = "5xl", text = "aevim" }: { size?: TypographySize, text?: string }) => {
-  const textSize = getTextSize(size)
+interface LogoProps {
+  size?: TypographySize;
+  text?: string;
+  routeToDashboard?: boolean;
+}
+
+export const Logo = ({
+  size = "5xl",
+  text = "aevim",
+  routeToDashboard,
+}: LogoProps) => {
+  const textSize = getTextSize(size);
+  const router = useRouter();
   return (
-    <span className={`relative ${textSize} font-bold font-heading`}>
+    <span
+      className={`relative ${textSize} font-bold font-heading`}
+      onClick={routeToDashboard ? () => router.push("/dashboard") : undefined}
+    >
       <span
         className={`absolute ${textSize} font-bold font-heading text-hotpink`}
         style={{
