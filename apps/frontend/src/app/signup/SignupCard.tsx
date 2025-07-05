@@ -1,3 +1,5 @@
+import { FormButton } from "@/components/Form/FormButton";
+import { FormDividerText } from "@/components/Form/FormDividerText";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { FormPasswordInputField } from "@/components/Form/FormPasswordInputField";
 import { Button } from "@/components/ui/button";
@@ -17,7 +19,7 @@ import { useForm } from "react-hook-form";
 
 export const SignupCard = () => {
   const router = useRouter();
-  const {mutate, isPending} = useSignup();
+  const { mutate, isPending } = useSignup();
   const {
     register,
     handleSubmit,
@@ -34,8 +36,8 @@ export const SignupCard = () => {
   });
 
   const onSubmit = (data: SignupFormData) => {
-    const {email, password, username} = data
-   mutate({email, password, username});
+    const { email, password, username } = data;
+    mutate({ email, password, username });
   };
   return (
     <>
@@ -47,7 +49,7 @@ export const SignupCard = () => {
           <CardDescription>Start logging with power</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <FormInputField
               id="username"
               label="Username"
@@ -84,31 +86,17 @@ export const SignupCard = () => {
               icon
               error={errors.confirmPassword}
             />
-            {/* TODO: extract this button */}
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              disabled={isPending || !isValid}
-              className="w-full h-12 text-base font-bold font-heading"
+            <FormButton
+              type="submit"
+              disabled={!isValid}
+              isLoading={isPending}
+              loadingText="Creating Account..."
             >
-              {isPending ? (
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current"></div>
-                  Creating Account...
-                </div>
-              ) : (
-                "START LOGGING"
-              )}
-            </Button>
-          </div>
+              START LOGGING
+            </FormButton>
+          </form>
           <div className="relative mt-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Already crushing it?
-              </span>
-            </div>
+            <FormDividerText text="Already crushing it?" />
           </div>
           <Button
             variant="outline"

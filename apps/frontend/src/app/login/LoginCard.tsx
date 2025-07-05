@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { FormPasswordInputField } from "@/components/Form/FormPasswordInputField";
 import { useLogin } from "@/hooks/useLogin";
+import { FormButton } from "@/components/Form/FormButton";
+import { FormDividerText } from "@/components/Form/FormDividerText";
 
 export const LoginCard = () => {
   const router = useRouter();
@@ -65,31 +67,17 @@ export const LoginCard = () => {
               icon
               error={errors.password}
             />
-            <Button
-              type="submit"
+            <FormButton
+              loadingText="Logging in..."
+              isLoading={isPending}
               disabled={isPending || !isValid}
-              className="w-full h-12 text-base font-heading"
+              type="submit"
             >
-              {isPending ? (
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current" />
-                  Logging In...
-                </div>
-              ) : (
-                "LOG IN"
-              )}
-            </Button>
+              LOG IN
+            </FormButton>
           </form>
-
           <div className="relative mt-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                New to aevim?
-              </span>
-            </div>
+            <FormDividerText text="New to aevim?" />
           </div>
 
           <Button

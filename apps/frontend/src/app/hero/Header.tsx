@@ -1,9 +1,10 @@
+import { ContentContainer } from "@/components/layouts/ContentContainer";
 import { Logo } from "@/components/Logo/Logo";
 
 export const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b">
-      <div className="container mx-auto px-4 py-4">
+      <ContentContainer className="py-4">
         <div className="flex items-center justify-between">
           <Logo />
           <a
@@ -13,7 +14,7 @@ export const Header = () => {
             Sign In
           </a>
         </div>
-      </div>
+      </ContentContainer>
     </header>
-  );
-};
+  )
+}
