@@ -10,11 +10,6 @@ export interface ApiError {
   errors: string[];
 }
 
-export interface ApiSuccessResponse<T = unknown> {
-  message?: string;
-  [key: string]: T | string | undefined;
-}
-
 export interface GetWorkoutsResponse {
   workouts: WorkoutWithoutUserId[];
 }
