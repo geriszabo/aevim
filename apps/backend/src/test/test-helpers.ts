@@ -3,10 +3,10 @@ import type {
   Set,
   WorkoutExercise,
   WorkoutOverview,
+  WorkoutWithoutUserId,
 } from "@aevim/shared-types";
 import app from "../index";
 import type { ExerciseWithouthUserId } from "../types/exercise";
-import type { WorkoutWithoutUserId } from "../types/workout";
 import {
   addExerciseRequest,
   addExerciseToWorkoutRequest,

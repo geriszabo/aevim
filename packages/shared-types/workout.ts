@@ -1,5 +1,3 @@
-import type { WorkoutWithoutUserId } from "../../apps/backend/src/types/workout";
-
 export interface Workout {
   id: string;
   name: string;
@@ -8,6 +6,8 @@ export interface Workout {
   created_at: string;
   user_id: string;
 }
+
+export type WorkoutWithoutUserId = Omit<Workout, "user_id">;
 
 export type WorkoutOverview = {
   workout: WorkoutWithoutUserId;

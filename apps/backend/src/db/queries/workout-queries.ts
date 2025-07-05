@@ -4,8 +4,9 @@ import {
   type Workout,
   type WorkoutExercise,
   type WorkoutOverview,
+  type WorkoutWithoutUserId,
 } from "@aevim/shared-types";
-import type { WorkoutData, WorkoutWithoutUserId } from "../../types/workout";
+import type { WorkoutData } from "../../types/workout";
 import { checkItemExists } from "../../helpers";
 
 export const insertWorkout = (
