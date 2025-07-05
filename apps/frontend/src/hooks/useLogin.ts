@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { postLogin } from "./api/auth/postLogin";
 import { toast } from "sonner";
-import { handleApiError } from "@/utils/handleApiError";
 import { useAuth } from "@/contexts/AuthContext";
 
 export const useLogin = () => {
@@ -19,7 +18,5 @@ export const useLogin = () => {
       queryClient.invalidateQueries();
       router.push("/dashboard");
     },
-    onError: (error) =>
-      handleApiError(error, "Login failed. Please try again."),
   });
 };

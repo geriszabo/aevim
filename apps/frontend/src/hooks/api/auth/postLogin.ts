@@ -1,5 +1,6 @@
 import env from "@/env";
 import { LoginFormData } from "@/schemas/login-schema";
+import { handleApiError } from "@/utils/handleApiError";
 import { API_ROUTES } from "@aevim/shared-types/api-routes";
 
 export const postLogin = async ({ email, password }: LoginFormData) => {
@@ -13,7 +14,7 @@ export const postLogin = async ({ email, password }: LoginFormData) => {
   });
 
   if (!response.ok) {
-    throw response;
+    handleApiError(response)
   }
 
   return response;
