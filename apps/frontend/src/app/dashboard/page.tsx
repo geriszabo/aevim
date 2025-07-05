@@ -19,12 +19,14 @@ import { WorkoutTemplateCard } from "./WorkoutTemplateCard";
 import { RecentWorkoutsCard } from "./RecentWorkoutsCard";
 import { useState } from "react";
 import { CreateWorkoutDialog } from "./CreateWorkoutDialog";
+import { useGetWorkouts } from "@/hooks/useGetWorkouts";
 
 export default function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const { data: recentWorkouts, isLoading } = useGetWorkouts();
 
-  const { user, isLoading } = useAuth();
+  const { user } = useAuth();
 
   if (isLoading) {
     return (
@@ -151,7 +153,7 @@ export default function Dashboard() {
           </Typography>
 
           <div className="space-y-3">
-            {recentWorkouts.map((workout) => (
+            {recentWorkouts?.workouts.map((workout) => (
               <RecentWorkoutsCard {...workout} key={workout.id} />
             ))}
           </div>
@@ -162,34 +164,6 @@ export default function Dashboard() {
     </PageContainer>
   );
 }
-
-// Mock data
-const recentWorkouts = [
-  {
-    id: "1",
-    name: "Push Day",
-    date: "Today",
-    duration: "45 min",
-    exercises: 5,
-    status: "completed",
-  },
-  {
-    id: "2",
-    name: "Pull Day",
-    date: "Yesterday",
-    duration: "52 min",
-    exercises: 6,
-    status: "completed",
-  },
-  {
-    id: "3",
-    name: "Leg Day",
-    date: "2 days ago",
-    duration: "38 min",
-    exercises: 4,
-    status: "completed",
-  },
-];
 
 const workoutTemplates = [
   {
