@@ -1,3 +1,4 @@
+import { FormButton } from "@/components/Form/FormButton";
 import { FormDatePicker } from "@/components/Form/FormDatePicker";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { FormTextareaField } from "@/components/Form/FormTextareaField";
@@ -30,7 +31,7 @@ export const CreateWorkoutDialog = ({
   isOpen,
   setIsOpen,
 }: CreateWorkoutDialogProps) => {
-  const {mutate, isPending} = useCreateWorkout()
+  const { mutate, isPending } = useCreateWorkout();
   const {
     register,
     handleSubmit,
@@ -48,7 +49,7 @@ export const CreateWorkoutDialog = ({
   });
 
   const onSubmit = async (data: CreateWorkoutData) => {
-    mutate({...data})
+    mutate({ ...data });
   };
 
   const handleClose = () => {
@@ -102,20 +103,14 @@ export const CreateWorkoutDialog = ({
                   Cancel
                 </Button>
               </DialogClose>
-              <Button
-                type="submit"
+              <FormButton
+                loadingText="Creating workout..."
+                isLoading={isPending}
                 disabled={isPending || !isValid}
-                className="w-full h-12 text-base font-heading"
+                type="submit"
               >
-                {isPending ? (
-                  <div className="flex items-center gap-2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current" />
-                    Creating workout...
-                  </div>
-                ) : (
-                  "Create workout"
-                )}
-              </Button>
+                Create workout
+              </FormButton>
             </DialogFooter>
           </form>
         </DialogContent>

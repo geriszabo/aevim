@@ -17,12 +17,12 @@ export const FormButton = ({
   return (
     <Button
       disabled={isLoading || disabled}
-      className="w-full h-12 text-base font-bold font-heading"
+      className="w-full h-12 text-base font-bold font-heading uppercase "
       {...props}
     >
       {isLoading ? (
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current" />
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current uppercase" />
           {loadingText}
         </div>
       ) : (

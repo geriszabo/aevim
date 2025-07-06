@@ -92,7 +92,7 @@ export const SignupCard = () => {
               isLoading={isPending}
               loadingText="Creating Account..."
             >
-              START LOGGING
+              Start logging
             </FormButton>
           </form>
           <div className="relative mt-6">

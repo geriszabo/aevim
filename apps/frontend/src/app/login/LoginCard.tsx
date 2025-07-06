@@ -73,7 +73,7 @@ export const LoginCard = () => {
               disabled={isPending || !isValid}
               type="submit"
             >
-              LOG IN
+              Log in
             </FormButton>
           </form>
           <div className="relative mt-6">
