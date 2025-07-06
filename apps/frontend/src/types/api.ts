@@ -1,4 +1,7 @@
-import type { Workout as WorkoutWithoutUserId, WorkoutOverview } from "@aevim/shared-types";
+import type {
+  WorkoutWithoutUserId,
+  WorkoutOverview,
+} from "@aevim/shared-types";
 
 export interface ApiErrorResponse {
   errors: string[];
