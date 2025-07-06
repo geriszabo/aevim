@@ -10,7 +10,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { useSignup } from "@/hooks/useSignup";
+import { useSignup } from "@/hooks/auth/useSignup";
 import { SignupFormData, signupSchema } from "@/schemas/signup-schema";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useRouter } from "next/navigation";
