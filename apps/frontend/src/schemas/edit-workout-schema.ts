@@ -7,6 +7,7 @@ export const editWorkoutSchema = z.object({
     .optional(),
   notes: z
     .string({ message: "No string for notes update provided" })
+    .nullable()
     .optional(),
 });
 
