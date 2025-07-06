@@ -29,7 +29,7 @@ interface EditWorkoutDialogProps {
   date?: WorkoutWithoutUserId["date"];
   name?: WorkoutWithoutUserId["name"];
   notes?: WorkoutWithoutUserId["notes"];
-  workoutId: string
+  workoutId: string;
 }
 
 export const EditWorkoutDialog = ({
@@ -38,9 +38,9 @@ export const EditWorkoutDialog = ({
   date,
   name,
   notes,
-  workoutId
+  workoutId,
 }: EditWorkoutDialogProps) => {
-  const {mutate, isPending} = useUpdateWorkout(workoutId)
+  const { mutate, isPending } = useUpdateWorkout(workoutId);
   const {
     register,
     handleSubmit,
@@ -51,15 +51,15 @@ export const EditWorkoutDialog = ({
     resolver: standardSchemaResolver(editWorkoutSchema),
     mode: "onChange",
     defaultValues: {
-      date: "",
-      name: "",
-      notes: null,
+      date,
+      name,
+      notes,
     },
   });
 
   const onSubmit = async (data: EditWorkoutData) => {
-    mutate(data)
-    handleClose()
+    mutate(data);
+    handleClose();
   };
 
   const handleClose = () => {
