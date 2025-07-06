@@ -8,6 +8,7 @@ import { Typography } from "@/components/ui/typography";
 import { useGetWorkout } from "@/hooks/useGetWorkout";
 import { use } from "react";
 import { EditWorkoutSection } from "./EditWorkoutSection";
+import { ExerciseSection } from "./ExerciseSection";
 
 export default function WorkoutPage({
   params,
@@ -28,7 +29,7 @@ export default function WorkoutPage({
           <Logo size="2xl" routeToDashboard />
         </ContentContainer>
       </header>
-      <SectionContainer padding="lg">
+      <SectionContainer>
         <ContentContainer textAlign="center">
           <Typography
             variant="heading"
@@ -42,11 +43,12 @@ export default function WorkoutPage({
           </Typography>
         </ContentContainer>
       </SectionContainer>
-      <SectionContainer padding="md">
-        <ContentContainer>
-          <EditWorkoutSection editWorkoutData={data.workout} workoutId={workoutId} />
-        </ContentContainer>
-      </SectionContainer>
+
+      <EditWorkoutSection
+        editWorkoutData={data.workout}
+        workoutId={workoutId}
+      />
+      <ExerciseSection />
     </PageContainer>
   );
 }
