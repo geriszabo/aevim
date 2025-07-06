@@ -24,9 +24,9 @@ export const EditWorkoutSection = ({
     { label: "notes", value: notes ?? "No notes added" },
   ];
   return (
-    <SectionContainer padding="md">
+    <SectionContainer padding="sm" >
       <ContentContainer>
-        <Card className="shadow-lg w-full max-w-4xl mx-auto">
+        <Card className="shadow-lg w-full mx-auto">
           <CardHeader className="flex justify-between align-super content-end">
             <CardTitle className="font-heading text-xl">
               Workout Details
