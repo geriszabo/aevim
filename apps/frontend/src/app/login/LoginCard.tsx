@@ -14,7 +14,7 @@ import { FormInputField } from "@/components/Form/FormInputField";
 import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { FormPasswordInputField } from "@/components/Form/FormPasswordInputField";
-import { useLogin } from "@/hooks/useLogin";
+import { useLogin } from "@/hooks/auth/useLogin";
 import { FormButton } from "@/components/Form/FormButton";
 import { FormDividerText } from "@/components/Form/FormDividerText";
 
