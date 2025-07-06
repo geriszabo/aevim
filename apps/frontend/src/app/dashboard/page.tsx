@@ -19,7 +19,7 @@ import { WorkoutTemplateCard } from "./WorkoutTemplateCard";
 import { RecentWorkoutsCard } from "./RecentWorkoutsCard";
 import { useState } from "react";
 import { CreateWorkoutDialog } from "./CreateWorkoutDialog";
-import { useGetWorkouts } from "@/hooks/useGetWorkouts";
+import { useGetWorkouts } from "@/hooks/workouts/useGetWorkouts";
 
 export default function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);

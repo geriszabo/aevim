@@ -5,10 +5,10 @@ import { PageContainer } from "@/components/layouts/PageContainer";
 import { SectionContainer } from "@/components/layouts/SectionContainer";
 import { Logo } from "@/components/Logo/Logo";
 import { Typography } from "@/components/ui/typography";
-import { useGetWorkout } from "@/hooks/useGetWorkout";
 import { use } from "react";
 import { EditWorkoutSection } from "./EditWorkoutSection";
 import { ExerciseSection } from "./ExerciseSection";
+import { useGetWorkout } from "@/hooks/workouts/useGetWorkout";
 
 export default function WorkoutPage({
   params,

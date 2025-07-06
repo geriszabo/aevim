@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Typography } from "@/components/ui/typography";
-import { useCreateWorkout } from "@/hooks/useCreateWorkout";
+import { useCreateWorkout } from "@/hooks/workouts/useCreateWorkout";
 import {
   CreateWorkoutData,
   createWorkoutSchema,
