@@ -28,7 +28,7 @@ export const ExerciseCard = () => {
                 Add Set
               </Button>
             </div>
-            <div className="grid grid-cols-5 gap-2 text-xs text-muted-foreground font-medium px-2">
+            <div className="grid grid-cols-4 gap-2 text-xs text-muted-foreground font-medium px-2">
               <span>Set</span>
               <span>Reps</span>
               <span>Weight</span>
