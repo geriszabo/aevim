@@ -13,13 +13,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Typography } from "@/components/ui/typography";
+import { useUpdateWorkout } from "@/hooks/useUpdateWorkout";
 import {
   EditWorkoutData,
   editWorkoutSchema,
 } from "@/schemas/edit-workout-schema";
 import { WorkoutWithoutUserId } from "@aevim/shared-types";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 
 interface EditWorkoutDialogProps {
@@ -28,6 +29,7 @@ interface EditWorkoutDialogProps {
   date?: WorkoutWithoutUserId["date"];
   name?: WorkoutWithoutUserId["name"];
   notes?: WorkoutWithoutUserId["notes"];
+  workoutId: string
 }
 
 export const EditWorkoutDialog = ({
@@ -36,8 +38,9 @@ export const EditWorkoutDialog = ({
   date,
   name,
   notes,
+  workoutId
 }: EditWorkoutDialogProps) => {
-  const [isPending, setIsPending] = useState();
+  const {mutate, isPending} = useUpdateWorkout(workoutId)
   const {
     register,
     handleSubmit,
@@ -50,12 +53,13 @@ export const EditWorkoutDialog = ({
     defaultValues: {
       date: "",
       name: "",
-      notes: "",
+      notes: null,
     },
   });
 
   const onSubmit = async (data: EditWorkoutData) => {
-    console.log(data);
+    mutate(data)
+    handleClose()
   };
 
   const handleClose = () => {

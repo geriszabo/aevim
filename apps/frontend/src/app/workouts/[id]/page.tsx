@@ -14,8 +14,8 @@ export default function WorkoutPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = use(params);
-  const { data } = useGetWorkout(id);
+  const { id: workoutId } = use(params);
+  const { data } = useGetWorkout(workoutId);
 
   if (!data?.workout) {
     return;
@@ -44,7 +44,7 @@ export default function WorkoutPage({
       </SectionContainer>
       <SectionContainer padding="md">
         <ContentContainer>
-          <EditWorkoutSection editWorkoutData={data.workout} />
+          <EditWorkoutSection editWorkoutData={data.workout} workoutId={workoutId} />
         </ContentContainer>
       </SectionContainer>
     </PageContainer>

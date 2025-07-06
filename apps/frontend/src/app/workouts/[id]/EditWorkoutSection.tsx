@@ -9,10 +9,11 @@ import { EditWorkoutData } from "@/schemas/edit-workout-schema";
 
 interface EditWorkoutSectionProps {
   editWorkoutData: EditWorkoutData;
+  workoutId: string;
 }
 
 export const EditWorkoutSection = ({
-  editWorkoutData,
+  editWorkoutData, workoutId
 }: EditWorkoutSectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { date, name, notes } = editWorkoutData;
@@ -42,6 +43,7 @@ export const EditWorkoutSection = ({
         {...editWorkoutData}
         isOpen={isEditing}
         setIsOpen={setIsEditing}
+        workoutId={workoutId}
       />
     </SectionContainer>
   );
