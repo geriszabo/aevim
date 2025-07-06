@@ -9,12 +9,11 @@ export const useCreateWorkout = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  return useMutation<Response, ApiError, CreateWorkoutData>({
+  return useMutation<CreateWorkoutResponse, ApiError, CreateWorkoutData>({
     mutationFn: postWorkout,
-    onSuccess: async (response) => {
-      const { message, workout }: CreateWorkoutResponse = await response.json();
-      toast.success(message);
-      router.push(`/workouts/${workout.id}`);
+    onSuccess: (data) => {
+      toast.success(data.message);
+      router.push(`/workouts/${data.workout.id}`);
       queryClient.invalidateQueries({ queryKey: ["workouts"] });
     },
   });

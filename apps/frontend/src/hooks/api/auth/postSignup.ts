@@ -21,5 +21,5 @@ export const postSignup = async ({
    handleApiError(response)
   }
 
-  return response;
+  return response.json();
 };

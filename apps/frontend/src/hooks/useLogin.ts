@@ -8,11 +8,10 @@ export const useLogin = () => {
   const router = useRouter();
   const { fetchUser } = useAuth();
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: postLogin,
-    onSuccess: async (response) => {
-      const data = await response.json();
+    onSuccess: async (data) => {
       toast.success(data.message);
       await fetchUser();
       queryClient.invalidateQueries();

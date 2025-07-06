@@ -17,5 +17,5 @@ export const postLogin = async ({ email, password }: LoginFormData) => {
     handleApiError(response)
   }
 
-  return response;
+  return response.json();
 };
