@@ -3,7 +3,12 @@ import { Typography } from "@/components/ui/typography";
 import { Trash2 } from "lucide-react";
 import React from "react";
 
-export const ExerciseCardHeader = () => {
+interface ExerciseCardHeaderProps {
+  name: string;
+  category?: string;
+}
+
+export const ExerciseCardHeader = ({name}: ExerciseCardHeaderProps) => {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -11,7 +16,7 @@ export const ExerciseCardHeader = () => {
           1
         </div>
         <Typography variant="heading" size="lg" className="font-heading">
-          exercise name
+          {name}
         </Typography>
       </div>
       <Button

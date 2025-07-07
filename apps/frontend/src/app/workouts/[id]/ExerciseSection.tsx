@@ -7,9 +7,14 @@ import { EmptyExerciseListPlaceholder } from "./EmptyExerciseListPlaceholder";
 import { ExerciseCard } from "./ExerciseCard";
 import { SectionContainer } from "@/components/layouts/SectionContainer";
 import { ContentContainer } from "@/components/layouts/ContentContainer";
+import { useCreateExerciseToWorkout } from "@/hooks/exercises/useCreateExerciseToWorkout";
 
-export const ExerciseSection = () => {
+export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
   const exercises = true;
+  const { mutate, data } = useCreateExerciseToWorkout(workoutId);
+
+  console.log(data);
+
   return (
     <SectionContainer padding="sm">
       <ContentContainer>
@@ -26,7 +31,10 @@ export const ExerciseSection = () => {
                   </Typography>
                 </div>
               </div>
-              <FormButton onClick={() => {}} className="font-bold font-heading">
+              <FormButton
+                onClick={() => mutate({ name: "dick", category: "cardio" })}
+                className="font-bold font-heading"
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 NEW
               </FormButton>
@@ -35,7 +43,7 @@ export const ExerciseSection = () => {
           <CardContent>
             {!exercises && <EmptyExerciseListPlaceholder />}
 
-            <ExerciseCard />
+            <ExerciseCard name="placeholder" category="placeholder as well" />
           </CardContent>
         </Card>
       </ContentContainer>

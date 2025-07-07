@@ -48,7 +48,7 @@ export default function WorkoutPage({
         editWorkoutData={data.workout}
         workoutId={workoutId}
       />
-      <ExerciseSection />
+      <ExerciseSection workoutId={workoutId} />
     </PageContainer>
   );
 }
