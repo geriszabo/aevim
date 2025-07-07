@@ -1,6 +1,8 @@
 import type {
   WorkoutWithoutUserId,
   WorkoutOverview,
+  Exercise,
+  ExerciseToWorkout,
 } from "@aevim/shared-types";
 
 export interface ApiErrorResponse {
@@ -37,4 +39,10 @@ export interface DeleteWorkoutResponse {
 export interface UpdateWorkoutResponse {
   message: string;
   workout: WorkoutWithoutUserId;
+}
+
+export interface CreateExerciseResponse {
+  message: string;
+  exercise: Omit<Exercise, "user_id">;
+  workoutExercise: ExerciseToWorkout;
 }
