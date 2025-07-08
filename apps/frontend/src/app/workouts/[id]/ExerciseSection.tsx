@@ -2,22 +2,20 @@ import { FormButton } from "@/components/Form/FormButton";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography";
 import { Plus } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { EmptyExerciseListPlaceholder } from "./EmptyExerciseListPlaceholder";
 import { ExerciseCard } from "./ExerciseCard";
 import { SectionContainer } from "@/components/layouts/SectionContainer";
 import { ContentContainer } from "@/components/layouts/ContentContainer";
-import { useCreateExerciseToWorkout } from "@/hooks/exercises/useCreateExerciseToWorkout";
 import { useGetExercisesOfWorkout } from "@/hooks/exercises/useGetExercisesOfWorkout";
+import { CreateExerciseToWorkoutDialog } from "./CreateExerciseToWorkoutDialog";
 
 export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
-  const exercisesExist = true;
-  const { mutate, data } = useCreateExerciseToWorkout(workoutId);
+  const [isOpen, setIsOpen] = useState(false);
   const { data: exercisesOfWorkout } = useGetExercisesOfWorkout(workoutId);
 
   const exercises = exercisesOfWorkout?.exercises;
 
-  console.log(data);
   console.log(exercises);
 
   return (
@@ -37,7 +35,7 @@ export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
                 </div>
               </div>
               <FormButton
-                onClick={() => mutate({ name: "dick", category: "cardio" })}
+                onClick={() => setIsOpen(true)}
                 className="font-bold font-heading"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -45,8 +43,10 @@ export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
               </FormButton>
             </div>
           </CardHeader>
-          <CardContent>
-            {!exercisesExist && <EmptyExerciseListPlaceholder />}
+          <CardContent className="flex flex-col gap-4">
+            {!exercisesOfWorkout?.exercises.length && (
+              <EmptyExerciseListPlaceholder />
+            )}
             {exercises &&
               exercises.map((exercise) => (
                 <ExerciseCard
@@ -57,6 +57,11 @@ export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
               ))}
           </CardContent>
         </Card>
+        <CreateExerciseToWorkoutDialog
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          workoutId={workoutId}
+        />
       </ContentContainer>
     </SectionContainer>
   );
