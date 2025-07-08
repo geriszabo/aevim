@@ -46,3 +46,6 @@ export interface CreateExerciseResponse {
   exercise: Omit<Exercise, "user_id">;
   workoutExercise: ExerciseToWorkout;
 }
+export interface GetExercisesOfWorkoutResponse {
+  exercises: Omit<Exercise, "user_id">[];
+}

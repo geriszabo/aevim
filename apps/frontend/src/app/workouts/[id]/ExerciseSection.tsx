@@ -8,12 +8,17 @@ import { ExerciseCard } from "./ExerciseCard";
 import { SectionContainer } from "@/components/layouts/SectionContainer";
 import { ContentContainer } from "@/components/layouts/ContentContainer";
 import { useCreateExerciseToWorkout } from "@/hooks/exercises/useCreateExerciseToWorkout";
+import { useGetExercisesOfWorkout } from "@/hooks/exercises/useGetExercisesOfWorkout";
 
 export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
-  const exercises = true;
+  const exercisesExist = true;
   const { mutate, data } = useCreateExerciseToWorkout(workoutId);
+  const { data: exercisesOfWorkout } = useGetExercisesOfWorkout(workoutId);
+
+  const exercises = exercisesOfWorkout?.exercises;
 
   console.log(data);
+  console.log(exercises);
 
   return (
     <SectionContainer padding="sm">
@@ -41,9 +46,15 @@ export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
             </div>
           </CardHeader>
           <CardContent>
-            {!exercises && <EmptyExerciseListPlaceholder />}
-
-            <ExerciseCard name="placeholder" category="placeholder as well" />
+            {!exercisesExist && <EmptyExerciseListPlaceholder />}
+            {exercises &&
+              exercises.map((exercise) => (
+                <ExerciseCard
+                  key={exercise.id}
+                  name={exercise.name}
+                  category={exercise.category}
+                />
+              ))}
           </CardContent>
         </Card>
       </ContentContainer>
