@@ -17,6 +17,7 @@ export const useCreateExerciseToWorkout = (workoutId: string) => {
       queryClient.invalidateQueries({
         queryKey: ["workout", workoutId, "exercises"],
       });
+      queryClient.invalidateQueries({ queryKey: ["exercises", workoutId] });
     },
   });
 };
