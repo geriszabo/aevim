@@ -432,7 +432,9 @@ describe("/workouts endpoint", () => {
   describe("DELETE workouts/:id/exercises/:exerciseId", () => {
     it("deletes an exercise from a workout", async () => {
       const { cookie } = await loginFlow();
-      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(cookie!);
+      const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+        cookie!
+      );
       if (!workoutSuccess) return;
       const { id: workoutId } = workout;
       await createExerciseAddToWorkoutAndReturn(cookie!, workoutId);
@@ -452,11 +454,6 @@ describe("/workouts endpoint", () => {
         message: `Exercise with id: ${
           exercises[0]!.exercise_id
         } has been deleted successfully from workout with id: ${workoutId}`,
-        exercise: {
-          id: expect.any(String),
-          workout_id: expect.any(String),
-          exercise_id: expect.any(String),
-        },
       });
     });
 
@@ -605,7 +602,9 @@ describe("/workouts endpoint", () => {
 describe("GET workouts/:id/overview", () => {
   it("returns a workout with its exercises and sets", async () => {
     const { cookie } = await loginFlow();
-    const { workout, success: workoutSuccess } = await createWorkoutAndReturn(cookie!);
+    const { workout, success: workoutSuccess } = await createWorkoutAndReturn(
+      cookie!
+    );
     if (!workoutSuccess) return;
 
     const exercisesArray = [

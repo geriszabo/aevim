@@ -141,7 +141,6 @@ workouts
       }
       return c.json({
         message: `Exercise with id: ${exerciseId} has been deleted successfully from workout with id: ${workoutId}`,
-        exercise: deletedExercise,
       });
     } catch (error) {
       return handleError(c, error);
