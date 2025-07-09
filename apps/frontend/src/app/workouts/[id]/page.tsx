@@ -50,7 +50,7 @@ export default function WorkoutPage({
         workoutId={workoutId}
       />
       <ExerciseSection workoutId={workoutId} />
-      <DeleteWorkoutDialog />
+      <DeleteWorkoutDialog workoutId={workoutId} />
     </PageContainer>
   );
 }

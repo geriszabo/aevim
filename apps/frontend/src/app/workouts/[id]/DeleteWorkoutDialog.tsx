@@ -10,8 +10,21 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { useDeleteWorkout } from "@/hooks/workouts/useDeleteWorkout";
+import { useRouter } from "next/navigation";
 
-export function DeleteWorkoutDialog() {
+interface DeleteWorkoutDialogProps {
+  workoutId: string;
+}
+
+export function DeleteWorkoutDialog({ workoutId }: DeleteWorkoutDialogProps) {
+  const router = useRouter();
+  const { mutate, isPending } = useDeleteWorkout(workoutId);
+
+  const handleDelete = () => {
+    mutate();
+    router.push("/dashboard");
+  };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -32,7 +45,19 @@ export function DeleteWorkoutDialog() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-600 text-white font-heading" >Delete workout</AlertDialogAction>
+          <AlertDialogAction
+            onClick={handleDelete}
+            className="bg-red-600 text-white font-heading"
+          >
+            {isPending ? (
+              <>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current uppercase" />
+                Deleteing workout...
+              </>
+            ) : (
+              "Delete workout"
+            )}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
