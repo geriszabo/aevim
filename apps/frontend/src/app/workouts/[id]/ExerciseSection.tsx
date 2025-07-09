@@ -50,6 +50,8 @@ export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
             {exercises &&
               exercises.map((exercise) => (
                 <ExerciseCard
+                  exerciseId={exercise.exercise_id}
+                  workoutId={workoutId}
                   key={exercise.id}
                   name={exercise.name}
                   category={exercise.category}

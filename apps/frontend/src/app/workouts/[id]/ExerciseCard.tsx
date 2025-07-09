@@ -11,15 +11,27 @@ import { Plus } from "lucide-react";
 interface ExerciseCardProps {
   name: string;
   category?: string | null;
+  workoutId: string;
+  exerciseId: string;
 }
 
-export const ExerciseCard = ({ name, category }: ExerciseCardProps) => {
+export const ExerciseCard = ({
+  name,
+  exerciseId,
+  workoutId,
+}: ExerciseCardProps) => {
+  console.log({workoutId})
+  console.log({exerciseId})
   return (
     <div className="space-y-4">
       <div className="group relative border rounded-lg p-4 hover:shadow-md transition-shadow bg-card">
         <div className="flex items-start gap-4">
           <div className="flex-1 space-y-4">
-            <ExerciseCardHeader name={name} category={category ?? "No category added"} />
+            <ExerciseCardHeader
+              name={name}
+              workoutId={workoutId}
+              exerciseId={exerciseId}
+            />
             <ExerciseCardInfo />
             <div className="flex items-center justify-between">
               <Label className="text-xs text-muted-foreground">Sets</Label>
