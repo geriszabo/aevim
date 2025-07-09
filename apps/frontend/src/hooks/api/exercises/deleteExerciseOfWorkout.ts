@@ -1,0 +1,26 @@
+import env from "@/env";
+import { handleApiError } from "@/utils/handleApiError";
+import { API_ROUTES } from "@aevim/shared-types";
+
+export const deleteExerciseOfWorkout = async (
+  workoutId: string,
+  exerciseId: string
+) => {
+  const response = await fetch(
+    `${env.API_BASE_URL}${API_ROUTES.exercises.workoutSingle(
+      workoutId,
+      exerciseId
+    )}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
+  if (!response.ok) {
+    handleApiError(response);
+  }
+  return response.json();
+};
