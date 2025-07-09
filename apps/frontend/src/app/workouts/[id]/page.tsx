@@ -9,6 +9,7 @@ import { use } from "react";
 import { EditWorkoutSection } from "./EditWorkoutSection";
 import { ExerciseSection } from "./ExerciseSection";
 import { useGetWorkout } from "@/hooks/workouts/useGetWorkout";
+import { DeleteWorkoutDialog } from "./DeleteWorkoutDialog";
 
 export default function WorkoutPage({
   params,
@@ -49,6 +50,7 @@ export default function WorkoutPage({
         workoutId={workoutId}
       />
       <ExerciseSection workoutId={workoutId} />
+      <DeleteWorkoutDialog />
     </PageContainer>
   );
 }
