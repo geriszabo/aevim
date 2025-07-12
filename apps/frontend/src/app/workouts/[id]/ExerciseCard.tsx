@@ -20,8 +20,6 @@ export const ExerciseCard = ({
   exerciseId,
   workoutId,
 }: ExerciseCardProps) => {
-  console.log({workoutId})
-  console.log({exerciseId})
   return (
     <div className="space-y-4">
       <div className="group relative border rounded-lg p-4 hover:shadow-md transition-shadow bg-card">

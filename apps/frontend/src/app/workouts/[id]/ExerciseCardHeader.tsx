@@ -18,7 +18,6 @@ export const ExerciseCardHeader = ({
   const { mutate } = useDeleteExerciseOfWorkout(workoutId, exerciseId);
 
   const handleDelete = () => {
-    console.log(workoutId, exerciseId);
     mutate();
   };
   return (

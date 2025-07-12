@@ -1,5 +1,6 @@
 import { FormDialog } from "@/components/Form/FormDialog";
 import { FormInputField } from "@/components/Form/FormInputField";
+import { FormTextareaField } from "@/components/Form/FormTextareaField";
 import { useCreateExerciseToWorkout } from "@/hooks/exercises/useCreateExerciseToWorkout";
 import {
   CreateExerciseData,
@@ -32,6 +33,7 @@ export const CreateExerciseToWorkoutDialog = ({
     defaultValues: {
       category: "",
       name: "",
+      notes: ""
     },
   });
 
@@ -73,6 +75,13 @@ export const CreateExerciseToWorkoutDialog = ({
         register={register}
         placeholder="cardio"
         error={errors.category}
+      />
+      <FormTextareaField
+        id="notes"
+        label="Notes"
+        register={register}
+        placeholder="Was"
+        error={errors.notes}
       />
     </FormDialog>
   );
