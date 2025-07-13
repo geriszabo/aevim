@@ -324,7 +324,7 @@ describe("/workouts endpoint", () => {
           workout_id: workout.id,
           exercise_id: expect.any(String),
           order_index: index + 1,
-          notes: null,
+          notes: "test note",
           created_at: expect.any(String),
           name: "bench pressing",
           category: "chest",
@@ -369,6 +369,7 @@ describe("/workouts endpoint", () => {
           exercise_id: expect.any(String),
           created_at: expect.any(String),
           order_index: 1,
+          notes: "test note"
         },
       });
     });
@@ -424,6 +425,7 @@ describe("/workouts endpoint", () => {
           exercise_id: expect.any(String),
           created_at: expect.any(String),
           order_index: 2,
+          notes: "test note"
         },
       });
     });

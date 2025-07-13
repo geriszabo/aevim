@@ -43,7 +43,7 @@ export const insertExerciseToWorkout = (
   checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
   const exerciseId = randomUUID();
   const workoutExerciseId = randomUUID();
-  const { name, category } = exerciseData;
+  const { name, category, notes } = exerciseData;
   const maxOrder = db
     .query(
       `
@@ -75,17 +75,18 @@ export const insertExerciseToWorkout = (
     const workoutExercise = db
       .query(
         `
-      INSERT INTO workout_exercises (id, workout_id, exercise_id, order_index)
-      VALUES (?, ?, ?, ?)
-      RETURNING id, workout_id, exercise_id, order_index, created_at
-    `
+  INSERT INTO workout_exercises (id, workout_id, exercise_id, order_index, notes)
+  VALUES (?, ?, ?, ?, ?)
+  RETURNING id, workout_id, exercise_id, order_index, notes, created_at
+`
       )
       .get(
         workoutExerciseId,
         workoutId,
         exerciseId,
-        nextOrder
-      ) as ExerciseToWorkout;
+        nextOrder,
+        notes || null
+      )
 
     return { exercise, workoutExercise };
   });

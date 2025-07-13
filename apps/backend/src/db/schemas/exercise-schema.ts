@@ -4,8 +4,8 @@ import { z } from "zod";
 export const exerciseSchema = z.object({
   name: z.string({ message: "You have to give the exercise a name" }),
   category: z.string().nullable().optional(),
+  notes: z.string().optional(),
 });
-
 
 export const exerciseValidator = zValidator(
   "json",
@@ -27,9 +27,12 @@ const exerciseUpdateSchema = z
     name: z
       .string({ message: "No string for name update provided" })
       .optional(),
+    notes: z
+      .string({ message: "No string for notes update provided" })
+      .optional(),
     category: z
       .string({ message: "No string for category update provided" })
-      .optional()
+      .optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "At least one field must be provided",

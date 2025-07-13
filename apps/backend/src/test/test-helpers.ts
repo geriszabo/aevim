@@ -49,14 +49,13 @@ export const getAuthMeAndReturn = async (cookie: string) => {
   }
 
   if (authMeRes.ok) {
-    const user = json as { id: string; email: string, username: string };
+    const user = json as { id: string; email: string; username: string };
     return { authMeRes, user, success: true as const };
   } else {
     const user = json as { errors: string[] };
     return { authMeRes, user, success: false as const };
   }
 };
-
 
 export const createWorkoutAndReturn = async (
   cookie: string,
@@ -87,7 +86,11 @@ export const createWorkoutAndReturn = async (
 export const createExerciseAddToWorkoutAndReturn = async (
   cookie: string,
   workoutId: string,
-  { name, category }: { name?: string; category?: string } = {}
+  {
+    name,
+    category,
+    notes,
+  }: { name?: string; category?: string; notes?: string } = {}
 ) => {
   const exerciseRes = await app.fetch(
     addExerciseToWorkoutRequest({
@@ -95,6 +98,7 @@ export const createExerciseAddToWorkoutAndReturn = async (
       workoutId,
       category,
       name,
+      notes
     })
   );
   const json = await exerciseRes.json();
@@ -186,7 +190,11 @@ export const getAllWorkoutsAndReturn = async (cookie: string) => {
   return { workoutsRes, workouts };
 };
 
-export const signupAndReturn = async (email?: string, password?: string, username?: string) => {
+export const signupAndReturn = async (
+  email?: string,
+  password?: string,
+  username?: string
+) => {
   const signupRes = await app.fetch(signupRequest(email, password, username));
   const json = await signupRes.json();
   return { signupRes, json };
@@ -205,7 +213,11 @@ export const logoutAndReturn = async () => {
   return { logoutRes, cookie };
 };
 
-export const completeAuthFlow = async (email?: string, password?: string, username?: string) => {
+export const completeAuthFlow = async (
+  email?: string,
+  password?: string,
+  username?: string
+) => {
   await signupAndReturn(email, password, username);
   return await loginAndReturn(email, password);
 };

@@ -164,13 +164,14 @@ export const addExerciseToWorkoutRequest = ({
   category = "chest",
   cookie = "",
   workoutId = "workout123",
+  notes = "test note"
 }): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.exercises.workout(workoutId),
     cookie,
     {
       method: "POST",
-      body: { name, category },
+      body: { name, category, notes },
     }
   );
 };
