@@ -17,6 +17,13 @@ export interface ApiError {
   errors: string[];
 }
 
+interface ApiResponse {
+  message: string;
+}
+
+export type DeleteWorkoutResponse = ApiResponse;
+export type DeleteExerciseOfWorkoutResponse = ApiResponse;
+
 export interface GetWorkoutsResponse {
   workouts: WorkoutWithoutUserId[];
 }
@@ -25,8 +32,7 @@ export interface GetWorkoutResponse {
   workout: WorkoutWithoutUserId;
 }
 
-export interface CreateWorkoutResponse {
-  message: string;
+export interface CreateWorkoutResponse extends ApiResponse {
   workout: WorkoutWithoutUserId;
 }
 
@@ -34,29 +40,19 @@ export interface GetWorkoutOverviewResponse {
   overview: WorkoutOverview;
 }
 
-export interface DeleteWorkoutResponse {
-  message: string;
-}
-
-export interface UpdateWorkoutResponse {
-  message: string;
+export interface UpdateWorkoutResponse extends ApiResponse {
   workout: WorkoutWithoutUserId;
 }
 
-export interface CreateExerciseResponse {
-  message: string;
+export interface CreateExerciseResponse extends ApiResponse {
   exercise: Omit<Exercise, "user_id">;
   workoutExercise: ExerciseToWorkout;
 }
+
 export interface GetExercisesOfWorkoutResponse {
   exercises: Omit<WorkoutExercise, "user_id">[];
 }
 
-export interface DeleteExerciseOfWorkoutResponse {
-  message: string;
-}
-
-export interface CreateSetResponse {
-  message: string;
+export interface CreateSetResponse extends ApiResponse {
   set: Set;
 }
