@@ -55,6 +55,7 @@ export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
                   key={exercise.id}
                   name={exercise.name}
                   category={exercise.category}
+                  notes={exercise.notes}
                 />
               ))}
           </CardContent>

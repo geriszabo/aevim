@@ -11,6 +11,7 @@ import { Plus } from "lucide-react";
 interface ExerciseCardProps {
   name: string;
   category?: string | null;
+  notes?: string | null;
   workoutId: string;
   exerciseId: string;
 }
@@ -19,6 +20,7 @@ export const ExerciseCard = ({
   name,
   exerciseId,
   workoutId,
+  notes,
 }: ExerciseCardProps) => {
   return (
     <div className="space-y-4">
@@ -56,6 +58,7 @@ export const ExerciseCard = ({
               <Input
                 placeholder="Add notes for this exercise..."
                 className="h-10"
+                defaultValue={notes ?? ""}
               />
             </div>
           </div>
