@@ -32,7 +32,7 @@ export const CreateWorkoutDialog = ({
     mode: "onChange",
     defaultValues: {
       name: "",
-      date: "",
+      date: new Date().toISOString().split("T")[0],
       notes: "",
     },
   });
