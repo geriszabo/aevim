@@ -4,6 +4,7 @@ import type {
   Exercise,
   ExerciseToWorkout,
   WorkoutExercise,
+  Set,
 } from "@aevim/shared-types";
 
 export interface ApiErrorResponse {
@@ -53,4 +54,9 @@ export interface GetExercisesOfWorkoutResponse {
 
 export interface DeleteExerciseOfWorkoutResponse {
   message: string;
+}
+
+export interface CreateSetResponse {
+  message: string;
+  set: Set;
 }
