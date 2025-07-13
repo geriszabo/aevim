@@ -11,7 +11,7 @@ export const useCreateExerciseToWorkout = (workoutId: string) => {
     mutationFn: (exerciseData: CreateExerciseData) =>
       postExerciseToWorkout({ workoutId, exerciseData }),
     onSuccess: (data) => {
-      toast.success(data.message || "Exercise added successfully!");
+      toast.success(data.message);
 
       queryClient.invalidateQueries({ queryKey: ["workout", workoutId] });
       queryClient.invalidateQueries({
