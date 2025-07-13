@@ -6,6 +6,7 @@ import { ExerciseCardInfo } from "./ExerciseCardInfo";
 import { ExerciseCardRow } from "./ExerciseCardRow";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { ExerciseCardMetricSelect } from "./ExerciseCardMetricSelect";
 
 //TODO: make this drag and droppable
 interface ExerciseCardProps {
@@ -14,6 +15,7 @@ interface ExerciseCardProps {
   notes?: string | null;
   workoutId: string;
   exerciseId: string;
+  exerciseOrder: number;
 }
 
 export const ExerciseCard = ({
@@ -21,6 +23,7 @@ export const ExerciseCard = ({
   exerciseId,
   workoutId,
   notes,
+  exerciseOrder,
 }: ExerciseCardProps) => {
   return (
     <div className="space-y-4">
@@ -32,7 +35,7 @@ export const ExerciseCard = ({
               workoutId={workoutId}
               exerciseId={exerciseId}
             />
-            <ExerciseCardInfo />
+            <ExerciseCardInfo exerciseOrder={exerciseOrder} />
             <div className="flex items-center justify-between">
               <Label className="text-xs text-muted-foreground">Sets</Label>
               <Button
@@ -45,10 +48,10 @@ export const ExerciseCard = ({
                 Add Set
               </Button>
             </div>
-            <div className="grid grid-cols-4 gap-2 text-xs text-muted-foreground font-medium px-2">
+            <div className="grid grid-cols-4 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
               <span>Set</span>
               <span>Reps</span>
-              <span>Weight</span>
+              <ExerciseCardMetricSelect />
             </div>
             <ExerciseCardRow />
             <div>

@@ -48,14 +48,13 @@ export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
               <EmptyExerciseListPlaceholder />
             )}
             {exercises &&
-              exercises.map((exercise) => (
+              exercises.map((exercise, index) => (
                 <ExerciseCard
+                  {...exercise}
+                  exerciseOrder={index + 1}
                   exerciseId={exercise.exercise_id}
                   workoutId={workoutId}
                   key={exercise.id}
-                  name={exercise.name}
-                  category={exercise.category}
-                  notes={exercise.notes}
                 />
               ))}
           </CardContent>

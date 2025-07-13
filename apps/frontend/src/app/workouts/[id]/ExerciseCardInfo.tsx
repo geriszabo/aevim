@@ -1,7 +1,11 @@
 import { Label } from "@/components/ui/label";
 import React from "react";
 
-export const ExerciseCardInfo = () => {
+export const ExerciseCardInfo = ({
+  exerciseOrder,
+}: {
+  exerciseOrder: number;
+}) => {
   return (
     <div className="grid grid-cols-2 gap-4">
       <div>
@@ -17,7 +21,7 @@ export const ExerciseCardInfo = () => {
           Order
         </Label>
         <div className="h-10 px-3 py-2 bg-muted rounded-md flex items-center text-sm font-medium text-muted-foreground">
-          #2
+          #{exerciseOrder}
         </div>
       </div>
     </div>
