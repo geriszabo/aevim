@@ -41,7 +41,7 @@ export const LoginCard = () => {
 
   return (
     <>
-      <Card className="shadow-lg">
+      <Card className="shadow-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold font-heading">
             Welcome Back

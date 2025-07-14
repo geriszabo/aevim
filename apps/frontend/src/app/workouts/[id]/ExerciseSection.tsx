@@ -21,7 +21,7 @@ export const ExerciseSection = ({ workoutId }: { workoutId: string }) => {
   return (
     <SectionContainer padding="sm">
       <ContentContainer>
-        <Card className="shadow-lg w-full max-w-4xl mx-auto">
+        <Card className="shadow-md w-full max-w-4xl mx-auto">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">

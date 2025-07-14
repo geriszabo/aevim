@@ -41,7 +41,7 @@ export const SignupCard = () => {
   };
   return (
     <>
-      <Card className="shadow-lg">
+      <Card className="shadow-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold font-heading">
             Join the Movement

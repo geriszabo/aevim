@@ -26,7 +26,7 @@ export const EditWorkoutSection = ({
   return (
     <SectionContainer padding="sm" >
       <ContentContainer>
-        <Card className="shadow-lg max-w-4xl mx-auto">
+        <Card className="shadow-md max-w-4xl mx-auto">
           <CardHeader className="flex justify-between align-super content-end">
             <CardTitle className="font-heading text-xl">
               Workout Details

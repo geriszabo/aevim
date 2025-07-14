@@ -27,7 +27,7 @@ export const ExerciseCard = ({
 }: ExerciseCardProps) => {
   return (
     <div className="space-y-4">
-      <div className="group relative border rounded-lg p-4 hover:shadow-md transition-shadow bg-card">
+      <div className="group relative border rounded-lg p-4 bg-card">
         <div className="flex items-start gap-4">
           <div className="flex-1 space-y-4">
             <ExerciseCardHeader
