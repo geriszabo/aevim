@@ -18,18 +18,43 @@ export const createTable = (
     `);
 };
 
-export const generateToken = async (userId: string) => {
+export const generateAccessToken = async (userId: string) => {
   const secret = env.JWT_SECRET;
   const now = Math.floor(Date.now() / 1000);
 
   const payload = {
     sub: userId,
-    iat: now, //IssuedAtTime
-    exp: now + 1 * 60 * 60, //expires in 1 hour
+    type: "access",
+    iat: now,
+    exp: now + 15 * 60, // 15 minutes
   };
 
   const token = await sign(payload, secret);
   return token;
+};
+
+export const generateRefreshToken = async (userId: string) => {
+  const secret = env.REFRESH_TOKEN_SECRET;
+  const now = Math.floor(Date.now() / 1000);
+
+  const payload = {
+    sub: userId,
+    type: "refresh",
+    iat: now,
+    exp: now + 7 * 24 * 60 * 60, // 7 days
+  };
+
+  const token = await sign(payload, secret);
+  return token;
+};
+
+export const generateTokenPair = async (userId: string) => {
+  const [accessToken, refreshToken] = await Promise.all([
+    generateAccessToken(userId),
+    generateRefreshToken(userId),
+  ]);
+
+  return { accessToken, refreshToken };
 };
 
 export const cookieOptions: CookieOptions = {
@@ -38,6 +63,14 @@ export const cookieOptions: CookieOptions = {
   sameSite: "Lax", // or Strict
   path: "/",
   maxAge: 3600, //1 hour
+};
+
+export const refreshCookieOptions: CookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "Lax",
+  path: "/",
+  maxAge: 7 * 24 * 60 * 60, // 7 days (matches token expiration)
 };
 
 const ERROR_MAPPINGS = {

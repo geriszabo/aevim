@@ -6,7 +6,12 @@ import {
   getUserById,
   insertUser,
 } from "../db/queries/auth-queries";
-import { cookieOptions, generateToken, handleError } from "../helpers";
+import {
+  cookieOptions,
+  generateTokenPair,
+  handleError,
+  refreshCookieOptions,
+} from "../helpers";
 import { deleteCookie, setCookie } from "hono/cookie";
 import { loginValidator } from "../db/schemas/login-schema";
 
@@ -19,10 +24,11 @@ auth
     try {
       //Get userId
       const userId = await insertUser(db, email, password, username);
-      //Generate token
-      const token = await generateToken(userId);
+      //Generate both tokens
+      const { accessToken, refreshToken } = await generateTokenPair(userId);
       //Set to cookie
-      setCookie(c, "authToken", token, cookieOptions);
+      setCookie(c, "authToken", accessToken, cookieOptions);
+      setCookie(c, "refreshToken", refreshToken, refreshCookieOptions);
       //Return success
       return c.json({
         message: "User registered successfully",
@@ -47,8 +53,10 @@ auth
         throw new Error("PASSWORD_MISMATCH");
       }
 
-      const token = await generateToken(user.id);
-      setCookie(c, "authToken", token, cookieOptions);
+      const { accessToken, refreshToken } = await generateTokenPair(user.id);
+      setCookie(c, "authToken", accessToken, cookieOptions);
+      setCookie(c, "refreshToken", refreshToken, refreshCookieOptions);
+
       return c.json({
         message: "Login successful",
         user: { id: user.id, email },
@@ -64,11 +72,21 @@ auth
       sameSite: "Lax",
       httpOnly: true,
     });
+    deleteCookie(c, "refreshToken", {
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
+      httpOnly: true,
+    });
     return c.json({ message: "Logout successful" }, 200);
   })
   .get("/auth/me", async (c) => {
     const db = dbConnect();
     const payload = c.get("jwtPayload");
+
+    if (payload.type !== "access") {
+      return c.json({ errors: ["Invalid token type"] }, 401);
+    }
     try {
       const user = getUserById(db, payload.sub);
       if (!user) {
