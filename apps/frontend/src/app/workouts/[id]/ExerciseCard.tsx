@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React from "react";
 import { ExerciseCardHeader } from "./ExerciseCardHeader";
 import { ExerciseCardInfo } from "./ExerciseCardInfo";
@@ -7,6 +8,9 @@ import { ExerciseCardRow } from "./ExerciseCardRow";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { ExerciseCardMetricSelect } from "./ExerciseCardMetricSelect";
+import { FormButton } from "@/components/Form/FormButton";
+import { useState } from "react";
+import { Metric } from "@/types/metrics";
 
 //TODO: make this drag and droppable
 interface ExerciseCardProps {
@@ -25,48 +29,62 @@ export const ExerciseCard = ({
   notes,
   exerciseOrder,
 }: ExerciseCardProps) => {
+  const [selectedMetric, setSelectedMetric] = useState<Metric>();
+  console.log(selectedMetric)
   return (
-    <div className="space-y-4">
-      <div className="group relative border rounded-lg p-4 bg-card">
-        <div className="flex items-start gap-4">
-          <div className="flex-1 space-y-4">
-            <ExerciseCardHeader
-              name={name}
-              workoutId={workoutId}
-              exerciseId={exerciseId}
-            />
-            <ExerciseCardInfo exerciseOrder={exerciseOrder} />
-            <div className="flex items-center justify-between">
-              <Label className="text-xs text-muted-foreground">Sets</Label>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {}}
-                className="h-8 text-xs"
-              >
-                <Plus className="h-3 w-3 mr-1" />
-                Add Set
-              </Button>
-            </div>
-            <div className="grid grid-cols-4 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
-              <span>Set</span>
-              <span>Reps</span>
-              <ExerciseCardMetricSelect />
-            </div>
-            <ExerciseCardRow />
-            <div>
-              <Label className="text-xs text-muted-foreground mb-1 block">
-                Exercise Notes
-              </Label>
-              <Input
-                placeholder="Add notes for this exercise..."
-                className="h-10"
-                defaultValue={notes ?? ""}
-              />
-            </div>
-          </div>
+    <Card className="mb-4">
+      <CardHeader className="pb-3">
+        <ExerciseCardHeader
+          name={name}
+          workoutId={workoutId}
+          exerciseId={exerciseId}
+        />
+        <ExerciseCardInfo exerciseOrder={exerciseOrder} />
+      </CardHeader>
+
+      <CardContent className="space-y-4">
+        {/* Sets Section */}
+        <div className="flex items-center justify-between">
+          <Label className="text-xs text-muted-foreground">Sets</Label>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {}}
+            className="h-8 text-xs"
+          >
+            <Plus className="h-3 w-3 mr-1" />
+            Add Set
+          </Button>
         </div>
-      </div>
-    </div>
+
+        {/* Sets Table Header */}
+        <div className="grid grid-cols-4 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
+          <span>Set</span>
+          <span>Reps</span>
+          <ExerciseCardMetricSelect
+            value={selectedMetric}
+            onValueChange={setSelectedMetric}
+          />
+        </div>
+
+        {/* Sets List */}
+        <ExerciseCardRow metric={selectedMetric} />
+
+        {/* Exercise Notes Section */}
+        <div className="pt-4 border-t">
+          <Label className="text-xs text-muted-foreground mb-2 block">
+            Exercise Notes
+          </Label>
+          <Input
+            placeholder="Add notes for this exercise..."
+            className="h-10 mb-3"
+            defaultValue={notes ?? ""}
+          />
+          <FormButton type="submit" loadingText="Saving...">
+            Save exercise
+          </FormButton>
+        </div>
+      </CardContent>
+    </Card>
   );
 };

@@ -9,12 +9,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Metric } from "@/types/metrics";
 
-export function ExerciseCardMetricSelect() {
+interface ExerciseCardMetricSelectProps {
+  value?: string;
+  onValueChange?: (value: Metric) => void;
+  placeholder?: string;
+}
+
+export function ExerciseCardMetricSelect({
+  value,
+  onValueChange,
+  placeholder = "Metric",
+}: ExerciseCardMetricSelectProps) {
   return (
-    <Select>
-      <SelectTrigger className="max-w-[180px] text-xs border-none shadow-none p-0" size="sm" >
-        <SelectValue placeholder="Metric" />
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger
+        className="max-w-[180px] text-xs border-none shadow-none p-0"
+        size="sm"
+      >
+        <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
