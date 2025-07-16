@@ -30,7 +30,6 @@ export const ExerciseCard = ({
   exerciseOrder,
 }: ExerciseCardProps) => {
   const [selectedMetric, setSelectedMetric] = useState<Metric>();
-  console.log(selectedMetric)
   return (
     <Card className="mb-4">
       <CardHeader className="pb-3">
@@ -42,7 +41,7 @@ export const ExerciseCard = ({
         <ExerciseCardInfo exerciseOrder={exerciseOrder} />
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-2">
         {/* Sets Section */}
         <div className="flex items-center justify-between">
           <Label className="text-xs text-muted-foreground">Sets</Label>
@@ -58,17 +57,19 @@ export const ExerciseCard = ({
         </div>
 
         {/* Sets Table Header */}
-        <div className="grid grid-cols-4 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
-          <span>Set</span>
-          <span>Reps</span>
-          <ExerciseCardMetricSelect
-            value={selectedMetric}
-            onValueChange={setSelectedMetric}
-          />
-        </div>
+        <div>
+          <div className="grid grid-cols-5 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
+            <span>Set</span>
+            <span>Reps</span>
+            <ExerciseCardMetricSelect
+              value={selectedMetric}
+              onValueChange={setSelectedMetric}
+            />
+          </div>
 
-        {/* Sets List */}
-        <ExerciseCardRow metric={selectedMetric} />
+          {/* Sets List */}
+          <ExerciseCardRow metric={selectedMetric} />
+        </div>
 
         {/* Exercise Notes Section */}
         <div className="pt-4 border-t">
@@ -77,7 +78,7 @@ export const ExerciseCard = ({
           </Label>
           <Input
             placeholder="Add notes for this exercise..."
-            className="h-10 mb-3"
+            className="h-10 mb-3 text-xs"
             defaultValue={notes ?? ""}
           />
           <FormButton type="submit" loadingText="Saving...">
