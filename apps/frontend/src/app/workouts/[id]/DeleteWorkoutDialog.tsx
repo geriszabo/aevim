@@ -29,8 +29,8 @@ export function DeleteWorkoutDialog({ workoutId }: DeleteWorkoutDialogProps) {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          variant="destructive"
-          className="w-full h-12 text-base font-bold font-heading uppercase"
+          variant="outline"
+          className="w-full h-12 text-base font-bold font-heading uppercase text-red-600"
         >
           Delete workout
         </Button>

@@ -10,6 +10,7 @@ import { EditWorkoutSection } from "./EditWorkoutSection";
 import { ExerciseSection } from "./ExerciseSection";
 import { useGetWorkout } from "@/hooks/workouts/useGetWorkout";
 import { DeleteWorkoutDialog } from "./DeleteWorkoutDialog";
+import { FormButton } from "@/components/Form/FormButton";
 
 export default function WorkoutPage({
   params,
@@ -50,7 +51,13 @@ export default function WorkoutPage({
         workoutId={workoutId}
       />
       <ExerciseSection workoutId={workoutId} />
+      <div className="flex flex-col gap-2">
+
+      <FormButton type="submit" loadingText="Saving...">
+        Save exercise
+      </FormButton>
       <DeleteWorkoutDialog workoutId={workoutId} />
+      </div>
     </PageContainer>
   );
 }
