@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React from "react";
 import { ExerciseCardHeader } from "./ExerciseCardHeader";
 import { ExerciseCardInfo } from "./ExerciseCardInfo";
-import { ExerciseCardRow } from "./ExerciseCardRow";
+import { ExerciseCardSetRow } from "./ExerciseCardSetRow";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { ExerciseCardMetricSelect } from "./ExerciseCardMetricSelect";
@@ -101,7 +101,7 @@ export const ExerciseCard = ({
 
           {/* Sets List */}
           {sets.map((set, index) => (
-            <ExerciseCardRow
+            <ExerciseCardSetRow
               key={index}
               setNumber={index + 1}
               metric={selectedMetric}

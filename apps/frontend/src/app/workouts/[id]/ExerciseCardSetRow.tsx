@@ -4,7 +4,7 @@ import { Metric } from "@/types/metrics";
 import { Trash2 } from "lucide-react";
 import React from "react";
 
-interface ExerciseCardRowProps {
+interface ExerciseCardSetRowProps {
   setNumber: number;
   metric?: Metric;
   reps: number;
@@ -14,7 +14,7 @@ interface ExerciseCardRowProps {
   onDelete: () => void;
 }
 
-export const ExerciseCardRow = ({
+export const ExerciseCardSetRow = ({
   setNumber,
   metric,
   reps,
@@ -22,7 +22,7 @@ export const ExerciseCardRow = ({
   onRepsChange,
   onValueChange,
   onDelete,
-}: ExerciseCardRowProps) => {
+}: ExerciseCardSetRowProps) => {
   const getUnit = (metricType: Metric | undefined) => {
     switch (metricType) {
       case "distance":
