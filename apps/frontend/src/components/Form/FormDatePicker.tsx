@@ -17,6 +17,7 @@ import {
   Control,
   Controller,
 } from "react-hook-form";
+import { format } from "date-fns";
 
 interface FormDatePickerProps<T extends FieldValues> {
   id: Path<T>;
@@ -56,7 +57,7 @@ export function FormDatePicker<T extends FieldValues>({
                 }`}
               >
                 {field.value
-                  ? new Date(field.value).toLocaleDateString()
+                  ? format(new Date(field.value), "dd/MM/yyyy")
                   : placeholder}
                 <ChevronDownIcon className="h-4 w-4" />
               </Button>
@@ -73,8 +74,8 @@ export function FormDatePicker<T extends FieldValues>({
                   if (date) {
                     // Format date as YYYY-MM-DD in local timezone
                     const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, "0");
+                    const day = String(date.getDate()).padStart(2, "0");
                     const formattedDate = `${year}-${month}-${day}`;
                     field.onChange(formattedDate);
                   } else {
