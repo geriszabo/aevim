@@ -1,7 +1,12 @@
 import { Label } from "@radix-ui/react-label";
 import { ComponentProps, ReactNode } from "react";
 import { Input } from "../ui/input";
-import { FieldError, FieldValues, Path, UseFormRegister } from "react-hook-form";
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from "react-hook-form";
 
 interface FormInputFieldProps<T extends FieldValues> {
   id: Path<T>;
@@ -42,7 +47,7 @@ export const FormInputField = <T extends FieldValues>({
           id={id}
           type={type}
           placeholder={placeholder}
-          className={`${icon ? "pl-10" : ""} h-12 `}
+          className={`${icon ? "pl-10" : ""} h-12 bg-white`}
           autoComplete={autoComplete}
           autoFocus={autoFocus}
           {...register(id)}

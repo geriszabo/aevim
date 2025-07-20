@@ -44,7 +44,7 @@ export const FormTextareaField = <T extends FieldValues>({
         <Textarea
           id={id}
           placeholder={placeholder}
-          className={`${icon ? "pl-10" : ""} h-28 resize-none`}
+          className={`${icon ? "pl-10" : ""} h-28 resize-none bg-white`}
           autoComplete={autoComplete}
           autoFocus={autoFocus}
           {...register(id)}
