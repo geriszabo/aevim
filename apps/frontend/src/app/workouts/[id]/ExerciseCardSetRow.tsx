@@ -3,24 +3,22 @@ import { Input } from "@/components/ui/input";
 import { Metric } from "@/types/metrics";
 import { Trash2 } from "lucide-react";
 import React from "react";
+import { UseFieldArrayRemove, UseFormRegister } from "react-hook-form";
+import { WorkoutFormValues } from "../createnew/page";
 
 interface ExerciseCardSetRowProps {
-  setNumber: number;
+  register: UseFormRegister<WorkoutFormValues>;
+  exerciseIndex: number;
+  setIndex: number;
   metric?: Metric;
-  reps: number;
-  value: number;
-  onRepsChange: (value: number) => void;
-  onValueChange: (value: number) => void;
-  onDelete: () => void;
+  onDelete: UseFieldArrayRemove;
 }
 
 export const ExerciseCardSetRow = ({
-  setNumber,
+  register,
+  exerciseIndex,
+  setIndex,
   metric,
-  reps,
-  value,
-  onRepsChange,
-  onValueChange,
   onDelete,
 }: ExerciseCardSetRowProps) => {
   const getUnit = (metricType: Metric | undefined) => {
@@ -42,21 +40,19 @@ export const ExerciseCardSetRow = ({
     <div className="space-y-3">
       <div className="space-y-2">
         <div className="grid grid-cols-5 gap-2 items-center p-2 bg-muted/50 rounded">
-          <span className="text-xs font-medium"># {setNumber}</span>
+          <span className="text-xs font-medium"># {setIndex + 1}</span>
           <Input
             type="number"
             className="h-8 text-xs"
             placeholder="0"
-            value={reps || ""}
-            onChange={(e) => onRepsChange(Number(e.target.value) || 0)}
+            {...register(`exercises.${exerciseIndex}.sets.${setIndex}.reps`)}
           />
           <div className="relative col-span-2">
             <Input
               type="number"
               className="h-8 text-xs pr-8 text-right"
               placeholder="0"
-              value={value || ""}
-              onChange={(e) => onValueChange(Number(e.target.value) || 0)}
+              {...register(`exercises.${exerciseIndex}.sets.${setIndex}.value`)}
             />
             {unit && (
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
@@ -68,7 +64,7 @@ export const ExerciseCardSetRow = ({
             variant="ghost"
             size="sm"
             className="h-8 w-8 p-0 text-red-500 hover:text-red-600 ml-auto"
-            onClick={onDelete}
+            onClick={() => onDelete()}
           >
             <Trash2 className="h-3 w-3" />
           </Button>
