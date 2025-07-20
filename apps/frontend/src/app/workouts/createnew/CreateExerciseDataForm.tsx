@@ -16,10 +16,10 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Typography } from "@/components/ui/typography";
 import { WorkoutFormValues } from "./page";
-import { ExerciseCardSetRow } from "../[id]/ExerciseCardSetRow";
+import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCardSetRow";
 import { useState } from "react";
 import { Metric } from "@/types/metrics";
-import { ExerciseCardMetricSelect } from "../[id]/ExerciseCardMetricSelect";
+import { ExerciseCardMetricSelect } from "../../../components/ExerciseCard/ExerciseCardMetricSelect";
 
 interface CreateExerciseDataFormProps {
   register: UseFormRegister<WorkoutFormValues>;

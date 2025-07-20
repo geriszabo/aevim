@@ -108,8 +108,8 @@ export default function WorkoutPage() {
               errors={errors.exercises?.[index] || {}}
             />
           ))}
-          <Button onClick={handleAddExercise} className="w-full font-heading">
-            New exercise
+          <Button onClick={handleAddExercise} variant="outline" className="w-full font-heading mb-4">
+            Add exercise
           </Button>
           <FormButton loadingText="Saving workout..." type="submit">
             Save workout

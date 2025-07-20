@@ -4,7 +4,7 @@ import { Typography } from "@/components/ui/typography";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
 import { EmptyExerciseListPlaceholder } from "./EmptyExerciseListPlaceholder";
-import { ExerciseCard } from "./ExerciseCard";
+import { ExerciseCard } from "../../../components/ExerciseCard/ExerciseCard";
 import { SectionContainer } from "@/components/layouts/SectionContainer";
 import { ContentContainer } from "@/components/layouts/ContentContainer";
 import { useGetExercisesOfWorkout } from "@/hooks/exercises/useGetExercisesOfWorkout";

@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React from "react";
 import { ExerciseCardHeader } from "./ExerciseCardHeader";
 import { ExerciseCardInfo } from "./ExerciseCardInfo";
-import { ExerciseCardSetRow } from "./ExerciseCardSetRow";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { ExerciseCardMetricSelect } from "./ExerciseCardMetricSelect";
@@ -45,23 +44,6 @@ export const ExerciseCard = ({
     setSets([...sets, newSet]);
   };
 
-  const handleSetUpdate = (
-    index: number,
-    field: "reps" | "value",
-    value: number
-  ) => {
-    const newSets = [...sets];
-    newSets[index] = {
-      ...newSets[index],
-      [field]: value,
-    };
-    setSets(newSets);
-  };
-
-  const handleDeleteSet = (index: number) => {
-    setSets(sets.filter((_, i) => i !== index));
-  };
-
   return (
     <Card className="mb-4">
       <CardHeader className="pb-3">
@@ -100,18 +82,15 @@ export const ExerciseCard = ({
           </div>
 
           {/* Sets List */}
-          {sets.map((set, index) => (
+          {/* {sets.map((set, index) => (
             <ExerciseCardSetRow
               key={index}
-              setNumber={index + 1}
-              metric={selectedMetric}
-              reps={set.reps}
-              value={set.value}
-              onRepsChange={(value) => handleSetUpdate(index, "reps", value)}
-              onValueChange={(value) => handleSetUpdate(index, "value", value)}
-              onDelete={() => handleDeleteSet(index)}
+              register={register}
+              exerciseIndex={id}
+              setIndex={index}
+              onDelete={() => removeSet(index)}
             />
-          ))}
+          ))} */}
         </div>
 
         {/* Exercise Notes Section */}
