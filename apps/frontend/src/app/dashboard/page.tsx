@@ -54,10 +54,6 @@ export default function Dashboard() {
     }
   };
 
-  function handleOpenCreateWorkoutDialog() {
-    setIsOpen(true);
-  }
-
   return (
     <PageContainer display="block">
       <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b">
@@ -108,7 +104,7 @@ export default function Dashboard() {
             <Button
               size="lg"
               className="w-full h-14 text-lg font-bold font-heading"
-              onClick={handleOpenCreateWorkoutDialog}
+              onClick={() => router.push("/workouts/create")}
             >
               <Play className="mr-2 h-5 w-5" />
               QUICK START
