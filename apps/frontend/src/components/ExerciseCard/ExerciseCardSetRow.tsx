@@ -1,10 +1,10 @@
+import { WorkoutFormValues } from "@/app/workouts/create/page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Metric } from "@/types/metrics";
 import { Trash2 } from "lucide-react";
 import React from "react";
 import { UseFieldArrayRemove, UseFormRegister } from "react-hook-form";
-import { WorkoutFormValues } from "../../app/workouts/createnew/page";
 
 interface ExerciseCardSetRowProps {
   register: UseFormRegister<WorkoutFormValues>;
