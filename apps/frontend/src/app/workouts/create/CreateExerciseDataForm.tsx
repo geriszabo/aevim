@@ -8,6 +8,7 @@ import {
   Control,
   UseFieldArrayRemove,
   useFieldArray,
+  UseFormGetValues,
 } from "react-hook-form";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -27,6 +28,7 @@ interface CreateExerciseDataFormProps {
   control: Control<WorkoutFormValues>;
   id: number;
   onDelete: UseFieldArrayRemove;
+  onNewSetAppending: UseFormGetValues<WorkoutFormValues>;
 }
 
 export const CreateExerciseDataForm = ({
@@ -35,6 +37,7 @@ export const CreateExerciseDataForm = ({
   register,
   onDelete,
   id,
+  onNewSetAppending,
 }: CreateExerciseDataFormProps) => {
   const [selectedMetric, setSelectedMetric] = useState<Metric>();
   const {
@@ -47,76 +50,79 @@ export const CreateExerciseDataForm = ({
   });
 
   const handleAddSet = () => {
+    const data = onNewSetAppending();
+    const sets = data.exercises[id].sets;
+    const lastSet = sets[sets.length - 1];
+
     appendSet({
-      reps: 0,
-      value: 0,
+      reps: lastSet?.reps ?? 0,
+      value: lastSet?.value ?? 0,
     });
   };
+  
   return (
-    <>
-      <Card className="mb-4">
-        <CardHeader className="pb-3">
-          <div className="flex justify-between">
-            <Typography variant="heading" size="lg">
-              Exercise nr. {id + 1}
-            </Typography>
+    <Card className="mb-4">
+      <CardHeader className="pb-3">
+        <div className="flex justify-between">
+          <Typography variant="heading" size="lg">
+            Exercise nr. {id + 1}
+          </Typography>
+          <Button
+            className="ml-auto"
+            variant="ghost"
+            size="icon"
+            onClick={() => onDelete()}
+          >
+            <Trash2 className="text-red-600" />
+          </Button>
+        </div>
+
+        <FormInputField
+          id={`exercises.${id}.name`}
+          label="Exercise name"
+          type="text"
+          register={register}
+          placeholder="Pull ups"
+          error={errors.name}
+        />
+        <FormInputField
+          id={`exercises.${id}.category`}
+          label="Exercise category"
+          type="text"
+          register={register}
+          placeholder="cardio"
+          error={errors.category}
+        />
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <div>
+          <div className="grid grid-cols-5 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
+            <span>Set</span>
+            <span>Reps</span>
+            <ExerciseCardMetricSelect
+              value={selectedMetric}
+              onValueChange={setSelectedMetric}
+            />
             <Button
-              className="ml-auto"
-              variant="ghost"
+              variant="outline"
               size="icon"
-              onClick={() => onDelete()}
+              className="h-6 ml-auto col-span-2"
+              onClick={handleAddSet}
             >
-              <Trash2 className="text-red-600" />
+              +
             </Button>
           </div>
-
-          <FormInputField
-            id={`exercises.${id}.name`}
-            label="Exercise name"
-            type="text"
-            register={register}
-            placeholder="Pull ups"
-            error={errors.name}
-          />
-          <FormInputField
-            id={`exercises.${id}.category`}
-            label="Exercise category"
-            type="text"
-            register={register}
-            placeholder="cardio"
-            error={errors.category}
-          />
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div>
-            <div className="grid grid-cols-5 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
-              <span>Set</span>
-              <span>Reps</span>
-              <ExerciseCardMetricSelect
-                value={selectedMetric}
-                onValueChange={setSelectedMetric}
-              />
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-6 ml-auto col-span-2"
-                onClick={handleAddSet}
-              >
-                +
-              </Button>
-            </div>
-            {setFields.map((set, index) => (
-              <ExerciseCardSetRow
-                key={index}
-                register={register}
-                exerciseIndex={id}
-                setIndex={index}
-                onDelete={() => removeSet(index)}
-              />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </>
+          {setFields.map((set, index) => (
+            <ExerciseCardSetRow
+              key={index}
+              register={register}
+              exerciseIndex={id}
+              setIndex={index}
+              onDelete={() => removeSet(index)}
+            />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };

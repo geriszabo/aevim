@@ -20,7 +20,7 @@ export type WorkoutFormValues = {
     name: string;
     category?: string | null | undefined;
     notes?: string | null | undefined;
-    sets: {reps: number, value: number}[];
+    sets: { reps: number; value: number }[];
   }[];
 };
 
@@ -29,7 +29,7 @@ export default function WorkoutPage() {
     register,
     control,
     handleSubmit,
-
+    getValues,
     formState: { errors },
   } = useForm<WorkoutFormValues>({
     defaultValues: {
@@ -40,6 +40,7 @@ export default function WorkoutPage() {
       },
       exercises: [],
     },
+    mode: "onSubmit",
   });
 
   const {
@@ -56,7 +57,12 @@ export default function WorkoutPage() {
       name: "",
       category: "",
       notes: "",
-      sets: [],
+      sets: [
+        {
+          reps: 0,
+          value: 0,
+        },
+      ],
     });
   };
 
@@ -106,9 +112,14 @@ export default function WorkoutPage() {
               id={index}
               onDelete={() => removeExercise(index)}
               errors={errors.exercises?.[index] || {}}
+              onNewSetAppending={getValues}
             />
           ))}
-          <Button onClick={handleAddExercise} variant="outline" className="w-full font-heading mb-4">
+          <Button
+            onClick={handleAddExercise}
+            variant="outline"
+            className="w-full font-heading mb-4"
+          >
             Add exercise
           </Button>
           <FormButton loadingText="Saving workout..." type="submit">
