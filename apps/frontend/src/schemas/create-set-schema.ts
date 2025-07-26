@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 
 export const createSetSchema = z.object({
   reps: z.number().min(1, "Reps must be at least 1"),

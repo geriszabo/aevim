@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
+import { z } from "zod/v4";
 
 export const setSchema = z.object({
   reps: z.number().min(1, "Reps must be at least 1"),
