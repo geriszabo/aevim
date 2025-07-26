@@ -13,18 +13,21 @@ import { FormInputField } from "@/components/Form/FormInputField";
 import { FormDatePicker } from "@/components/Form/FormDatePicker";
 import { FormTextareaField } from "@/components/Form/FormTextareaField";
 import { CreateExerciseDataForm } from "./CreateExerciseDataForm";
+import { useCreateCompleteWorkout } from "@/hooks/workouts/useCreateCompleteWorkout";
 
 export type WorkoutFormValues = {
-  workoutData: CreateWorkoutData;
+  workout: CreateWorkoutData;
   exercises: {
     name: string;
     category?: string | null | undefined;
     notes?: string | null | undefined;
+    metric: string;
     sets: { reps: number; value: number }[];
   }[];
 };
 
 export default function WorkoutPage() {
+  const {mutate} = useCreateCompleteWorkout();
   const {
     register,
     control,
@@ -33,7 +36,7 @@ export default function WorkoutPage() {
     formState: { errors },
   } = useForm<WorkoutFormValues>({
     defaultValues: {
-      workoutData: {
+      workout: {
         name: "",
         date: new Date().toISOString().split("T")[0],
         notes: "",
@@ -57,6 +60,7 @@ export default function WorkoutPage() {
       name: "",
       category: "",
       notes: "",
+      metric: "",
       sets: [
         {
           reps: 0,
@@ -68,6 +72,8 @@ export default function WorkoutPage() {
 
   const onSubmit = (data: WorkoutFormValues) => {
     console.log(data);
+    mutate({exercises: data.exercises, workout: data.workout})
+
   };
 
   return (
@@ -80,24 +86,24 @@ export default function WorkoutPage() {
       <SectionContainer>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormInputField
-            id="workoutData.name"
+            id="workout.name"
             label="Workout name"
             register={register}
             type="text"
-            error={errors.workoutData?.name}
+            error={errors.workout?.name}
             placeholder="Gym session"
           />
           <FormDatePicker
-            id="workoutData.date"
+            id="workout.date"
             label="Date"
             control={control}
-            error={errors.workoutData?.date}
+            error={errors.workout?.date}
             placeholder="Select workout date"
           />
           <FormTextareaField
-            id="workoutData.notes"
+            id="workout.notes"
             label="Notes for the workout"
-            error={errors.workoutData?.notes}
+            error={errors.workout?.notes}
             placeholder="Heavy session, saw a hot girl doing lifts"
             register={register}
           />

@@ -45,14 +45,19 @@ export const ExerciseCardSetRow = ({
             type="number"
             className="h-8 text-xs"
             placeholder="0"
-            {...register(`exercises.${exerciseIndex}.sets.${setIndex}.reps`)}
+            {...register(`exercises.${exerciseIndex}.sets.${setIndex}.reps`, {
+              valueAsNumber: true,
+            })}
           />
           <div className="relative col-span-2">
             <Input
               type="number"
               className="h-8 text-xs pr-8 text-right"
               placeholder="0"
-              {...register(`exercises.${exerciseIndex}.sets.${setIndex}.value`)}
+              {...register(
+                `exercises.${exerciseIndex}.sets.${setIndex}.value`,
+                { valueAsNumber: true }
+              )}
             />
             {unit && (
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">

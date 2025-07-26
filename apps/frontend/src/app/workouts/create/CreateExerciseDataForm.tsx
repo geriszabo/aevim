@@ -9,6 +9,7 @@ import {
   UseFieldArrayRemove,
   useFieldArray,
   UseFormGetValues,
+  Controller,
 } from "react-hook-form";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -18,8 +19,6 @@ import { Trash2 } from "lucide-react";
 import { Typography } from "@/components/ui/typography";
 import { WorkoutFormValues } from "./page";
 import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCardSetRow";
-import { useState } from "react";
-import { Metric } from "@/types/metrics";
 import { ExerciseCardMetricSelect } from "../../../components/ExerciseCard/ExerciseCardMetricSelect";
 
 interface CreateExerciseDataFormProps {
@@ -39,7 +38,6 @@ export const CreateExerciseDataForm = ({
   id,
   onNewSetAppending,
 }: CreateExerciseDataFormProps) => {
-  const [selectedMetric, setSelectedMetric] = useState<Metric>();
   const {
     fields: setFields,
     append: appendSet,
@@ -99,9 +97,15 @@ export const CreateExerciseDataForm = ({
           <div className="grid grid-cols-5 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
             <span>Set</span>
             <span>Reps</span>
-            <ExerciseCardMetricSelect
-              value={selectedMetric}
-              onValueChange={setSelectedMetric}
+            <Controller
+              control={control}
+              name={`exercises.${id}.metric`}
+              render={({ field }) => (
+                <ExerciseCardMetricSelect
+                  value={field.value}
+                  onValueChange={field.onChange}
+                />
+              )}
             />
             <Button
               variant="outline"
@@ -112,7 +116,7 @@ export const CreateExerciseDataForm = ({
               +
             </Button>
           </div>
-          {setFields.map((set, index) => (
+          {setFields.map((_set, index) => (
             <ExerciseCardSetRow
               key={index}
               register={register}
