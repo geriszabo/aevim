@@ -134,3 +134,74 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/api/v1/auth/workouts/55e04db0-3ed5-4a65-8b92-d1d7361e3aaf/exercises/de8f8f3a-36c4-46aa-befc-b6f4e7bbb7eb
 Cookie: {{login.response.headers.Set-Cookie}}
+
+
+###
+
+POST http://localhost:3000/api/v1/auth/workouts/create
+Cookie: {{login.response.headers.Set-Cookie}}
+Content-Type: application/json
+
+{
+    "workout": {
+        "date": "2025-07-25",
+        "name": "Push Day Workout",
+        "notes": "Focus on chest, shoulders, and triceps"
+    },
+    "exercises": [
+        {
+            "name": "Bench Press",
+            "category": "chest",
+            "notes": "Keep form tight",
+            "metric": "weight",
+            "sets": [
+                {
+                    "reps": 8,
+                    "weight": 80.0,
+                    "notes": "warm up set"
+                },
+                {
+                    "reps": 6,
+                    "weight": 90.0,
+                    "notes": "working set"
+                },
+                {
+                    "reps": 4,
+                    "weight": 100.0,
+                    "notes": "heavy set"
+                }
+            ]
+        },
+        {
+            "name": "Overhead Press",
+            "category": "shoulders",
+            "notes": "Focus on core stability",
+            "metric": "weight",
+            "sets": [
+                {
+                    "reps": 10,
+                    "weight": 50.0,
+                    "notes": "good form"
+                },
+                {
+                    "reps": 8,
+                    "weight": 55.0,
+                    "notes": "challenging"
+                }
+            ]
+        },
+        {
+            "name": "Jogging",
+            "category": "cardio",
+            "notes": "Cardio finisher",
+            "metric": "distance",
+            "sets": [
+                {
+                    "reps": 1,
+                    "distance": 22,
+                    "notes": "was a nice jog"
+                }
+            ]
+        }
+    ]
+}
