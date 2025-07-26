@@ -212,6 +212,7 @@ export const getWorkoutOverviewByWorkoutId = (
       sets.reps AS set_reps,
       sets.weight AS set_weight,
       sets.duration AS set_duration,
+      sets.distance AS set_distance,
       sets.order_index AS set_order_index,
       sets.created_at AS set_created_at
     FROM workout_exercises
@@ -250,6 +251,7 @@ export const getWorkoutOverviewByWorkoutId = (
         reps: row.set_reps,
         weight: row.set_weight,
         duration: row.set_duration,
+        distance: row.set_distance,
         order_index: row.set_order_index,
         created_at: row.set_created_at,
       });
