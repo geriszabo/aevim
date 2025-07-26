@@ -7,6 +7,7 @@ export const API_ROUTES = {
   },
   workouts: {
     base: "/auth/workouts",
+    createComplete: "/auth/workouts/create",
     single: (id: string) => `/auth/workouts/${id}`,
     overview: (id: string) => `/auth/workouts/${id}/overview`,
   },

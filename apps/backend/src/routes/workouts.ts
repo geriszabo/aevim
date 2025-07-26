@@ -26,10 +26,59 @@ import {
   updateSetById,
 } from "../db/queries/set-queries";
 import { handleError } from "../helpers";
+import { completeWorkoutValidator } from "../db/schemas/complete-workout-schema";
 
 const workouts = new Hono();
 
 workouts
+  .post("/workouts/create", completeWorkoutValidator, async (c) => {
+    const db = dbConnect();
+    const payload = c.get("jwtPayload");
+    const {
+      workout: { date, name, notes },
+      exercises,
+    } = c.req.valid("json");
+
+    try {
+      const workout = insertWorkout(db, { date, name, notes }, payload.sub);
+      const { id: workoutId } = workout;
+      for (const exerciseData of exercises) {
+        const { name, category, sets, notes, metric } = exerciseData;
+        const { workoutExercise } = insertExerciseToWorkout(
+          db,
+          { name, category, notes },
+          payload.sub,
+          workoutId
+        );
+
+        const { exercise_id: exerciseId } = workoutExercise;
+        for (const setData of sets) {
+          const set = insertSet(
+            db,
+            {
+              reps: setData.reps,
+              notes: setData.notes,
+              [metric]: setData.value,
+            },
+            payload.sub,
+            workoutId,
+            exerciseId
+          );
+        }
+      }
+      const completeWorkout = getWorkoutOverviewByWorkoutId(
+        db,
+        workoutId,
+        payload.sub
+      );
+      return c.json({
+        message: "Complete workout created successfully",
+        workout: completeWorkout,
+      });
+    } catch (error) {
+      return handleError(c, error);
+    }
+  })
   .post("/workouts", workoutValidator, async (c) => {
     const db = dbConnect();
     const payload = c.get("jwtPayload");
