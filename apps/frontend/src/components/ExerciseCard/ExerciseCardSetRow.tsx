@@ -70,6 +70,7 @@ export const ExerciseCardSetRow = ({
             size="sm"
             className="h-8 w-8 p-0 text-red-500 hover:text-red-600 ml-auto"
             onClick={() => onDelete()}
+            type="button"
           >
             <Trash2 className="h-3 w-3" />
           </Button>

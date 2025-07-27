@@ -112,6 +112,7 @@ export const CreateExerciseDataForm = ({
               size="icon"
               className="h-6 ml-auto col-span-2"
               onClick={handleAddSet}
+              type="button"
             >
               +
             </Button>
