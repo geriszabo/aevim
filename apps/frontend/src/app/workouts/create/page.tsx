@@ -27,7 +27,7 @@ export type WorkoutFormValues = {
 };
 
 export default function WorkoutPage() {
-  const {mutate} = useCreateCompleteWorkout();
+  const { mutate } = useCreateCompleteWorkout();
   const {
     register,
     control,
@@ -71,9 +71,7 @@ export default function WorkoutPage() {
   };
 
   const onSubmit = (data: WorkoutFormValues) => {
-    console.log(data);
-    mutate({exercises: data.exercises, workout: data.workout})
-
+    mutate({ ...data });
   };
 
   return (
@@ -125,6 +123,7 @@ export default function WorkoutPage() {
             onClick={handleAddExercise}
             variant="outline"
             className="w-full font-heading mb-4"
+            type="button"
           >
             Add exercise
           </Button>

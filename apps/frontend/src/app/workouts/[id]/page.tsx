@@ -7,10 +7,10 @@ import { Logo } from "@/components/Logo/Logo";
 import { Typography } from "@/components/ui/typography";
 import { use } from "react";
 import { EditWorkoutSection } from "./EditWorkoutSection";
-import { ExerciseSection } from "./ExerciseSection";
-import { useGetWorkout } from "@/hooks/workouts/useGetWorkout";
+import { ExerciseSection } from "./ExerciseSection"
 import { DeleteWorkoutDialog } from "./DeleteWorkoutDialog";
 import { FormButton } from "@/components/Form/FormButton";
+import { useGetCompleteWorkout } from "@/hooks/workouts/useGetCompleteWorkout";
 
 export default function WorkoutPage({
   params,
@@ -18,11 +18,16 @@ export default function WorkoutPage({
   params: Promise<{ id: string }>;
 }) {
   const { id: workoutId } = use(params);
-  const { data } = useGetWorkout(workoutId);
+  
+  const {data: completeWorkout} = useGetCompleteWorkout(workoutId)
 
-  if (!data?.workout) {
+
+  if (!completeWorkout) {
     return;
   }
+
+  const {overview: {exercises, workout}} = completeWorkout
+
 
   return (
     <PageContainer display={"block"}>
@@ -47,10 +52,10 @@ export default function WorkoutPage({
       </SectionContainer>
 
       <EditWorkoutSection
-        editWorkoutData={data.workout}
+        editWorkoutData={workout}
         workoutId={workoutId}
       />
-      <ExerciseSection workoutId={workoutId} />
+      <ExerciseSection exercises={exercises} />
       <div className="flex flex-col gap-2">
 
       <FormButton type="submit" loadingText="Saving...">
