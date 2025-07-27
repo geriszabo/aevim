@@ -17,7 +17,6 @@ export const ExerciseCard = ({
   exerciseOrder,
 }: ExerciseCardProps) => {
   const { sets } = exercise;
-  console.log(sets);
   return (
     <Card className="mb-4">
       <CardHeader className="pb-3">
