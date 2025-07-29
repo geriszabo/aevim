@@ -46,7 +46,7 @@ workouts
         const { name, category, sets, notes, metric } = exerciseData;
         const { workoutExercise } = insertExerciseToWorkout(
           db,
-          { name, category, notes },
+          { name, category, notes, metric },
           payload.sub,
           workoutId
         );

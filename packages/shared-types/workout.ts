@@ -1,3 +1,5 @@
+import { SetMetrics } from "./set";
+
 export interface Workout {
   id: string;
   name: string;
@@ -18,6 +20,7 @@ export type WorkoutOverview = {
     order_index: number;
     name: string;
     category: string;
+    metric: SetMetrics;
     created_at: string;
     sets: Array<{
       id: string;

@@ -48,6 +48,7 @@ export const applySchema = (dbInstance: Database) => {
           user_id TEXT,
           name TEXT NOT NULL,
           category TEXT,
+          metric TEXT,
           is_global INTEGER DEFAULT 0,
           created_at TEXT DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

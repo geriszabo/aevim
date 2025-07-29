@@ -207,6 +207,7 @@ export const getWorkoutOverviewByWorkoutId = (
       workout_exercises.order_index AS we_order_index,
       workout_exercises.created_at AS we_created_at,
       exercises.name AS ex_name,
+      exercises.metric AS ex_metric,
       exercises.category AS ex_category,
       sets.id AS set_id,
       sets.reps AS set_reps,
@@ -240,6 +241,7 @@ export const getWorkoutOverviewByWorkoutId = (
         created_at: row.we_created_at,
         name: row.ex_name,
         category: row.ex_category,
+        metric: row.ex_metric,
         sets: [],
       });
     }

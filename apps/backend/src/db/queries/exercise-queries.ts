@@ -11,18 +11,19 @@ export const insertExercise = (
   exerciseData: ExerciseData,
   userId: string
 ) => {
-  const { name, category } = exerciseData;
+  const { name, category, metric } = exerciseData;
   const exerciseId = randomUUID();
   const workoutQuery = db.query(`
-    INSERT INTO exercises (id, user_id, name, category)
-    VALUES (?, ?, ?, ?)
-    RETURNING id, name, category, created_at
+    INSERT INTO exercises (id, user_id, name, category, metric)
+    VALUES (?, ?, ?, ?, ?)
+    RETURNING id, name, category, metric, created_at
     `);
   const exercise = workoutQuery.get(
     exerciseId,
     userId,
     name,
-    category || null
+    category || null,
+    metric || null
   ) as ExerciseWithouthUserId;
 
   return exercise;
@@ -84,7 +85,7 @@ export const getExerciseById = (
   userId: string
 ) => {
   const exerciseQuery = db.query(`
-    SELECT id, name, category, created_at
+    SELECT id, name, category, created_at, metric
     FROM exercises
     WHERE id = ? AND user_id = ?
     `);
@@ -99,7 +100,7 @@ export const getExerciseById = (
 
 export const getAllExercises = (db: Database, userId: string) => {
   const exercisesQuery = db.query(`
-    SELECT id, name, category, created_at
+    SELECT id, name, category, created_at, metric
     FROM exercises 
     WHERE user_id = ?`);
 
