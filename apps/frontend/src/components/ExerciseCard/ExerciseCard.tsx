@@ -17,6 +17,7 @@ export const ExerciseCard = ({
   exerciseOrder,
 }: ExerciseCardProps) => {
   const { sets } = exercise;
+  console.log(exercise.metric);
   return (
     <Card className="mb-4">
       <CardHeader className="pb-3">
@@ -36,22 +37,20 @@ export const ExerciseCard = ({
           </div>
         </div>
         {sets.map((set, index) => {
-          //TODO: fix this ugly ass code later, get metrics from the backend
-          let value
-          if(set.weight) {
-            value = set.weight + " kg"
-          }
-          if(set.distance) {
-            value = set.distance + " km"
-          }
-          if(set.duration) {
-            value = set.duration + " min"
-          }
           return (
-            <div key={set.id} className="grid grid-cols-5 gap-2 items-center justify-center p-2">
-              <Typography variant="body" size="xs" >#{index + 1}</Typography>
-              <Typography variant="body" size="xs" >{set.reps}</Typography>
-              <Typography variant="body" size="xs" className="col-span-2" >{value}</Typography>
+            <div
+              key={set.id}
+              className="grid grid-cols-5 gap-2 items-center justify-center p-2"
+            >
+              <Typography variant="body" size="xs">
+                #{index + 1}
+              </Typography>
+              <Typography variant="body" size="xs">
+                {set.reps}
+              </Typography>
+              <Typography variant="body" size="xs" className="col-span-2">
+                {set[exercise.metric]}
+              </Typography>
             </div>
           );
         })}
