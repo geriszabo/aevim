@@ -9,3 +9,5 @@ export interface Set {
   order_index: number;
   created_at: string;
 }
+
+export type SetMetrics = "weight" | "duration" | "distance";
