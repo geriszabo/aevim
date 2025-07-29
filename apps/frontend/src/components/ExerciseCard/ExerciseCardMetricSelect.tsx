@@ -9,11 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Metric } from "@/types/metrics";
+
+import type { SetMetrics } from "@aevim/shared-types";
 
 interface ExerciseCardMetricSelectProps {
   value?: string;
-  onValueChange?: (value: Metric) => void;
+  onValueChange?: (value: SetMetrics) => void;
   placeholder?: string;
 }
 

@@ -1,7 +1,7 @@
 import { WorkoutFormValues } from "@/app/workouts/create/page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Metric } from "@/types/metrics";
+import { SetMetrics } from "@aevim/shared-types";
 import { Trash2 } from "lucide-react";
 import React from "react";
 import { UseFieldArrayRemove, UseFormRegister } from "react-hook-form";
@@ -10,7 +10,7 @@ interface ExerciseCardSetRowProps {
   register: UseFormRegister<WorkoutFormValues>;
   exerciseIndex: number;
   setIndex: number;
-  metric?: Metric;
+  metric?: SetMetrics;
   onDelete: UseFieldArrayRemove;
 }
 
@@ -21,7 +21,7 @@ export const ExerciseCardSetRow = ({
   metric,
   onDelete,
 }: ExerciseCardSetRowProps) => {
-  const getUnit = (metricType: Metric | undefined) => {
+  const getUnit = (metricType: SetMetrics | undefined) => {
     switch (metricType) {
       case "distance":
         return "km";
