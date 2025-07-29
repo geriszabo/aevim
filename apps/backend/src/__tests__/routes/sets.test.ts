@@ -89,7 +89,7 @@ describe("/sets endpoint", () => {
         workout.id
       );
       if (success) {
-        const { set, setRes } = await createSetAddToWorkoutAndReturn(
+        const { set } = await createSetAddToWorkoutAndReturn(
           cookie!,
           workout.id,
           exercise.exercise.id,
@@ -103,11 +103,11 @@ describe("/sets endpoint", () => {
         );
         expect(set).toEqual({
           errors: [
-            "Expected number, received null",
-            "Expected number, received null",
-            "Expected number, received null",
-            "Expected number, received null",
-            "Expected string, received null",
+            "Invalid input: expected number, received null",
+            "Invalid input: expected number, received null",
+            "Invalid input: expected number, received null",
+            "Invalid input: expected number, received null",
+            "Invalid input: expected string, received null",
           ],
         });
       }

@@ -47,6 +47,7 @@ describe("/exercises endpoint", () => {
           id: expect.any(String),
           name: "bench pressing",
           category: "chest",
+          metric: null,
           created_at: expect.any(String),
         },
       });
@@ -76,6 +77,7 @@ describe("/exercises endpoint", () => {
           id: expect.any(String),
           name: "bench pressing",
           category: "chest",
+          metric: null,
           created_at: expect.any(String),
         },
       });

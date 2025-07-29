@@ -362,6 +362,7 @@ describe("/workouts endpoint", () => {
           name: "bench pressing",
           category: "chest",
           created_at: expect.any(String),
+          metric: null,
         },
         workoutExercise: {
           id: expect.any(String),
@@ -417,6 +418,7 @@ describe("/workouts endpoint", () => {
           id: expect.any(String),
           name: "pull up",
           category: "back",
+          metric: null,
           created_at: expect.any(String),
         },
         workoutExercise: {
@@ -574,7 +576,7 @@ describe("/workouts endpoint", () => {
 
       expect(updatedSetRes.status).toBe(400);
       expect(updatedSet).toEqual({
-        errors: ["Reps must be at least 1"],
+        errors: ["Reps must be at least 1",  "At least one field must be provided for update"],
       });
     });
 

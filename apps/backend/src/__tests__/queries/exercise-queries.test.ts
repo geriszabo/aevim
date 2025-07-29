@@ -47,6 +47,7 @@ describe("insertExerciseToWorkout", () => {
       id: expect.any(String),
       name: "Push Up",
       category: "Strength",
+      metric: null,
       created_at: expect.any(String),
     });
   });
@@ -67,6 +68,7 @@ describe("insertExerciseToWorkout", () => {
       id: expect.any(String),
       name: "Push Up",
       category: null,
+      metric: null,
       created_at: expect.any(String),
     });
   });
@@ -95,6 +97,7 @@ describe("insertExercise", () => {
       id: expect.any(String),
       name: "Push Up",
       category: "Strength",
+      metric: null,
       created_at: expect.any(String),
     });
   });
@@ -110,6 +113,7 @@ describe("insertExercise", () => {
       id: expect.any(String),
       name: "Squat",
       category: null,
+      metric: null,
       created_at: expect.any(String),
     });
   });
@@ -132,6 +136,7 @@ describe("getExerciseById", () => {
       id: exercise.id,
       name: "Push Up",
       category: "Strength",
+      metric: null,
       created_at: expect.any(String),
     });
   });
@@ -161,6 +166,7 @@ describe("deleteExerciseById", () => {
       id: exercise.id,
       name: "Push Up",
       category: "Strength",
+      metric: null,
       created_at: expect.any(String),
     });
     deleteExerciseById(db, exercise.id, userId);
@@ -192,6 +198,7 @@ describe("getAllExercises", () => {
         id: expect.any(String),
         name: `Exercise ${index + 1}`,
         category: "Strength",
+        metric: null,
         created_at: expect.any(String),
       });
     });
