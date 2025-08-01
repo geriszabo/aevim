@@ -2,16 +2,20 @@
   "name": "@aevim/shared-types",
   "version": "1.0.0",
   "description": "Shared TypeScript types for Aevim monorepo",
-  "main": "index.ts",
-  "types": "index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "bun run tsc",
+    "dev": "bun run tsc --watch",
+    "clean": "rm -rf dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^5.0.0"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

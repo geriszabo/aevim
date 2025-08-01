@@ -5,6 +5,7 @@
   "scripts": {
     "start": "bun run src/index.ts",
     "dev": "bun run --hot src/index.ts",
+    "build": "bun run tsc",
     "db:users:reset": "bun run scripts/reset-users.ts",
     "db:workouts:reset": "bun run scripts/reset-workouts.ts",
     "db:we:reset": "bun run scripts/reset-workout-exercises.ts",
