@@ -392,7 +392,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
         created_at: expect.any(String),
         name: `Exercise ${exerciseIndex + 1}`,
         category: `Category ${exerciseIndex + 1}`,
-        metric: null, // Add this missing property
+        metric: null,
         sets: expect.any(Array),
       });
 
@@ -404,7 +404,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
           reps: 10,
           weight: 50,
           duration: null,
-          distance: null, // Add this missing property
+          distance: null,
           order_index: setIndex + 1,
           created_at: expect.any(String),
         });
