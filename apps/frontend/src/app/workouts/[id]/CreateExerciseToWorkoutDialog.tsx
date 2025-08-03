@@ -3,9 +3,9 @@ import { FormInputField } from "@/components/Form/FormInputField";
 import { FormTextareaField } from "@/components/Form/FormTextareaField";
 import { useCreateExerciseToWorkout } from "@/hooks/exercises/useCreateExerciseToWorkout";
 import {
-  CreateExerciseData,
-  createExerciseSchema,
-} from "@/schemas/create-exercise-schema";
+  ExerciseData,
+  exerciseSchema,
+} from "@aevim/shared-types/exercise-schema";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import React, { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
@@ -27,19 +27,19 @@ export const CreateExerciseToWorkoutDialog = ({
     handleSubmit,
     formState: { isValid, errors },
     reset,
-  } = useForm<CreateExerciseData>({
-    resolver: standardSchemaResolver(createExerciseSchema),
+  } = useForm<ExerciseData>({
+    resolver: standardSchemaResolver(exerciseSchema),
     mode: "onChange",
     defaultValues: {
       category: "",
       name: "",
-      notes: ""
+      notes: "",
     },
   });
 
-  const onSubmit = (data: CreateExerciseData) => {
+  const onSubmit = (data: ExerciseData) => {
     mutate(data);
-    handleClose()
+    handleClose();
   };
 
   const handleClose = () => {

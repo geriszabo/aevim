@@ -8,7 +8,7 @@ import {
   insertExercise,
   updateExerciseById,
 } from "../../db/queries/exercise-queries";
-import type { ExerciseData } from "../../db/schemas/exercise-schema";
+import type { ExerciseData } from "@aevim/shared-types/exercise";
 import { insertWorkout } from "../../db/queries/workout-queries";
 import { insertExerciseToWorkout } from "../../db/queries/workout-exercises-queries";
 

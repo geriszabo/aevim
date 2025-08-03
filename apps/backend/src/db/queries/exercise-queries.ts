@@ -1,10 +1,10 @@
 import { Database } from "bun:sqlite";
 import { randomUUID } from "crypto";
 import type {
-  ExerciseData,
   ExerciseWithouthUserId,
 } from "../../types/exercise";
 import { checkItemExists } from "../../helpers";
+import type { ExerciseData } from "@aevim/shared-types";
 
 export const insertExercise = (
   db: Database,
