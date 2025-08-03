@@ -4,6 +4,7 @@ export interface ExerciseToWorkout {
   exercise_id: string;
   order_index: number;
   created_at: string;
+  notes?: string | null
 }
 
 export interface WorkoutExercise {

@@ -20,7 +20,7 @@ export type WorkoutOverview = {
     order_index: number;
     name: string;
     category: string;
-    metric: SetMetrics;
+    metric: SetMetrics | null;
     created_at: string;
     sets: Array<{
       id: string;

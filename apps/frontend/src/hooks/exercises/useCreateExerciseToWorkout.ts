@@ -1,14 +1,15 @@
-import { CreateExerciseData } from "@/schemas/create-exercise-schema";
+
 import { ApiError, CreateExerciseResponse } from "@/types/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postExerciseToWorkout } from "../api/exercises/postExerciseToWorkout";
 import { toast } from "sonner";
+import { ExerciseData } from "@aevim/shared-types/exercise-schema";
 
 export const useCreateExerciseToWorkout = (workoutId: string) => {
   const queryClient = useQueryClient();
 
-  return useMutation<CreateExerciseResponse, ApiError, CreateExerciseData>({
-    mutationFn: (exerciseData: CreateExerciseData) =>
+  return useMutation<CreateExerciseResponse, ApiError, ExerciseData>({
+    mutationFn: (exerciseData: ExerciseData) =>
       postExerciseToWorkout({ workoutId, exerciseData }),
     onSuccess: (data) => {
       toast.success(data.message);

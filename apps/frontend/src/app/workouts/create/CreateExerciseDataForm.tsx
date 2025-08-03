@@ -1,7 +1,6 @@
 "use client";
 
 import { FormInputField } from "@/components/Form/FormInputField";
-import { CreateExerciseData } from "@/schemas/create-exercise-schema";
 import {
   UseFormRegister,
   FieldErrors,
@@ -20,10 +19,11 @@ import { Typography } from "@/components/ui/typography";
 import { WorkoutFormValues } from "./page";
 import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCardSetRow";
 import { ExerciseCardMetricSelect } from "../../../components/ExerciseCard/ExerciseCardMetricSelect";
+import { ExerciseData } from "@aevim/shared-types/exercise-schema";
 
 interface CreateExerciseDataFormProps {
   register: UseFormRegister<WorkoutFormValues>;
-  errors: FieldErrors<CreateExerciseData>;
+  errors: FieldErrors<ExerciseData>;
   control: Control<WorkoutFormValues>;
   id: number;
   onDelete: UseFieldArrayRemove;

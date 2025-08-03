@@ -1,11 +1,11 @@
 import env from "@/env";
-import { CreateExerciseData } from "@/schemas/create-exercise-schema";
 import { handleApiError } from "@/utils/handleApiError";
 import { API_ROUTES } from "@aevim/shared-types/api-routes";
+import { ExerciseData } from "@aevim/shared-types/exercise-schema";
 
 interface PostExerciseToWorkoutProps {
   workoutId: string;
-  exerciseData: CreateExerciseData;
+  exerciseData: ExerciseData;
 }
 
 export const postExerciseToWorkout = async ({

@@ -1,8 +1,9 @@
 import { Database } from "bun:sqlite";
 import { randomUUID } from "crypto";
 import type { ExerciseWithouthUserId } from "../../types/exercise";
-import type { ExerciseToWorkout, ExerciseData } from "@aevim/shared-types";
+import type { ExerciseToWorkout } from "@aevim/shared-types";
 import { checkItemExists } from "../../helpers";
+import type { ExerciseData } from "@aevim/shared-types/exercise-schema";
 
 type InsertExerciseResult = {
   exercise: ExerciseWithouthUserId;
