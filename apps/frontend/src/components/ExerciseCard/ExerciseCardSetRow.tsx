@@ -43,6 +43,7 @@ export const ExerciseCardSetRow = ({
           <span className="text-xs font-medium"># {setIndex + 1}</span>
           <Input
             type="number"
+            step="0.1"
             className="h-8 text-xs"
             placeholder="0"
             {...register(`exercises.${exerciseIndex}.sets.${setIndex}.reps`, {
@@ -52,6 +53,7 @@ export const ExerciseCardSetRow = ({
           <div className="relative col-span-2">
             <Input
               type="number"
+              step="0.1"
               className="h-8 text-xs pr-8 text-right"
               placeholder="0"
               {...register(
