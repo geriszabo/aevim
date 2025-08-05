@@ -13,7 +13,7 @@ import { FormDatePicker } from "@/components/Form/FormDatePicker";
 import { FormTextareaField } from "@/components/Form/FormTextareaField";
 import { CreateExerciseDataForm } from "./CreateExerciseDataForm";
 import { useCreateCompleteWorkout } from "@/hooks/workouts/useCreateCompleteWorkout";
-import { WorkoutData } from "@aevim/shared-types/workout-schema";
+import { WorkoutData } from "@aevim/shared-types/schemas/workout-schema";
 
 export type WorkoutFormValues = {
   workout: WorkoutData;

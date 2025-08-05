@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ApiError, CreateWorkoutResponse } from "@/types/api";
 import { postWorkout } from "../api/workouts/postWorkout";
-import { WorkoutData } from "@aevim/shared-types/workout-schema";
+import { WorkoutData } from "@aevim/shared-types/schemas/workout-schema";
 
 export const useCreateWorkout = () => {
   const router = useRouter();

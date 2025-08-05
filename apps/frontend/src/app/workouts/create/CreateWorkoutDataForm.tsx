@@ -1,7 +1,7 @@
 import { FormDatePicker } from "@/components/Form/FormDatePicker";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { FormTextareaField } from "@/components/Form/FormTextareaField";
-import { WorkoutData } from "@aevim/shared-types/workout-schema";
+import { WorkoutData } from "@aevim/shared-types/schemas/workout-schema";
 import { UseFormRegister, Control, FieldErrors } from "react-hook-form";
 
 interface CreateWorkoutDataFormProps {

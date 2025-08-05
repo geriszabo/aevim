@@ -6,7 +6,7 @@ import { useCreateWorkout } from "@/hooks/workouts/useCreateWorkout";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { WorkoutData, workoutSchema } from "@aevim/shared-types/workout-schema";
+import { WorkoutData, workoutSchema } from "@aevim/shared-types/schemas/workout-schema";
 
 interface CreateWorkoutDialogProps {
   isOpen: boolean;
