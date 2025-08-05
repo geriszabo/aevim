@@ -2,7 +2,6 @@ import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb, createTestUser } from "../../test/test-db";
 
-import type { WorkoutData } from "../../types/workout";
 import {
   deleteWorkoutById,
   getWorkoutById,
@@ -15,6 +14,7 @@ import {
 import { insertExerciseToWorkout } from "../../db/queries/workout-exercises-queries";
 import type { SetData } from "../../types/set";
 import { insertSet } from "../../db/queries/set-queries";
+import type { WorkoutData } from "@aevim/shared-types";
 
 let db: Database;
 let userId: string;

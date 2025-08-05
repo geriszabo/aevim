@@ -7,16 +7,16 @@ import { Logo } from "@/components/Logo/Logo";
 import { Typography } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { FormButton } from "@/components/Form/FormButton";
-import { CreateWorkoutData } from "@/schemas/create-workout-schema";
 import { useFieldArray, useForm } from "react-hook-form";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { FormDatePicker } from "@/components/Form/FormDatePicker";
 import { FormTextareaField } from "@/components/Form/FormTextareaField";
 import { CreateExerciseDataForm } from "./CreateExerciseDataForm";
 import { useCreateCompleteWorkout } from "@/hooks/workouts/useCreateCompleteWorkout";
+import { WorkoutData } from "@aevim/shared-types/workout-schema";
 
 export type WorkoutFormValues = {
-  workout: CreateWorkoutData;
+  workout: WorkoutData;
   exercises: {
     name: string;
     category?: string | null | undefined;

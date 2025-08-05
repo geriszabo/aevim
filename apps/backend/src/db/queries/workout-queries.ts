@@ -2,11 +2,11 @@ import { randomUUID } from "crypto";
 import { Database } from "bun:sqlite";
 import {
   type Workout,
+  type WorkoutData,
   type WorkoutExercise,
   type WorkoutOverview,
   type WorkoutWithoutUserId,
 } from "@aevim/shared-types";
-import type { WorkoutData } from "../../types/workout";
 import { checkItemExists } from "../../helpers";
 
 export const insertWorkout = (

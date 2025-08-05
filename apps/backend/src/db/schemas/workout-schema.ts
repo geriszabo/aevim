@@ -1,11 +1,7 @@
+import { workoutSchema } from "@aevim/shared-types";
 import { zValidator } from "@hono/zod-validator";
 import * as z from "zod/v4";
 
-export const workoutSchema = z.object({
-  name: z.string({ message: "You have to give the workout a name" }),
-  notes: z.string().nullable().optional(),
-  date: z.iso.date({ message: "Please pick a date for the workout in YYYY-MM-DD format" }),
-});
 
 export const workoutValidator = zValidator(
   "json",

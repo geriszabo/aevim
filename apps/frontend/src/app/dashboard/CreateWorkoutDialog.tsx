@@ -3,13 +3,10 @@ import { FormInputField } from "@/components/Form/FormInputField";
 import { FormTextareaField } from "@/components/Form/FormTextareaField";
 import { FormDialog } from "@/components/Form/FormDialog";
 import { useCreateWorkout } from "@/hooks/workouts/useCreateWorkout";
-import {
-  CreateWorkoutData,
-  createWorkoutSchema,
-} from "@/schemas/create-workout-schema";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
+import { WorkoutData, workoutSchema } from "@aevim/shared-types/workout-schema";
 
 interface CreateWorkoutDialogProps {
   isOpen: boolean;
@@ -27,8 +24,8 @@ export const CreateWorkoutDialog = ({
     formState: { isValid, errors },
     reset,
     control,
-  } = useForm<CreateWorkoutData>({
-    resolver: standardSchemaResolver(createWorkoutSchema),
+  } = useForm<WorkoutData>({
+    resolver: standardSchemaResolver(workoutSchema),
     mode: "onChange",
     defaultValues: {
       name: "",
@@ -37,7 +34,7 @@ export const CreateWorkoutDialog = ({
     },
   });
 
-  const onSubmit = async (data: CreateWorkoutData) => {
+  const onSubmit = async (data: WorkoutData) => {
     mutate({ ...data });
   };
 

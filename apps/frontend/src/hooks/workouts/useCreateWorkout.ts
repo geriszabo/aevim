@@ -2,14 +2,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ApiError, CreateWorkoutResponse } from "@/types/api";
-import { CreateWorkoutData } from "@/schemas/create-workout-schema";
 import { postWorkout } from "../api/workouts/postWorkout";
+import { WorkoutData } from "@aevim/shared-types/workout-schema";
 
 export const useCreateWorkout = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  return useMutation<CreateWorkoutResponse, ApiError, CreateWorkoutData>({
+  return useMutation<CreateWorkoutResponse, ApiError, WorkoutData>({
     mutationFn: postWorkout,
     onSuccess: (data) => {
       toast.success(data.message);
