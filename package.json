@@ -21,6 +21,7 @@
     "build:shared": "cd packages/shared-types && bun run build",
     "build:backend": "cd apps/backend && bun run build",
     "build:frontend": "cd apps/frontend && bun run build",
+    "rebuild": "cd packages/shared-types && bun run build && cd ../.. && bun install",
     "db:users:reset": "cd apps/backend && bun run db:users:reset",
     "db:workouts:reset": "cd apps/backend && bun run db:workouts:reset",
     "db:we:reset": "cd apps/backend && bun run db:we:reset",
