@@ -1,10 +1,9 @@
 import * as z from "zod/v4";
+import { signupSchema as sharedSignupSchema } from "@aevim/shared-types/schemas/signup-schema";
 
 export const signupSchema = z
   .object({
-    username: z.string().min(3, "Your name has to be at least 3 characters long"),
-    email: z.email(),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    ...sharedSignupSchema.shape,
     confirmPassword: z
       .string()
       .min(6, "Password must be at least 6 characters"),
