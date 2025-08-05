@@ -3,7 +3,7 @@ import { ApiError, CreateExerciseResponse } from "@/types/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postExerciseToWorkout } from "../api/exercises/postExerciseToWorkout";
 import { toast } from "sonner";
-import { ExerciseData } from "@aevim/shared-types/exercise-schema";
+import { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";
 
 export const useCreateExerciseToWorkout = (workoutId: string) => {
   const queryClient = useQueryClient();

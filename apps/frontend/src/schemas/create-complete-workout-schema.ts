@@ -1,6 +1,6 @@
 import { z } from "zod/v4";
-import {exerciseSchema} from "@aevim/shared-types/exercise-schema"
-import {workoutSchema} from "@aevim/shared-types/workout-schema"
+import {exerciseSchema} from "@aevim/shared-types/schemas/exercise-schema"
+import {workoutSchema} from "@aevim/shared-types/schemas/workout-schema"
 
 export const completeWorkoutSchema = z.object({
   workout: workoutSchema,

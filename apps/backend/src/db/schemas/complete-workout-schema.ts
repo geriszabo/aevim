@@ -1,6 +1,6 @@
 import { z } from "zod/v4";
 import { zValidator } from "@hono/zod-validator";
-import { exerciseSchema } from "@aevim/shared-types/exercise-schema";
+import { exerciseSchema } from "@aevim/shared-types/schemas/exercise-schema";
 import { workoutSchema } from "@aevim/shared-types";
 
 const completeWorkoutSchema = z.object({

@@ -1,7 +1,7 @@
 import env from "@/env";
 import { handleApiError } from "@/utils/handleApiError";
 import { API_ROUTES } from "@aevim/shared-types/api-routes";
-import { ExerciseData } from "@aevim/shared-types/exercise-schema";
+import { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";
 
 interface PostExerciseToWorkoutProps {
   workoutId: string;

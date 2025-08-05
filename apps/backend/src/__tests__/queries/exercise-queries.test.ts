@@ -10,7 +10,7 @@ import {
 } from "../../db/queries/exercise-queries";
 import { insertWorkout } from "../../db/queries/workout-queries";
 import { insertExerciseToWorkout } from "../../db/queries/workout-exercises-queries";
-import type { ExerciseData } from "@aevim/shared-types/exercise-schema";
+import type { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";
 
 let db: Database;
 let userId: string;

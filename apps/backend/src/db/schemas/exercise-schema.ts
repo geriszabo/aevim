@@ -1,4 +1,4 @@
-import { exerciseSchema } from "@aevim/shared-types/exercise-schema";
+import { exerciseSchema } from "@aevim/shared-types/schemas/exercise-schema";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod/v4";
 

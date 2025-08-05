@@ -19,7 +19,7 @@ import { Typography } from "@/components/ui/typography";
 import { WorkoutFormValues } from "./page";
 import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCardSetRow";
 import { ExerciseCardMetricSelect } from "../../../components/ExerciseCard/ExerciseCardMetricSelect";
-import { ExerciseData } from "@aevim/shared-types/exercise-schema";
+import { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";
 
 interface CreateExerciseDataFormProps {
   register: UseFormRegister<WorkoutFormValues>;

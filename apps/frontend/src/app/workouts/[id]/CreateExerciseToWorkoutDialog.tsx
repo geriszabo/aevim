@@ -5,7 +5,7 @@ import { useCreateExerciseToWorkout } from "@/hooks/exercises/useCreateExerciseT
 import {
   ExerciseData,
   exerciseSchema,
-} from "@aevim/shared-types/exercise-schema";
+} from "@aevim/shared-types/schemas/exercise-schema";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import React, { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
