@@ -1,7 +1,6 @@
-import { workoutSchema } from "@aevim/shared-types";
+import { workoutSchema } from "@aevim/shared-types/schemas/workout-schema";
 import { zValidator } from "@hono/zod-validator";
 import * as z from "zod/v4";
-
 
 export const workoutValidator = zValidator(
   "json",
@@ -23,8 +22,8 @@ const workoutUpdateSchema = z
     name: z
       .string({ message: "No string for name update provided" })
       .optional(),
-    date: z
-      .iso.date({ message: "No string for date update provided" })
+    date: z.iso
+      .date({ message: "No string for date update provided" })
       .optional(),
     notes: z
       .string({ message: "No string for notes update provided" })
