@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ApiError, CreateCompleteWorkoutResponse } from "@/types/api";
-import { CreateCompleteWorkoutData } from "@/schemas/create-complete-workout-schema";
 import { postCompleteWorkout } from "../api/workouts/postCompleteWorkout";
+import { CompleteWorkoutData } from "@aevim/shared-types/schemas";
 
 export const useCreateCompleteWorkout = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ export const useCreateCompleteWorkout = () => {
   return useMutation<
     CreateCompleteWorkoutResponse,
     ApiError,
-    CreateCompleteWorkoutData
+    CompleteWorkoutData
   >({
     mutationFn: postCompleteWorkout,
     onSuccess: (data) => {
