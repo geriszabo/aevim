@@ -17,7 +17,7 @@
 
 ### Components
 
-- [ ]
+- [ ] Delete EditWorkoutDialog after implementing update workout page
 
 ## 🧪 Testing & Quality
 
