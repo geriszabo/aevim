@@ -26,12 +26,57 @@ import {
   updateSetById,
 } from "../db/queries/set-queries";
 import { handleError } from "../helpers";
-import { completeWorkoutValidator } from "../db/schemas/complete-workout-schema";
+import {
+  createCompleteWorkoutValidator,
+  updateCompleteWorkoutValidator,
+} from "../db/schemas/complete-workout-schema";
+import { updateExerciseById } from "../db/queries/exercise-queries";
 
 const workouts = new Hono();
 
 workouts
-  .post("/workouts/create", completeWorkoutValidator, async (c) => {
+  .put("/workouts/update/:id", updateCompleteWorkoutValidator, async (c) => {
+    const db = dbConnect();
+    const payload = c.get("jwtPayload");
+    const workoutId = c.req.param("id");
+    const {
+      workout: { date, name, notes },
+      exercises,
+    } = c.req.valid("json");
+
+    try {
+      const updatedWorkout = updateWorkoutById(db, workoutId, payload.sub, {
+        date,
+        name,
+        notes,
+      });
+      console.log(updatedWorkout);
+      for (const exerciseData of exercises) {
+        const { name, category, sets, notes, metric, exercise_id } =
+          exerciseData;
+        const updatedExercise = updateExerciseById(
+          db,
+          exercise_id,
+          payload.sub,
+          { category, metric, name, notes }
+        );
+        console.log(updatedExercise);
+        for (const setData of sets) {
+          const { duration, notes, reps, weight, distance } = setData;
+          const updatedSet = updateSetById(
+            db,
+            setData.id,
+            { distance, duration, notes, reps, weight },
+            payload.sub
+          );
+          console.log(updatedSet)
+        }
+      }
+    } catch (error) {
+      return handleError(c, error);
+    }
+  })
+  .post("/workouts/create", createCompleteWorkoutValidator, async (c) => {
     const db = dbConnect();
     const payload = c.get("jwtPayload");
     const {
