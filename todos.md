@@ -4,6 +4,7 @@
 
 ### Types
 
+- [ ] Fix in apps/backend/src/db/schemas/complete-workout-schema.ts: createCompleteWorkoutSchema points to node modules
 - [ ] Move setSchema from apps/backend/src/db/schemas/set-schema.ts to shared
 
 ## 🔧 Backend Improvements
