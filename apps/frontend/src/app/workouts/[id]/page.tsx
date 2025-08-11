@@ -18,9 +18,7 @@ export default function WorkoutPage({
   params: Promise<{ id: string }>;
 }) {
   const { id: workoutId } = use(params);
-  
   const {data: completeWorkout} = useGetCompleteWorkout(workoutId)
-
 
   if (!completeWorkout) {
     return;
