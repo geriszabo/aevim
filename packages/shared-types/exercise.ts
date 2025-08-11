@@ -1,4 +1,4 @@
-import { SetMetrics } from "./set";
+import type { SetMetrics } from "./set";
 
 export interface Exercise {
   id: string;
