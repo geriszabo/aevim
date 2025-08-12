@@ -22,7 +22,6 @@
   "dependencies": {
     "@hono/zod-validator": "^0.6.0",
     "hono": "^4.7.10",
-    "zod": "^3.25.30",
-    "@aevim/shared-types": "file:../../packages/shared-types"
+    "zod": "^3.25.30"
   }
 }
