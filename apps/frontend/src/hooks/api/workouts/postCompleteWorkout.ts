@@ -1,9 +1,9 @@
 import env from "@/env";
 import { handleApiError } from "@/utils/handleApiError";
 import { API_ROUTES } from "@aevim/shared-types/api-routes";
-import { CompleteWorkoutData } from "@aevim/shared-types/schemas";
+import { CreateCompleteWorkoutData } from "@aevim/shared-types/schemas";
 
-export const postCompleteWorkout = async ({exercises, workout}: CompleteWorkoutData) => {
+export const postCompleteWorkout = async ({exercises, workout}: CreateCompleteWorkoutData) => {
   const response = await fetch(
     `${env.API_BASE_URL}${API_ROUTES.workouts.createComplete}`,
     {
