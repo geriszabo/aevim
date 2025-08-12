@@ -47,7 +47,7 @@ exercises
       const deletedExercise = deleteExerciseById(db, exerciseId, payload.sub);
       return c.json(
         {
-          message: `Exercise with name: ${deletedExercise.name} as been deleted successfuly`,
+          message: `Exercise has been deleted successfuly`,
         },
         200
       );
