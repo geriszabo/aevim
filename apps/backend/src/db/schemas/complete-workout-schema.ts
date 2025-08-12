@@ -1,4 +1,4 @@
-import { createCompleteWorkoutSchema, updateCompleteWorkoutSchema } from "@aevim/shared-types/dist/schemas/complete-workout-schema";
+import { createCompleteWorkoutSchema, updateCompleteWorkoutSchema } from "@aevim/shared-types";
 import { zValidator } from "@hono/zod-validator";
 
 export const createCompleteWorkoutValidator = zValidator(
