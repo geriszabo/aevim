@@ -14,13 +14,17 @@
 ### API Endpoints
 
 - [ ] Create completeWorkouts route
-- [ ] Move workouts/create to completeWorkouts route (PUT & POST)
+- [ ] Move workouts/create and / or workouts/overview to completeWorkouts route (PUT & POST)
 
 ## 🎨 Frontend Improvements
 
 ### Components
 
 - [ ] Delete EditWorkoutDialog after implementing update workout page
+
+### Hooks
+
+- [ ] Move workoutOverview api call and hook to completeWorkouts folder inside hooks
 
 ## 🧪 Testing & Quality
 
