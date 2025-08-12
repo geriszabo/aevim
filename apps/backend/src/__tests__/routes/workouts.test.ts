@@ -282,7 +282,7 @@ describe("/workouts endpoint", () => {
       expect(deleteRes.status).toBe(200);
       expect(deletedWorkout).toEqual({
         message:
-          "Workout with name: crossfit session as been deleted successfuly",
+          "Workout has been deleted successfuly",
       });
       const { workoutRes: foundWorkoutRes, workout: foundWorkout } =
         await getSingleWorkoutAndReturn(cookie!, workout.id);

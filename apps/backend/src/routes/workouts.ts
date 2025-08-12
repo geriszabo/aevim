@@ -186,7 +186,7 @@ workouts
       const deletedWorkout = deleteWorkoutById(db, workoutId, payload.sub);
       return c.json(
         {
-          message: `Workout with name: ${deletedWorkout.name} as been deleted successfuly`,
+          message: `Workout has been deleted successfuly`,
         },
         200
       );
