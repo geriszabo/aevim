@@ -9,7 +9,6 @@ export const API_ROUTES = {
     base: "/auth/workouts",
     createComplete: "/auth/workouts/create",
     single: (id: string) => `/auth/workouts/${id}`,
-    overview: (id: string) => `/auth/workouts/${id}/overview`,
   },
   exercises: {
     base: "/auth/exercises",
@@ -23,6 +22,10 @@ export const API_ROUTES = {
       `/auth/workouts/${workoutId}/exercises/${exerciseId}/sets`,
     single: (workoutId: string, exerciseId: string, setId: string) =>
       `/auth/workouts/${workoutId}/exercises/${exerciseId}/sets/${setId}`,
+  },
+  completeWorkouts: {
+    base: "/auth/completeWorkouts",
+    single: (id: string) => `/auth/completeWorkouts/${id}`,
   },
 } as const;
 

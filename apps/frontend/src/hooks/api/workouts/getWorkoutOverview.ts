@@ -5,7 +5,7 @@ import { API_ROUTES } from "@aevim/shared-types";
 
 export const getWorkoutOverview = async (workoutId: string) => {
   const response = await fetch(
-    `${env.API_BASE_URL}${API_ROUTES.workouts.overview(workoutId)}`,
+    `${env.API_BASE_URL}${API_ROUTES.completeWorkouts.single(workoutId)}`,
     {
       method: "GET",
       headers: {

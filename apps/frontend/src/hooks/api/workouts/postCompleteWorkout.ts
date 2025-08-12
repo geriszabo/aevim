@@ -5,7 +5,7 @@ import { CreateCompleteWorkoutData } from "@aevim/shared-types/schemas";
 
 export const postCompleteWorkout = async ({exercises, workout}: CreateCompleteWorkoutData) => {
   const response = await fetch(
-    `${env.API_BASE_URL}${API_ROUTES.workouts.createComplete}`,
+    `${env.API_BASE_URL}${API_ROUTES.completeWorkouts.base}`,
     {
       method: "POST",
       headers: {

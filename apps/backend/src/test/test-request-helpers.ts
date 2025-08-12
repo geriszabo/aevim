@@ -142,7 +142,7 @@ export const getWorkoutOverviewRequest = (
   cookie: string
 ): Request => {
   return createAuthenticatedRequest(
-    API_ROUTES.workouts.overview(workoutId),
+    API_ROUTES.completeWorkouts.single(workoutId),
     cookie
   );
 };
