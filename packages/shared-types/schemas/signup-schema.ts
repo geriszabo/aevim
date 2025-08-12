@@ -4,7 +4,7 @@ const PASSWORD_LENGTH = 8;
 const USERNAME_LENGTH = 3;
 
 export const signupSchema = z.object({
-  email: z.email(),
+  email: z.email({message: "Invalid email"}),
   password: z.string().min(PASSWORD_LENGTH, {
     message: `Password must be at least ${PASSWORD_LENGTH} characters long`,
   }),
