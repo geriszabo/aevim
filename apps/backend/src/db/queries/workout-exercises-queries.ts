@@ -79,7 +79,7 @@ export const insertExerciseToWorkout = (
   RETURNING id, workout_id, exercise_id, order_index, notes, created_at
 `
       )
-      .get(workoutExerciseId, workoutId, exerciseId, nextOrder, notes || null);
+      .get(workoutExerciseId, workoutId, exerciseId, nextOrder, notes || null) as ExerciseToWorkout;
 
     return { exercise, workoutExercise };
   });
