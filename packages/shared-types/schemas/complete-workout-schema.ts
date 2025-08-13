@@ -33,7 +33,7 @@ export const updateCompleteWorkoutSchema = z.object({
       ...exerciseSchema.shape,
       created_at: z.string(),
       exercise_id: z.string(),
-      orer_index: z.number(),
+      order_index: z.number(),
       metric: z.string().min(1, "Please choose a metric for the exercise"),
       sets: z.array(
         z.object({
@@ -41,7 +41,7 @@ export const updateCompleteWorkoutSchema = z.object({
           distance: z.number().optional(),
           duration: z.number().optional(),
           weight: z.number().optional(),
-          orer_index: z.number(),
+          order_index: z.number(),
           id: z.string(),
           reps: z.number().min(1, "Reps must be at least 1"),
           value: z.number().min(1, "Values must be at least 1"),
