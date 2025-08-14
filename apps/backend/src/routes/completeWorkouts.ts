@@ -102,6 +102,16 @@ completeWorkouts
           console.log(updatedSet);
         }
       }
+      //TODO: delete this later, no need to return the whole workout
+      const newWorkout = getWorkoutOverviewByWorkoutId(
+        db,
+        workoutId,
+        payload.sub
+      );
+      return c.json({
+        message: "Workout updated successfully",
+        updatedWorkout: newWorkout,
+      });
     } catch (error) {
       return handleError(c, error);
     }
