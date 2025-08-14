@@ -14,6 +14,7 @@ import { FormTextareaField } from "@/components/Form/FormTextareaField";
 import { CreateExerciseDataForm } from "./CreateExerciseDataForm";
 import { useCreateCompleteWorkout } from "@/hooks/workouts/useCreateCompleteWorkout";
 import { WorkoutData } from "@aevim/shared-types/schemas/workout-schema";
+import { CreateCompleteWorkoutData } from "@aevim/shared-types";
 
 export type WorkoutFormValues = {
   workout: WorkoutData;
@@ -34,7 +35,7 @@ export default function WorkoutPage() {
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<WorkoutFormValues>({
+  } = useForm<CreateCompleteWorkoutData>({
     defaultValues: {
       workout: {
         name: "",
@@ -70,7 +71,7 @@ export default function WorkoutPage() {
     });
   };
 
-  const onSubmit = (data: WorkoutFormValues) => {
+  const onSubmit = (data: CreateCompleteWorkoutData) => {
     mutate({ ...data });
   };
 
