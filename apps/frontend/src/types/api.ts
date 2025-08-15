@@ -39,6 +39,9 @@ export interface CreateWorkoutResponse extends ApiResponse {
 export interface CreateCompleteWorkoutResponse extends ApiResponse {
   workout: WorkoutOverview
 }
+export interface UpdateCompleteWorkoutResponse extends ApiResponse {
+  updatedWorkout: WorkoutOverview
+}
 
 export interface GetWorkoutOverviewResponse {
   overview: WorkoutOverview;
