@@ -46,7 +46,7 @@ describe("/sets endpoint", () => {
           cookie!,
           workout.id,
           exercise.exercise.id,
-          { distance: 1, duration: 1, notes: "cool", reps: 2, weight: 50 }
+          { metric_value: 1, reps: 2 }
         );
         expect(setRes.status).toBe(201);
         expect(set).toEqual({
@@ -55,10 +55,7 @@ describe("/sets endpoint", () => {
             id: expect.any(String),
             workout_exercise_id: expect.any(String),
             reps: 2,
-            weight: 50,
-            duration: 1,
-            distance: 1,
-            notes: "cool",
+            metric_value: 1,
             order_index: 1,
             created_at: expect.any(String),
           },
@@ -72,7 +69,7 @@ describe("/sets endpoint", () => {
         cookie!,
         "fictionalWorkoutId",
         "fictionalExerciseId",
-        { distance: 1, duration: 1, notes: "cool", reps: 2, weight: 50 }
+        { metric_value: 1, reps: 2 }
       );
       expect(setRes.status).toBe(404);
       expect(set).toEqual({ errors: ["Workout exercise not found"] });
@@ -94,20 +91,14 @@ describe("/sets endpoint", () => {
           workout.id,
           exercise.exercise.id,
           {
-            distance: null as any,
-            duration: null as any,
-            notes: null as any,
+            metric_value: null as any,
             reps: null as any,
-            weight: null as any,
           }
         );
         expect(set).toEqual({
           errors: [
             "Invalid input: expected number, received null",
-            "Invalid input: expected number, received null",
-            "Invalid input: expected number, received null",
-            "Invalid input: expected number, received null",
-            "Invalid input: expected string, received null",
+            "Value must be valid number",
           ],
         });
       }
@@ -151,10 +142,7 @@ describe("/sets endpoint", () => {
             id: expect.any(String),
             workout_exercise_id: expect.any(String),
             reps: 2,
-            weight: 50,
-            duration: 1,
-            distance: 1,
-            notes: "cool",
+            metric_value: 100,
             order_index: 1,
             created_at: expect.any(String),
           });
@@ -162,10 +150,7 @@ describe("/sets endpoint", () => {
             id: expect.any(String),
             workout_exercise_id: expect.any(String),
             reps: 1,
-            weight: 100,
-            duration: 2,
-            distance: 24,
-            notes: "just a small jog",
+            metric_value: 100,
             order_index: 2,
             created_at: expect.any(String),
           });
@@ -206,7 +191,7 @@ describe("/sets endpoint", () => {
         cookie!,
         workout.id,
         successResponse.exercise.id,
-        { reps: 10, weight: 135 }
+        { reps: 10, metric_value: 135 }
       );
 
       const setResponse = set as {
@@ -267,7 +252,7 @@ describe("/sets endpoint", () => {
         cookie!,
         workout.id,
         exercise.id,
-        { reps: 15, weight: 10 }
+        { reps: 15, metric_value: 10 }
       );
       const { set } = setObject as { set: Set };
       // No cookie 🍪
@@ -300,10 +285,7 @@ describe("/sets endpoint", () => {
         successResponse.exercise.id,
         {
           reps: 10,
-          weight: 135,
-          duration: 60,
-          distance: 0,
-          notes: "Original notes",
+          metric_value: 135,
         }
       );
       const setResponse = set as {
@@ -312,10 +294,7 @@ describe("/sets endpoint", () => {
       };
       const updateData = {
         reps: 12,
-        weight: 155,
-        duration: 90,
-        distance: 5,
-        notes: "Updated notes",
+        metric_value: 155,
       };
       const { updatedSet, updatedSetRes, success } = await updateSetAndReturn(
         cookie!,
@@ -332,10 +311,7 @@ describe("/sets endpoint", () => {
           id: setResponse.set.id,
           workout_exercise_id: expect.any(String),
           reps: 12,
-          weight: 155,
-          duration: 90,
-          distance: 5,
-          notes: "Updated notes",
+          metric_value: 155,
           order_index: 1,
           created_at: expect.any(String),
         });
@@ -360,7 +336,7 @@ describe("/sets endpoint", () => {
         cookie!,
         workout.id,
         successResponse.exercise.id,
-        { reps: 8, weight: 200, duration: 45, distance: 0, notes: "Original" }
+        { reps: 8, metric_value: 200 }
       );
       const setResponse = set as {
         message: string;
@@ -368,7 +344,7 @@ describe("/sets endpoint", () => {
       };
       const updateData = {
         reps: 10,
-        weight: 225,
+        metric_value: 225,
       };
       const { updatedSet, updatedSetRes, success } = await updateSetAndReturn(
         cookie!,
@@ -381,11 +357,7 @@ describe("/sets endpoint", () => {
       expect(success).toBe(true);
       if (success) {
         expect(updatedSet.set.reps).toBe(10);
-        expect(updatedSet.set.weight).toBe(225);
-        // Other fields remain unchanged
-        expect(updatedSet.set.duration).toBe(45);
-        expect(updatedSet.set.distance).toBe(null);
-        expect(updatedSet.set.notes).toBe("Original");
+        expect(updatedSet.set.metric_value).toBe(225);
       }
     });
 

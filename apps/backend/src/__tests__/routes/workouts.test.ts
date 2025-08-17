@@ -501,11 +501,8 @@ describe("/workouts endpoint", () => {
         exercise.exercise.id,
         set.set.id,
         {
-          weight: 69,
+          metric_value: 69,
           reps: 69,
-          duration: 69,
-          distance: 69,
-          notes: "still feels pretty good",
         }
       );
       expect(updatedSetRes.status).toBe(200);
@@ -515,10 +512,7 @@ describe("/workouts endpoint", () => {
           id: expect.any(String),
           workout_exercise_id: expect.any(String),
           reps: 69,
-          weight: 69,
-          duration: 69,
-          distance: 69,
-          notes: "still feels pretty good",
+          metric_value: 69,
           order_index: 1,
           created_at: expect.any(String),
         },
@@ -632,13 +626,13 @@ describe("GET workouts/:id/overview", () => {
         cookie!,
         workout.id,
         successResponse.exercise.id,
-        { reps: 10, weight: 135 }
+        { reps: 10, metric_value: 135 }
       );
       await createSetAddToWorkoutAndReturn(
         cookie!,
         workout.id,
         successResponse.exercise.id,
-        { reps: 8, weight: 145 }
+        { reps: 8, metric_value: 145 }
       );
     }
 

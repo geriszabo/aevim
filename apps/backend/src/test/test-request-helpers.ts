@@ -55,7 +55,7 @@ export const signupRequest = (
     body: JSON.stringify({
       email,
       password,
-      username
+      username,
     }),
   });
 };
@@ -73,7 +73,7 @@ export const loginrequest = (
     body: JSON.stringify({
       email,
       password,
-      username
+      username,
     }),
   });
 };
@@ -164,7 +164,7 @@ export const addExerciseToWorkoutRequest = ({
   category = "chest",
   cookie = "",
   workoutId = "workout123",
-  notes = "test note"
+  notes = "test note",
 }): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.exercises.workout(workoutId),
@@ -229,10 +229,7 @@ export const addSetRequest = ({
   workoutId = "defaultWorkoutId",
   exerciseId = "defaultExerciseId",
   reps = 10,
-  weight = 100,
-  duration = 2,
-  distance = 10,
-  notes = "felt pretty good",
+  metric_value = 100,
   cookie = "",
 }): Request => {
   return createAuthenticatedRequest(
@@ -240,7 +237,7 @@ export const addSetRequest = ({
     cookie,
     {
       method: "POST",
-      body: { reps, weight, duration, distance, notes },
+      body: { reps, metric_value },
     }
   );
 };

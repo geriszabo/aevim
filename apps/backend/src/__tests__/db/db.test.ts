@@ -1,5 +1,3 @@
-// Fixed cascade-deletion.test.ts
-
 import { describe, beforeEach, afterEach, expect, it } from "bun:test";
 import { Database } from "bun:sqlite";
 import { createTestDb, createTestUser } from "../../test/test-db";
@@ -96,7 +94,7 @@ describe("Cascade Deletion Tests", () => {
         for (let j = 0; j < 2; j++) {
           insertSet(
             db,
-            { reps: 10 + j, weight: 100 + j * 10 },
+            { reps: 10 + j, metric_value: 100 + j * 10 },
             userId,
             workout.id,
             exercise.id
@@ -200,7 +198,7 @@ describe("Cascade Deletion Tests", () => {
       for (let i = 0; i < 5; i++) {
         insertSet(
           db,
-          { reps: 10 + i, weight: 100 + i * 10 },
+          { reps: 10 + i, metric_value: 100 + i * 10 },
           userId,
           workout.id,
           exercise.id
@@ -273,8 +271,8 @@ describe("Cascade Deletion Tests", () => {
       );
 
       // Add sets to both
-      insertSet(db, { reps: 10 }, userId, workout1.id, ex1.id);
-      insertSet(db, { reps: 10 }, userId, workout2.id, ex2.id);
+      insertSet(db, { reps: 10, metric_value: 69 }, userId, workout1.id, ex1.id);
+      insertSet(db, { reps: 10, metric_value: 69 }, userId, workout2.id, ex2.id);
 
       // Verify initial state
       const beforeCounts = getDataCounts(db, userId);

@@ -26,9 +26,7 @@ export type WorkoutOverview = {
       id: string;
       workout_exercise_id: string;
       reps: number;
-      weight: number | null;
-      duration: number | null;
-      distance: number | null;
+      metric_value: number;
       order_index: number;
       created_at: string;
     }>;

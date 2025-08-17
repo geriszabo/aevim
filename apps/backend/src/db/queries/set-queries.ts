@@ -31,7 +31,7 @@ export const insertSet = (
 
   // STEP 2: PREPARE DATA
   const setId = randomUUID();
-  const { reps, weight, duration, distance, notes } = setData;
+  const { reps, metric_value } = setData;
 
   // STEP 3: GET NEXT ORDER INDEX
   const maxOrder = db
@@ -48,19 +48,16 @@ export const insertSet = (
 
   // STEP 4: INSERT THE SET (matching your schema)
   const setQuery = db.query(`
-    INSERT INTO sets (id, workout_exercise_id, reps, weight, duration, distance, notes, order_index)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    RETURNING id, workout_exercise_id, reps, weight, duration, distance, notes, order_index, created_at
+    INSERT INTO sets (id, workout_exercise_id, reps, metric_value, order_index)
+    VALUES (?, ?, ?, ?, ?)
+    RETURNING id, workout_exercise_id, reps, metric_value, order_index, created_at
   `);
 
   const set = setQuery.get(
     setId,
     workoutExerciseExists.id,
     reps,
-    weight || null,
-    duration || null,
-    distance || null,
-    notes || null,
+    metric_value,
     nextOrder
   ) as Set;
 
@@ -84,10 +81,7 @@ export const getAllSetsByExerciseId = (
       sets.id,
       sets.workout_exercise_id,
       sets.reps,
-      sets.weight,
-      sets.duration,
-      sets.distance,
-      sets.notes,
+      sets.metric_value,
       sets.order_index,
       sets.created_at
     FROM sets
@@ -176,7 +170,7 @@ export const updateSetById = (
         JOIN workouts ON workout_exercises.workout_id = workouts.id
         WHERE workouts.user_id = ?
       )
-    RETURNING id, workout_exercise_id, reps, weight, duration, distance, notes, order_index, created_at
+    RETURNING id, workout_exercise_id, reps, metric_value, order_index, created_at
   `);
 
   const result = updateQuery.get(...values, setId, userId) as Set | null;

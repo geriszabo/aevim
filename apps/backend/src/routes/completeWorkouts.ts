@@ -43,8 +43,7 @@ completeWorkouts
             db,
             {
               reps: setData.reps,
-              notes: setData.notes,
-              [metric]: setData.value,
+              metric_value: setData.metric_value,
             },
             payload.sub,
             workoutId,
@@ -62,6 +61,7 @@ completeWorkouts
         workout: completeWorkout,
       });
     } catch (error) {
+      console.error(error)
       return handleError(c, error);
     }
   })
@@ -92,11 +92,11 @@ completeWorkouts
         );
         console.log(updatedExercise);
         for (const setData of sets) {
-          const { duration, notes, reps, weight, distance } = setData;
+          const { reps, metric_value } = setData;
           const updatedSet = updateSetById(
             db,
             setData.id,
-            { distance, duration, notes, reps, weight },
+            { reps, metric_value },
             payload.sub
           );
           console.log(updatedSet);

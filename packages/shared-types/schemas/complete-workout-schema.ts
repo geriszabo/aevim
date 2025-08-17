@@ -11,11 +11,7 @@ export const createCompleteWorkoutSchema = z.object({
       sets: z.array(
         z.object({
           reps: z.number().min(1, "Reps must be at least 1"),
-          value: z.number().min(1, "Values must be at least 1"),
-          notes: z
-            .string()
-            .max(500, "Notes cannot exceed 500 characters")
-            .optional(),
+          metric_value: z.number().min(1, "Values must be at least 1"),
         })
       ),
     })
@@ -38,17 +34,10 @@ export const updateCompleteWorkoutSchema = z.object({
       sets: z.array(
         z.object({
           created_at: z.string(),
-          distance: z.number().optional(),
-          duration: z.number().optional(),
-          weight: z.number().optional(),
+          metric_value: z.number(),
           order_index: z.number(),
           id: z.string(),
           reps: z.number().min(1, "Reps must be at least 1"),
-          value: z.number().min(1, "Values must be at least 1"),
-          notes: z
-            .string()
-            .max(500, "Notes cannot exceed 500 characters")
-            .optional(),
         })
       ),
     })

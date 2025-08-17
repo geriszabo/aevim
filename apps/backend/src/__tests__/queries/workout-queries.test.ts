@@ -358,7 +358,7 @@ describe("getWorkoutExercisesByWorkoutId", () => {
 
 describe("getWorkoutOverviewByWorkoutId", () => {
   it("returns workout with exercises and sets", async () => {
-    const setData: SetData = { reps: 10, weight: 50 };
+    const setData: SetData = { reps: 10, metric_value: 50 };
     const workout = insertWorkout(db, workoutData, userId);
 
     const exercisesArray = [
@@ -402,9 +402,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
           id: expect.any(String),
           workout_exercise_id: expect.any(String),
           reps: 10,
-          weight: 50,
-          duration: null,
-          distance: null,
+          metric_value: 50,
           order_index: setIndex + 1,
           created_at: expect.any(String),
         });
@@ -466,7 +464,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
   });
 
   it("maintains correct exercise order", async () => {
-    const setData: SetData = { reps: 8, weight: 40 };
+    const setData: SetData = { reps: 8, metric_value: 40 };
     const workout = insertWorkout(db, workoutData, userId);
 
     const exercisesArray = [

@@ -22,11 +22,11 @@ const exerciseData = {
   name: "Push Up",
   category: "Strength",
 };
-const setData: SetData = { reps: 4, weight: 20, notes: "felt pretty good" };
+const setData: SetData = { reps: 4, metric_value: 20 };
 
 beforeEach(() => {
-    db = createTestDb();
-  userId = createTestUser(db)
+  db = createTestDb();
+  userId = createTestUser(db);
 });
 
 afterEach(() => {
@@ -34,7 +34,7 @@ afterEach(() => {
 });
 
 describe("insertSet", () => {
-  const setData: SetData = { reps: 4, weight: 20, notes: "felt pretty good" };
+  const setData: SetData = { reps: 4, metric_value: 20 };
   it("inserts a set", async () => {
     const workout = insertWorkout(db, workoutData, userId);
     const { exercise } = insertExerciseToWorkout(
@@ -49,11 +49,8 @@ describe("insertSet", () => {
       workout_exercise_id: expect.any(String),
       created_at: expect.any(String),
       reps: 4,
-      weight: 20,
-      duration: null,
+      metric_value: 20,
       order_index: 1,
-      distance: null,
-      notes: "felt pretty good",
     });
   });
 
@@ -61,7 +58,7 @@ describe("insertSet", () => {
     try {
       insertSet(
         db,
-        { reps: 5, weight: 10 },
+        { reps: 5, metric_value: 10 },
         userId,
         "fakeWorkoutId",
         "fakeExerciseId"
@@ -100,7 +97,7 @@ describe("getAllSetsByExerciseId", () => {
     insertSet(db, setData, userId, workout.id, exercise.id);
     insertSet(
       db,
-      { reps: 1, distance: 20, notes: "I ran 20kms" },
+      { reps: 1, metric_value: 20 },
       userId,
       workout.id,
       exercise.id
@@ -111,10 +108,7 @@ describe("getAllSetsByExerciseId", () => {
       id: expect.any(String),
       workout_exercise_id: expect.any(String),
       reps: 4,
-      weight: 20,
-      distance: null,
-      duration: null,
-      notes: "felt pretty good",
+      metric_value: 20,
       order_index: 1,
       created_at: expect.any(String),
     });
@@ -122,10 +116,7 @@ describe("getAllSetsByExerciseId", () => {
       id: expect.any(String),
       workout_exercise_id: expect.any(String),
       reps: 1,
-      weight: null,
-      distance: 20,
-      duration: null,
-      notes: "I ran 20kms",
+      metric_value: 20,
       order_index: 2,
       created_at: expect.any(String),
     });
@@ -185,21 +176,21 @@ describe("deleteSetBySetId", () => {
 
     const set1 = insertSet(
       db,
-      { reps: 10, weight: 100 },
+      { reps: 10, metric_value: 100 },
       userId,
       workout.id,
       exercise.id
     );
     const set2 = insertSet(
       db,
-      { reps: 8, weight: 110 },
+      { reps: 8, metric_value: 110 },
       userId,
       workout.id,
       exercise.id
     );
     const set3 = insertSet(
       db,
-      { reps: 6, weight: 120 },
+      { reps: 6, metric_value: 120 },
       userId,
       workout.id,
       exercise.id
@@ -279,8 +270,7 @@ describe("updateSetById", () => {
     const set = insertSet(db, setData, userId, workout.id, exercise.id);
     const updates = {
       reps: 6,
-      weight: 25,
-      duration: 120,
+      metric_value: 25,
     };
 
     const updatedSet = updateSetById(db, set.id, updates, userId);
@@ -288,19 +278,15 @@ describe("updateSetById", () => {
       id: set.id,
       workout_exercise_id: expect.any(String),
       reps: 6,
-      weight: 25,
-      duration: 120,
+      metric_value: 25,
       order_index: 1,
       created_at: expect.any(String),
-      distance: null,
-      notes: "felt pretty good",
     });
 
     const sets = getAllSetsByExerciseId(db, userId, workout.id, exercise.id);
     expect(sets).toHaveLength(1);
     expect(sets[0]?.reps).toBe(6);
-    expect(sets[0]?.weight).toBe(25);
-    expect(sets[0]?.duration).toBe(120);
+    expect(sets[0]?.metric_value).toBe(25);
   });
 
   it("successfully updates only 1 field", async () => {
@@ -312,19 +298,15 @@ describe("updateSetById", () => {
       workout.id
     );
     const set = insertSet(db, setData, userId, workout.id, exercise.id);
-    // Update only weight
-    const updates = { weight: 30 };
+    const updates = { metric_value: 30 };
     const updatedSet = updateSetById(db, set.id, updates, userId);
     expect(updatedSet).toEqual({
       id: set.id,
       workout_exercise_id: expect.any(String),
       reps: 4,
-      weight: 30,
-      duration: null,
+      metric_value: 30,
       order_index: 1,
       created_at: expect.any(String),
-      distance: null,
-      notes: "felt pretty good",
     });
   });
 
@@ -366,40 +348,49 @@ describe("updateSetById", () => {
       workout.id
     );
 
-    insertSet(db, { reps: 10, weight: 100 }, userId, workout.id, exercise.id);
-    const set2 = insertSet(
+    insertSet(
       db,
-      { reps: 8, weight: 110 },
+      { reps: 10, metric_value: 100 },
       userId,
       workout.id,
       exercise.id
     );
-    insertSet(db, { reps: 6, weight: 120 }, userId, workout.id, exercise.id);
+    const set2 = insertSet(
+      db,
+      { reps: 8, metric_value: 110 },
+      userId,
+      workout.id,
+      exercise.id
+    );
+    insertSet(
+      db,
+      { reps: 6, metric_value: 120 },
+      userId,
+      workout.id,
+      exercise.id
+    );
 
-    const updates = { reps: 12, weight: 130 };
+    const updates = { reps: 12, metric_value: 130 };
     const updatedSet = updateSetById(db, set2.id, updates, userId);
 
     expect(updatedSet).toEqual({
       id: set2.id,
       workout_exercise_id: expect.any(String),
       reps: 12,
-      weight: 130,
-      duration: null,
+      metric_value: 130,
       order_index: 2,
       created_at: expect.any(String),
-      distance: null,
-      notes: null,
     });
 
     const allSets = getAllSetsByExerciseId(db, userId, workout.id, exercise.id);
     expect(allSets).toHaveLength(3);
     expect(allSets[0]?.reps).toBe(10);
-    expect(allSets[0]?.weight).toBe(100);
+    expect(allSets[0]?.metric_value).toBe(100);
     expect(allSets[1]?.reps).toBe(12);
-    expect(allSets[1]?.weight).toBe(130);
+    expect(allSets[1]?.metric_value).toBe(130);
     expect(allSets[2]?.reps).toBe(6);
-    expect(allSets[2]?.weight).toBe(120);
   });
+
   it("handles null values correctly", async () => {
     const workout = insertWorkout(db, workoutData, userId);
     const { exercise } = insertExerciseToWorkout(
@@ -410,24 +401,21 @@ describe("updateSetById", () => {
     );
     const set = insertSet(
       db,
-      { reps: 10, weight: 100 },
+      { reps: 10, metric_value: 100 },
       userId,
       workout.id,
       exercise.id
     );
-    const updates = { weight: null } as any;
+    const updates = { metric_value: null } as any;
     const updatedSet = updateSetById(db, set.id, updates, userId);
 
     expect(updatedSet).toEqual({
       id: set.id,
       workout_exercise_id: expect.any(String),
       reps: 10,
-      weight: null,
-      duration: null,
+      metric_value: null as unknown as number,
       order_index: 1,
       created_at: expect.any(String),
-      notes: null,
-      distance: null,
     });
   });
 });

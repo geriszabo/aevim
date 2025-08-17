@@ -271,10 +271,7 @@ export const createSetAddToWorkoutAndReturn = async (
   exerciseId: string,
   setData: {
     reps?: number;
-    weight?: number;
-    duration?: number;
-    distance?: number;
-    notes?: string;
+    metric_value?: number
   } = {}
 ) => {
   const setRes = await app.fetch(
@@ -376,10 +373,7 @@ export const updateSetAndReturn = async (
   setId: string,
   update: {
     reps?: number;
-    weight?: number;
-    duration?: number;
-    distance?: number;
-    notes?: string;
+    metric_value?: number
   }
 ) => {
   const updatedSetRes = await app.fetch(

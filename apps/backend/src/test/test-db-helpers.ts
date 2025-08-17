@@ -77,9 +77,7 @@ export const createCompleteWorkout = (db: Database, userId: string) => {
 
   const setData = {
     reps: 10,
-    weight: 100,
-    duration: 60,
-    distance: 5,
+    metric_value: 50,
     notes: "Test set",
   };
 
