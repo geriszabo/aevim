@@ -49,7 +49,7 @@ export const ExerciseCard = ({
                 {set.reps}
               </Typography>
               <Typography variant="body" size="xs" className="col-span-2">
-                {set[exercise.metric]}
+                {set.metric_value}
               </Typography>
             </div>
           );

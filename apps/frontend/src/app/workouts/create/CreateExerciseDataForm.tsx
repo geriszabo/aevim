@@ -54,7 +54,7 @@ export const CreateExerciseDataForm = ({
 
     appendSet({
       reps: lastSet?.reps ?? 0,
-      value: lastSet?.value ?? 0,
+      metric_value: lastSet?.metric_value ?? 0,
     });
   };
   

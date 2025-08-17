@@ -23,7 +23,7 @@ export type WorkoutFormValues = {
     category?: string | null | undefined;
     notes?: string;
     metric: string;
-    sets: { reps: number; value: number }[];
+    sets: { reps: number; metric_value: number }[];
   }[];
 };
 
@@ -65,7 +65,7 @@ export default function WorkoutPage() {
       sets: [
         {
           reps: 0,
-          value: 0,
+          metric_value: 0,
         },
       ],
     });

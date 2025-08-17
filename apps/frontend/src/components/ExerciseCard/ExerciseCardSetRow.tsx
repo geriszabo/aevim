@@ -57,7 +57,7 @@ export const ExerciseCardSetRow = ({
               className="h-8 text-xs pr-8 text-right"
               placeholder="0"
               {...register(
-                `exercises.${exerciseIndex}.sets.${setIndex}.value`,
+                `exercises.${exerciseIndex}.sets.${setIndex}.metric_value`,
                 { valueAsNumber: true }
               )}
             />
