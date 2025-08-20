@@ -4,7 +4,7 @@ import { getWorkoutOverview } from "../api/workouts/getWorkoutOverview";
 
 export const useGetCompleteWorkout = (workoutId: string) => {
   return useQuery<GetWorkoutOverviewResponse, ApiError>({
-    queryKey: ["workoutOverview", workoutId],
+    queryKey: ["completeWorkout", workoutId],
     queryFn: () => getWorkoutOverview(workoutId),
     retry: 1,
   });

@@ -3,9 +3,11 @@ import { UpdateCompleteWorkoutData } from "@aevim/shared-types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { putCompleteWorkout } from "../api/completeworkouts/putCompleteWorkout";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const useUpdateCompleteWorkout = (workoutId: string) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   return useMutation<
     UpdateCompleteWorkoutResponse,
     ApiError,
@@ -15,8 +17,9 @@ export const useUpdateCompleteWorkout = (workoutId: string) => {
       putCompleteWorkout({ workoutId, editCompleteWorkoutData }),
     onSuccess: (data) => {
       toast.success(data.message);
+      router.push(`/workouts/${data.updatedWorkout.workout.id}`);
       queryClient.invalidateQueries({ queryKey: ["workouts"] });
-      queryClient.invalidateQueries({ queryKey: ["workout", workoutId] });
+      queryClient.invalidateQueries({ queryKey: ["completeWorkout", workoutId] });
     },
   });
 };

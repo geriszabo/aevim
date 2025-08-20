@@ -18,7 +18,7 @@ export const useCreateCompleteWorkout = () => {
     onSuccess: (data) => {
       toast.success(data.message);
       router.push(`/workouts/${data.workout.workout.id}`);
-      queryClient.invalidateQueries({ queryKey: ["workouts"] });
+      queryClient.invalidateQueries({ queryKey: ["workouts", "completeWorkouts"] });
     },
   });
 };
