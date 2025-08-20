@@ -86,20 +86,18 @@ completeWorkouts
           exerciseData;
         const updatedExercise = updateExerciseById(
           db,
-          exercise_id,
+          exercise_id!,
           payload.sub,
           { category, metric, name, notes }
         );
-        console.log(updatedExercise);
         for (const setData of sets) {
           const { reps, metric_value } = setData;
           const updatedSet = updateSetById(
             db,
-            setData.id,
+            setData.id!,
             { reps, metric_value },
             payload.sub
           );
-          console.log(updatedSet);
         }
       }
       //TODO: delete this later, no need to return the whole workout

@@ -11,7 +11,7 @@ export const createCompleteWorkoutSchema = z.object({
       sets: z.array(
         z.object({
           reps: z.number().min(1, "Reps must be at least 1"),
-          metric_value: z.number().min(1, "Values must be at least 1"),
+          metric_value: z.number().min(0, "Values must be larger than 0"),
         })
       ),
     })
@@ -20,23 +20,29 @@ export const createCompleteWorkoutSchema = z.object({
 
 export const updateCompleteWorkoutSchema = z.object({
   workout: z.object({
-    ...workoutSchema.shape,
-    id: z.string(),
-    created_at: z.string(),
+    name: z.string({ message: "No string for name update provided" }),
+    date: z.iso.date({ message: "No string for date update provided" }),
+    notes: z
+      .string({ message: "No string for notes update provided" })
+      .optional()
+      .nullable(),
   }),
   exercises: z.array(
     z.object({
-      ...exerciseSchema.shape,
-      created_at: z.string(),
-      exercise_id: z.string(),
-      order_index: z.number(),
+      name: z.string({ message: "No string for name update provided" }),
+      notes: z
+        .string({ message: "No string for notes update provided" })
+        .optional(),
+      category: z
+        .string({ message: "No string for category update provided" })
+        .optional()
+        .nullable(),
+      exercise_id: z.string().optional(),
       metric: z.string().min(1, "Please choose a metric for the exercise"),
       sets: z.array(
         z.object({
-          created_at: z.string(),
           metric_value: z.number(),
-          order_index: z.number(),
-          id: z.string(),
+          id: z.string().optional(),
           reps: z.number().min(1, "Reps must be at least 1"),
         })
       ),
