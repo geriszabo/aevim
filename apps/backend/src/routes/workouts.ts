@@ -8,7 +8,6 @@ import {
   deleteWorkoutById,
   getWorkoutById,
   getExercisesByWorkoutId,
-  getWorkoutOverviewByWorkoutId,
   getWorkoutsByUserId,
   insertWorkout,
   updateWorkoutById,
@@ -26,11 +25,6 @@ import {
   updateSetById,
 } from "../db/queries/set-queries";
 import { handleError } from "../helpers";
-import {
-  createCompleteWorkoutValidator,
-  updateCompleteWorkoutValidator,
-} from "../db/schemas/complete-workout-schema";
-import { updateExerciseById } from "../db/queries/exercise-queries";
 
 const workouts = new Hono();
 

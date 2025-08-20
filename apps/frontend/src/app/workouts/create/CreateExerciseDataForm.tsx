@@ -16,7 +16,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Typography } from "@/components/ui/typography";
-import { WorkoutFormValues } from "./page";
+import { WorkoutFormValues } from "@/types/form";
 import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCardSetRow";
 import { ExerciseCardMetricSelect } from "../../../components/ExerciseCard/ExerciseCardMetricSelect";
 import { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";

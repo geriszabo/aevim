@@ -1,4 +1,4 @@
-import { WorkoutFormValues } from "@/app/workouts/create/page";
+import { WorkoutFormValues } from "@/types/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SetMetrics } from "@aevim/shared-types";
