@@ -362,9 +362,9 @@ describe("getWorkoutOverviewByWorkoutId", () => {
     const workout = insertWorkout(db, workoutData, userId);
 
     const exercisesArray = [
-      { name: "Exercise 1", category: "Category 1" },
-      { name: "Exercise 2", category: "Category 2" },
-      { name: "Exercise 3", category: "Category 3" },
+      { name: "Exercise 1", category: "Category 1", metric: "weight" },
+      { name: "Exercise 2", category: "Category 2", metric: "weight" },
+      { name: "Exercise 3", category: "Category 3", metric: "weight" },
     ];
 
     exercisesArray.forEach((exercise) => {
@@ -392,7 +392,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
         created_at: expect.any(String),
         name: `Exercise ${exerciseIndex + 1}`,
         category: `Category ${exerciseIndex + 1}`,
-        metric: null,
+        metric: "weight",
         sets: expect.any(Array),
       });
 
