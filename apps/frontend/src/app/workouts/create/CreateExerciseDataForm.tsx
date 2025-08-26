@@ -69,6 +69,7 @@ export const CreateExerciseDataForm = ({
             className="ml-auto"
             variant="ghost"
             size="icon"
+            type="button"
             onClick={() => onDelete()}
           >
             <Trash2 className="text-red-600" />
