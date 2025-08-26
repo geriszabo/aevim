@@ -261,3 +261,39 @@ export const getWorkoutOverviewByWorkoutId = (
     exercises: Array.from(exercisesMap.values()),
   };
 };
+
+export const getWorkoutExerciseAndSetIds = (
+  db: Database,
+  workoutId: string,
+  userId: string
+) => {
+  checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
+
+  const query = db.query(`
+    SELECT
+      workout_exercises.exercise_id AS exercise_id,
+      sets.id AS set_id
+    FROM workout_exercises
+    JOIN exercises ON workout_exercises.exercise_id = exercises.id
+    LEFT JOIN sets ON workout_exercises.id = sets.workout_exercise_id
+    WHERE workout_exercises.workout_id = ?
+      AND exercises.user_id = ?
+    ORDER BY workout_exercises.order_index, sets.order_index
+  `);
+
+  const rows = query.all(workoutId, userId) as {
+    exercise_id: string;
+    set_id: string;
+  }[];
+
+  const allExerciseIds: string[] = [];
+  const allSetIds: string[] = [];
+  rows.map(
+    (row) => (allExerciseIds.push(row.exercise_id), allSetIds.push(row.set_id))
+  );
+
+  return {
+    exerciseIds: Array.from(new Set(allExerciseIds)),
+    setIds: Array.from(new Set(allSetIds)),
+  };
+};
