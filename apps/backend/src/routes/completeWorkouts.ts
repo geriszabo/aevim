@@ -1,18 +1,26 @@
 import { Hono } from "hono";
 import { dbConnect } from "../db/db";
 import {
+  getWorkoutExerciseAndSetIds,
   getWorkoutOverviewByWorkoutId,
   insertWorkout,
   updateWorkoutById,
 } from "../db/queries/workout-queries";
 import { insertExerciseToWorkout } from "../db/queries/workout-exercises-queries";
-import { insertSet, updateSetById } from "../db/queries/set-queries";
+import {
+  deleteSetBySetId,
+  insertSet,
+  updateSetById,
+} from "../db/queries/set-queries";
 import { handleError } from "../helpers";
 import {
   createCompleteWorkoutValidator,
   updateCompleteWorkoutValidator,
 } from "../db/schemas/complete-workout-schema";
-import { updateExerciseById } from "../db/queries/exercise-queries";
+import {
+  deleteExerciseById,
+  updateExerciseById,
+} from "../db/queries/exercise-queries";
 
 const completeWorkouts = new Hono();
 
@@ -61,7 +69,6 @@ completeWorkouts
         workout: completeWorkout,
       });
     } catch (error) {
-      console.error(error)
       return handleError(c, error);
     }
   })
@@ -75,40 +82,57 @@ completeWorkouts
     } = c.req.valid("json");
 
     try {
-      const updatedWorkout = updateWorkoutById(db, workoutId, payload.sub, {
+      const idsInDb = getWorkoutExerciseAndSetIds(db, workoutId, payload.sub);
+      const incomingExerciseIds = exercises.map(
+        (exercise) => exercise.exercise_id
+      );
+      const exercisesToDelete = idsInDb.exerciseIds.filter(
+        (exerciseInDb) => !incomingExerciseIds.includes(exerciseInDb)
+      );
+      const incomingSetIds = exercises.flatMap((exercise) =>
+        exercise.sets.map((set) => set.id)
+      );
+      const setsToDelete = idsInDb.setIds.filter(
+        (setIdInDb) => !incomingSetIds.includes(setIdInDb)
+      );
+      setsToDelete.map((setId) => deleteSetBySetId(db, setId, payload.sub));
+      exercisesToDelete.map((exerciseToDelete) =>
+        deleteExerciseById(db, exerciseToDelete, payload.sub)
+      );
+      updateWorkoutById(db, workoutId, payload.sub, {
         date,
         name,
         notes,
       });
-      console.log(updatedWorkout);
       for (const exerciseData of exercises) {
-        const { name, category, sets, notes, metric, exercise_id } =
-          exerciseData;
-        const updatedExercise = updateExerciseById(
-          db,
-          exercise_id!,
-          payload.sub,
-          { category, metric, name, notes }
-        );
+        let exerciseId = exerciseData.exercise_id;
+        const sets = exerciseData.sets;
+        if (!exerciseData.exercise_id) {
+          const {
+            workoutExercise: { exercise_id },
+          } = insertExerciseToWorkout(db, exerciseData, payload.sub, workoutId);
+          exerciseId = exercise_id;
+        } else {
+          const { name, category, notes, metric, exercise_id } = exerciseData;
+          exerciseId = exercise_id;
+          updateExerciseById(db, exercise_id, payload.sub, {
+            category,
+            metric,
+            name,
+            notes,
+          });
+        }
         for (const setData of sets) {
-          const { reps, metric_value } = setData;
-          const updatedSet = updateSetById(
-            db,
-            setData.id!,
-            { reps, metric_value },
-            payload.sub
-          );
+          if (!setData.id) {
+            insertSet(db, setData, payload.sub, workoutId, exerciseId);
+          } else {
+            const { reps, metric_value } = setData;
+            updateSetById(db, setData.id!, { reps, metric_value }, payload.sub);
+          }
         }
       }
-      //TODO: delete this later, no need to return the whole workout
-      const newWorkout = getWorkoutOverviewByWorkoutId(
-        db,
-        workoutId,
-        payload.sub
-      );
       return c.json({
         message: "Workout updated successfully",
-        updatedWorkout: newWorkout,
       });
     } catch (error) {
       return handleError(c, error);
