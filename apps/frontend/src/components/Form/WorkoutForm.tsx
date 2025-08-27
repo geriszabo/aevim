@@ -60,7 +60,6 @@ export const WorkoutForm = ({
   };
 
   const onSubmit = (data: WorkoutFormValues) => {
-    console.log({ data });
     mutate({ ...data });
   };
   return (
