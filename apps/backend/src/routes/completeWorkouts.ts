@@ -12,7 +12,12 @@ import {
   insertSet,
   updateSetById,
 } from "../db/queries/set-queries";
-import { handleError } from "../helpers";
+import {
+  calculateItemsToDelete,
+  deleteIds,
+  extractIncomingIds,
+  handleError,
+} from "../helpers";
 import {
   createCompleteWorkoutValidator,
   updateCompleteWorkoutValidator,
@@ -82,23 +87,26 @@ completeWorkouts
     } = c.req.valid("json");
 
     try {
-      const idsInDb = getWorkoutExerciseAndSetIds(db, workoutId, payload.sub);
-      const incomingExerciseIds = exercises.map(
-        (exercise) => exercise.exercise_id
+      const currentIds = getWorkoutExerciseAndSetIds(
+        db,
+        workoutId,
+        payload.sub
       );
-      const exercisesToDelete = idsInDb.exerciseIds.filter(
-        (exerciseInDb) => !incomingExerciseIds.includes(exerciseInDb)
+      const { incomingExerciseIds, incomingSetIds } =
+        extractIncomingIds(exercises);
+
+      const exercisesToDelete = calculateItemsToDelete(
+        currentIds.exerciseIds,
+        incomingExerciseIds
       );
-      const incomingSetIds = exercises.flatMap((exercise) =>
-        exercise.sets.map((set) => set.id)
+      const setsToDelete = calculateItemsToDelete(
+        currentIds.setIds,
+        incomingSetIds
       );
-      const setsToDelete = idsInDb.setIds.filter(
-        (setIdInDb) => !incomingSetIds.includes(setIdInDb)
-      );
-      setsToDelete.map((setId) => deleteSetBySetId(db, setId, payload.sub));
-      exercisesToDelete.map((exerciseToDelete) =>
-        deleteExerciseById(db, exerciseToDelete, payload.sub)
-      );
+
+      deleteIds(exercisesToDelete, db, payload.sub, deleteExerciseById);
+      deleteIds(setsToDelete, db, payload.sub, deleteSetBySetId);
+
       updateWorkoutById(db, workoutId, payload.sub, {
         date,
         name,

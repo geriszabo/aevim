@@ -3,6 +3,7 @@ import { sign } from "hono/jwt";
 import type { CookieOptions } from "hono/utils/cookie";
 import env from "./env";
 import type { Context } from "hono";
+import type { UpdateCompleteWorkoutData } from "@aevim/shared-types";
 
 type ErrorCode = keyof typeof ERROR_MAPPINGS;
 
@@ -135,4 +136,36 @@ export const checkItemExists = (
   }
 
   return exists;
+};
+
+export const extractIncomingIds = (
+  exercises: UpdateCompleteWorkoutData["exercises"]
+) => {
+  const incomingExerciseIds = exercises
+    .map((exercise) => exercise.exercise_id)
+    .filter(Boolean);
+
+  const incomingSetIds = exercises
+    .flatMap((exercise) => exercise.sets.map((set) => set.id))
+    .filter(Boolean);
+
+  return { incomingExerciseIds, incomingSetIds };
+};
+
+export const calculateItemsToDelete = (
+  currentIds: string[],
+  incomingIds: (string | undefined)[]
+) => {
+  if (!incomingIds.length) return currentIds;
+  return currentIds.filter((currentId) => !incomingIds.includes(currentId));
+};
+
+export const deleteIds = (
+  idsToDelete: string[],
+  db: Database,
+  userId: string,
+  deleteFunction: (db: Database, idToDelete: string, userId: string) => void
+) => {
+  if(!idsToDelete.length) return;
+  idsToDelete.map((id) => deleteFunction(db, id, userId));
 };
