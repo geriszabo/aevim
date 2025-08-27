@@ -17,9 +17,11 @@ export const useUpdateCompleteWorkout = (workoutId: string) => {
       putCompleteWorkout({ workoutId, editCompleteWorkoutData }),
     onSuccess: (data) => {
       toast.success(data.message);
-      router.push(`/workouts/${data.updatedWorkout.workout.id}`);
+      router.push(`/workouts/${workoutId}`);
       queryClient.invalidateQueries({ queryKey: ["workouts"] });
-      queryClient.invalidateQueries({ queryKey: ["completeWorkout", workoutId] });
+      queryClient.invalidateQueries({
+        queryKey: ["completeWorkout", workoutId],
+      });
     },
   });
 };
