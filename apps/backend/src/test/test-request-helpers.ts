@@ -279,3 +279,46 @@ export const updateSetRequest = (
     { method: "PUT", body: update }
   );
 };
+
+export const addCompleteWorkoutRequest = (
+  cookie: string = "",
+  workout: {
+    name?: string;
+    date?: string;
+    notes?: string;
+  } = {
+    name: "Monday Workout",
+    date: "2025-08-27",
+    notes: "Great session",
+  },
+  exercises: Array<{
+    name?: string;
+    category?: string;
+    metric?: string;
+    notes?: string;
+    sets?: Array<{
+      reps?: number;
+      metric_value?: number;
+    }>;
+  }> = [
+    {
+      name: "Bench Press",
+      category: "chest",
+      metric: "weight",
+      notes: "Focus on form",
+      sets: [
+        { reps: 10, metric_value: 135 },
+        { reps: 8, metric_value: 145 },
+      ],
+    },
+  ]
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.completeWorkouts.base,
+    cookie,
+    {
+      method: "POST",
+      body: { workout, exercises },
+    }
+  );
+};

@@ -8,6 +8,7 @@ import type {
 import app from "../index";
 import type { ExerciseWithouthUserId } from "../types/exercise";
 import {
+  addCompleteWorkoutRequest,
   addExerciseRequest,
   addExerciseToWorkoutRequest,
   addSetRequest,
@@ -98,7 +99,7 @@ export const createExerciseAddToWorkoutAndReturn = async (
       workoutId,
       category,
       name,
-      notes
+      notes,
     })
   );
   const json = await exerciseRes.json();
@@ -271,7 +272,7 @@ export const createSetAddToWorkoutAndReturn = async (
   exerciseId: string,
   setData: {
     reps?: number;
-    metric_value?: number
+    metric_value?: number;
   } = {}
 ) => {
   const setRes = await app.fetch(
@@ -373,7 +374,7 @@ export const updateSetAndReturn = async (
   setId: string,
   update: {
     reps?: number;
-    metric_value?: number
+    metric_value?: number;
   }
 ) => {
   const updatedSetRes = await app.fetch(
@@ -394,4 +395,32 @@ export const updateSetAndReturn = async (
       success: false;
     };
   }
+};
+
+export const createCompleteWorkoutAndReturn = async (
+  cookie: string,
+  completeWorkoutData: {
+    workout?: {
+      name?: string;
+      date?: string;
+      notes?: string;
+    };
+    exercises?: Array<{
+      name?: string;
+      category?: string;
+      metric?: string;
+      notes?: string;
+      sets?: Array<{
+        reps?: number;
+        metric_value?: number;
+      }>;
+    }>;
+  } = {}
+) => {
+  const { exercises, workout } = completeWorkoutData;
+  const res = await app.fetch(
+    addCompleteWorkoutRequest(cookie, workout, exercises)
+  );
+  const completeWorkout = await res.json();
+  return { res, completeWorkout };
 };
