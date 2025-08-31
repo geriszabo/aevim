@@ -20,7 +20,7 @@ export const createCompleteWorkoutSchema = z.object({
 
 export const updateCompleteWorkoutSchema = z.object({
   workout: z.object({
-    name: z.string({ message: "No string for name update provided" }),
+    name: z.string({ message: "No string for name update provided" }).min(1, "Workout name cannot be empty"),
     date: z.iso.date({ message: "No string for date update provided" }),
     notes: z
       .string({ message: "No string for notes update provided" })
@@ -29,7 +29,7 @@ export const updateCompleteWorkoutSchema = z.object({
   }),
   exercises: z.array(
     z.object({
-      name: z.string({ message: "No string for name update provided" }),
+      name: z.string({ message: "No string for name update provided" }).min(1, "Exercise name cannot be empty"),
       notes: z
         .string({ message: "No string for notes update provided" })
         .optional(),
@@ -41,7 +41,7 @@ export const updateCompleteWorkoutSchema = z.object({
       metric: z.string().min(1, "Please choose a metric for the exercise"),
       sets: z.array(
         z.object({
-          metric_value: z.number(),
+          metric_value: z.number().min(0, "Values must be larger than 0"),
           id: z.string().optional(),
           reps: z.number().min(1, "Reps must be at least 1"),
         })
