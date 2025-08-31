@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { dbConnect } from "../db/db";
 import {
   getWorkoutExerciseAndSetIds,
-  getWorkoutOverviewByWorkoutId,
+  getCompleteWorkoutByWorkoutId,
   insertWorkout,
   updateWorkoutById,
 } from "../db/queries/workout-queries";
@@ -64,7 +64,7 @@ completeWorkouts
           );
         }
       }
-      const completeWorkout = getWorkoutOverviewByWorkoutId(
+      const completeWorkout = getCompleteWorkoutByWorkoutId(
         db,
         workoutId,
         payload.sub
@@ -151,7 +151,7 @@ completeWorkouts
     const workoutId = c.req.param("id");
     const payload = c.get("jwtPayload");
     try {
-      const workoutOverview = getWorkoutOverviewByWorkoutId(
+      const workoutOverview = getCompleteWorkoutByWorkoutId(
         db,
         workoutId,
         payload.sub

@@ -6,7 +6,7 @@ import {
   deleteWorkoutById,
   getWorkoutById,
   getExercisesByWorkoutId,
-  getWorkoutOverviewByWorkoutId,
+  getCompleteWorkoutByWorkoutId,
   getWorkoutsByUserId,
   insertWorkout,
   updateWorkoutById,
@@ -356,7 +356,7 @@ describe("getWorkoutExercisesByWorkoutId", () => {
   });
 });
 
-describe("getWorkoutOverviewByWorkoutId", () => {
+describe("getCompleteWorkoutByWorkoutId", () => {
   it("returns workout with exercises and sets", async () => {
     const setData: SetData = { reps: 10, metric_value: 50 };
     const workout = insertWorkout(db, workoutData, userId);
@@ -379,7 +379,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
       insertSet(db, setData, userId, workout.id, exercise.exercise_id);
     });
 
-    const overview = getWorkoutOverviewByWorkoutId(db, workout.id, userId);
+    const overview = getCompleteWorkoutByWorkoutId(db, workout.id, userId);
     expect(overview).toBeDefined();
     expect(overview!.exercises).toHaveLength(3);
 
@@ -419,7 +419,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
 
   it("throws error when workout does not exist", async () => {
     try {
-      getWorkoutOverviewByWorkoutId(db, "fakeWorkoutId", userId);
+      getCompleteWorkoutByWorkoutId(db, "fakeWorkoutId", userId);
     } catch (error) {
       if (error instanceof Error) {
         expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
@@ -438,7 +438,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
     exercisesArray.forEach((exercise) => {
       insertExerciseToWorkout(db, exercise, userId, workout.id);
     });
-    const overview = getWorkoutOverviewByWorkoutId(db, workout.id, userId);
+    const overview = getCompleteWorkoutByWorkoutId(db, workout.id, userId);
     expect(overview).toBeDefined();
     expect(overview!.exercises).toHaveLength(2);
     overview!.exercises.forEach((exercise) => {
@@ -449,7 +449,7 @@ describe("getWorkoutOverviewByWorkoutId", () => {
 
   it("returns workout with no exercises", async () => {
     const workout = insertWorkout(db, workoutData, userId);
-    const overview = getWorkoutOverviewByWorkoutId(db, workout.id, userId);
+    const overview = getCompleteWorkoutByWorkoutId(db, workout.id, userId);
 
     expect(overview).toBeDefined();
     expect(overview!.workout).toEqual({

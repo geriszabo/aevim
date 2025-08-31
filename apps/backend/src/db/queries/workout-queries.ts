@@ -190,7 +190,7 @@ export const getExercisesByWorkoutId = (
   return exercises;
 };
 
-export const getWorkoutOverviewByWorkoutId = (
+export const getCompleteWorkoutByWorkoutId = (
   db: Database,
   workoutId: string,
   userId: string
