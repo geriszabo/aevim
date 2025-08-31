@@ -421,6 +421,6 @@ export const createCompleteWorkoutAndReturn = async (
   const res = await app.fetch(
     addCompleteWorkoutRequest(cookie, workout, exercises)
   );
-  const completeWorkout = await res.json();
+  const completeWorkout = await res.json() as {message: string, workout: WorkoutOverview};
   return { res, completeWorkout };
 };
