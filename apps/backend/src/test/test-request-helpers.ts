@@ -322,3 +322,49 @@ export const addCompleteWorkoutRequest = (
     }
   );
 };
+
+export const updateCompleteWorkoutRequest = (
+  workoutId: string,
+  cookie: string = "",
+  workout: {
+    name?: string;
+    date?: string;
+    notes?: string | null;
+  } = {
+    name: "Updated Workout",
+    date: "2025-08-28",
+    notes: "Updated session",
+  },
+  exercises: Array<{
+    exercise_id?: string;
+    name?: string;
+    category?: string;
+    metric?: string;
+    notes?: string;
+    sets?: Array<{
+      id?: string;
+      reps?: number;
+      metric_value?: number;
+    }>;
+  }> = [
+    {
+      name: "Updated Bench Press",
+      category: "chest",
+      metric: "weight",
+      notes: "Updated form focus",
+      sets: [
+        { reps: 12, metric_value: 140 },
+        { reps: 10, metric_value: 150 },
+      ],
+    },
+  ]
+): Request => {
+  return createAuthenticatedRequest(
+    API_ROUTES.completeWorkouts.single(workoutId),
+    cookie,
+    {
+      method: "PUT",
+      body: { workout, exercises },
+    }
+  );
+};

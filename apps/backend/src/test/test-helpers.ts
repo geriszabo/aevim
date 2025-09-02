@@ -27,6 +27,7 @@ import {
   loginrequest,
   logoutRequest,
   signupRequest,
+  updateCompleteWorkoutRequest,
   updateExerciseRequest,
   updateSetRequest,
   updateWorkoutRequest,
@@ -421,6 +422,22 @@ export const createCompleteWorkoutAndReturn = async (
   const res = await app.fetch(
     addCompleteWorkoutRequest(cookie, workout, exercises)
   );
-  const completeWorkout = await res.json() as {message: string, workout: WorkoutOverview};
+  const completeWorkout = (await res.json()) as {
+    message: string;
+    workout: WorkoutOverview;
+  };
   return { res, completeWorkout };
+};
+
+export const updateCompleteWorkoutAndReturn = async (
+  cookie: string,
+  workoutId: string,
+  updateData: WorkoutOverview
+) => {
+  const { exercises, workout } = updateData;
+  const res = await app.fetch(
+    updateCompleteWorkoutRequest(workoutId, cookie, workout, exercises)
+  );
+  const updateResponse = await res.json();
+  return { res, updateResponse };
 };
