@@ -169,3 +169,22 @@ export const deleteIds = (
   if(!idsToDelete.length) return;
   idsToDelete.map((id) => deleteFunction(db, id, userId));
 };
+
+export const calculateItemsToDeleteWithDependencies = (
+  currentExerciseSets: { exerciseId: string, setIds: string[] }[],
+  incomingIds: { incomingExerciseIds: (string | undefined)[], incomingSetIds: (string | undefined)[] }
+) => {
+
+  const currentExerciseIds = currentExerciseSets.map(es => es.exerciseId);
+  const currentSetIds = currentExerciseSets.flatMap(es => es.setIds);
+
+  const exercisesToDelete = calculateItemsToDelete(currentExerciseIds, incomingIds.incomingExerciseIds);
+  let setsToDelete = calculateItemsToDelete(currentSetIds, incomingIds.incomingSetIds);
+  const setIdsInDeletedExercises = currentExerciseSets
+    .filter(es => exercisesToDelete.includes(es.exerciseId))
+    .flatMap(es => es.setIds);
+  
+  setsToDelete = setsToDelete.filter(setId => !setIdsInDeletedExercises.includes(setId));
+
+  return { exercisesToDelete, setsToDelete };
+};

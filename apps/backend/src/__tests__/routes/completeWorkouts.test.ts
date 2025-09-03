@@ -205,6 +205,95 @@ describe("/completeWorkouts endpoint", () => {
       );
     });
 
+    it("deletes sets and exercises when removed from workout", async () => {
+      const { cookie } = await loginFlow();
+      const { user } = await getAuthMeAndReturn(cookie!);
+      if (!("id" in user)) return;
+
+      const workoutData = {
+        workout: {
+          name: "Upper Body Push Day",
+          date: "2025-09-03",
+          notes: "Focus on controlled movement and form",
+        },
+        exercises: [
+          {
+            name: "Bench Press",
+            category: "chest",
+            metric: "weight",
+            notes: "Keep elbows at 45 degrees",
+            sets: [
+              {
+                reps: 10,
+                metric_value: 135,
+              },
+              {
+                reps: 8,
+                metric_value: 145,
+              },
+              {
+                reps: 6,
+                metric_value: 155,
+              },
+            ],
+          },
+          {
+            name: "Overhead Press",
+            category: "shoulders",
+            metric: "weight",
+            notes: "Full range of motion",
+            sets: [
+              {
+                reps: 12,
+                metric_value: 85,
+              },
+              {
+                reps: 10,
+                metric_value: 95,
+              },
+              {
+                reps: 8,
+                metric_value: 105,
+              },
+            ],
+          },
+        ],
+      };
+
+      const { completeWorkout } = await createCompleteWorkoutAndReturn(
+        cookie!,
+        workoutData
+      );
+      const workoutId = completeWorkout.workout.workout.id;
+      let workoutFromDB = getCompleteWorkoutByWorkoutId(db, workoutId, user.id);
+      
+      expect(workoutFromDB.exercises).toHaveLength(2);
+      expect(workoutFromDB.exercises[0]!.sets).toHaveLength(3);
+      expect(workoutFromDB.exercises[1]!.sets).toHaveLength(3);
+
+      const finalUpdate = structuredClone(workoutFromDB);
+      finalUpdate.exercises[0]!.sets = [finalUpdate.exercises[0]!.sets[0]!];
+      finalUpdate.exercises = [finalUpdate.exercises[0]!];
+
+      const { res } = await updateCompleteWorkoutAndReturn(cookie!, workoutId, {
+        workout: finalUpdate.workout,
+        exercises: finalUpdate.exercises,
+      });
+      
+      const finalWorkoutFromDB = getCompleteWorkoutByWorkoutId(
+        db,
+        workoutId,
+        user.id
+      );
+      
+      expect(res.status).toBe(200);
+      expect(finalWorkoutFromDB.exercises).toHaveLength(1);
+      expect(finalWorkoutFromDB.exercises[0]!.name).toBe("Bench Press");
+      expect(finalWorkoutFromDB.exercises[0]!.sets).toHaveLength(1);
+      expect(finalWorkoutFromDB.exercises[0]!.sets[0]!.reps).toBe(10);
+      expect(finalWorkoutFromDB.exercises[0]!.sets[0]!.metric_value).toBe(135);
+    });
+
     it("throws 401 if data doesnt match validators", async () => {
       const { cookie } = await loginFlow();
       const { user } = await getAuthMeAndReturn(cookie!);

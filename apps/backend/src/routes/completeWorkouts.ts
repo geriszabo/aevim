@@ -13,7 +13,7 @@ import {
   updateSetById,
 } from "../db/queries/set-queries";
 import {
-  calculateItemsToDelete,
+  calculateItemsToDeleteWithDependencies,
   deleteIds,
   extractIncomingIds,
   handleError,
@@ -87,39 +87,38 @@ completeWorkouts
     } = c.req.valid("json");
 
     try {
-      const currentIds = getWorkoutExerciseAndSetIds(
+      const currentExerciseSets = getWorkoutExerciseAndSetIds(
         db,
         workoutId,
         payload.sub
       );
-      const { incomingExerciseIds, incomingSetIds } =
-        extractIncomingIds(exercises);
-
-      const exercisesToDelete = calculateItemsToDelete(
-        currentIds.exerciseIds,
-        incomingExerciseIds
-      );
-      const setsToDelete = calculateItemsToDelete(
-        currentIds.setIds,
-        incomingSetIds
-      );
+      const incomingIds = extractIncomingIds(exercises);
+      const { exercisesToDelete, setsToDelete } =
+        calculateItemsToDeleteWithDependencies(
+          currentExerciseSets,
+          incomingIds
+        );
 
       deleteIds(exercisesToDelete, db, payload.sub, deleteExerciseById);
       deleteIds(setsToDelete, db, payload.sub, deleteSetBySetId);
-
       updateWorkoutById(db, workoutId, payload.sub, {
         date,
         name,
         notes,
       });
+
       for (const exerciseData of exercises) {
         let exerciseId = exerciseData.exercise_id;
         const sets = exerciseData.sets;
         if (!exerciseData.exercise_id) {
-          const {
-            workoutExercise: { exercise_id },
-          } = insertExerciseToWorkout(db, exerciseData, payload.sub, workoutId);
-          exerciseId = exercise_id;
+          const { workoutExercise } = insertExerciseToWorkout(
+            db,
+            exerciseData,
+            payload.sub,
+            workoutId
+          );
+          
+          exerciseId = workoutExercise.exercise_id;
         } else {
           const { name, category, notes, metric, exercise_id } = exerciseData;
           exerciseId = exercise_id;

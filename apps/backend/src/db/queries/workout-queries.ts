@@ -283,17 +283,24 @@ export const getWorkoutExerciseAndSetIds = (
 
   const rows = query.all(workoutId, userId) as {
     exercise_id: string;
-    set_id: string;
+    set_id: string | null;
   }[];
 
-  const allExerciseIds: string[] = [];
-  const allSetIds: string[] = [];
-  rows.map(
-    (row) => (allExerciseIds.push(row.exercise_id), allSetIds.push(row.set_id))
-  );
+  // Group sets by exercise
+  const exerciseMap = new Map<string, string[]>();
+  rows.forEach((row) => {
+    if (!exerciseMap.has(row.exercise_id)) {
+      exerciseMap.set(row.exercise_id, []);
+    }
+    // Only add set_id if it exists (LEFT JOIN can return null)
+    if (row.set_id) {
+      exerciseMap.get(row.exercise_id)!.push(row.set_id);
+    }
+  });
 
-  return {
-    exerciseIds: Array.from(new Set(allExerciseIds)),
-    setIds: Array.from(new Set(allSetIds)),
-  };
+  // Convert to array format that's easy to map through
+  return Array.from(exerciseMap.entries()).map(([exerciseId, setIds]) => ({
+    exerciseId,
+    setIds
+  }));
 };
