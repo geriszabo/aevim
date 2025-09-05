@@ -52,8 +52,8 @@ export const WorkoutForm = ({
       metric: "",
       sets: [
         {
-          reps: 0,
-          metric_value: 0,
+          reps: "" as unknown as number,
+          metric_value: "" as unknown as number,
         },
       ],
     });
