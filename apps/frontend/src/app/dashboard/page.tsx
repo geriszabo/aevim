@@ -54,6 +54,10 @@ export default function Dashboard() {
     }
   };
 
+  const handleRouteToProfile = () => {
+    router.push("/profile");
+  };
+
   return (
     <PageContainer display="block">
       <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b">
@@ -67,6 +71,9 @@ export default function Dashboard() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleRouteToProfile}>
+                  Profile
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout}>
                   Logout
                 </DropdownMenuItem>
