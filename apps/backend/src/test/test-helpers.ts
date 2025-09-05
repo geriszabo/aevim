@@ -1,6 +1,7 @@
 import type {
   ExerciseToWorkout,
   Set,
+  UserBiometrics,
   WorkoutExercise,
   WorkoutOverview,
   WorkoutWithoutUserId,
@@ -31,6 +32,9 @@ import {
   updateExerciseRequest,
   updateSetRequest,
   updateWorkoutRequest,
+  getUserBiometricsRequest,
+  createUserBiometricsRequest,
+  updateUserBiometricsRequest,
 } from "./test-request-helpers";
 
 export async function loginFlow() {
@@ -440,4 +444,98 @@ export const updateCompleteWorkoutAndReturn = async (
   );
   const updateResponse = await res.json();
   return { res, updateResponse };
+};
+
+export const getUserBiometricsAndReturn = async (cookie: string) => {
+  const biometricsRes = await app.fetch(getUserBiometricsRequest(cookie));
+  const json = await biometricsRes.json();
+
+  if (biometricsRes.ok) {
+    const biometrics = json as {
+      biometrics: {
+        weight: number;
+        sex: string;
+        height: number;
+        build: string;
+      } | null;
+    };
+    return {
+      biometricsRes,
+      biometrics: biometrics.biometrics,
+      success: true as const,
+    };
+  } else {
+    const biometrics = json as { errors: string[] } | { message: string };
+    return { biometricsRes, biometrics, success: false as const };
+  }
+};
+
+export const createUserBiometricsAndReturn = async (
+  cookie: string,
+  biometricsData: {
+    weight: number;
+    sex: UserBiometrics["sex"];
+    height: number;
+    build: UserBiometrics["build"];
+  }
+) => {
+  const biometricsRes = await app.fetch(
+    createUserBiometricsRequest(cookie, biometricsData)
+  );
+  const json = await biometricsRes.json();
+
+  if (biometricsRes.ok) {
+    const biometrics = json as {
+      message: string;
+      biometrics: {
+        weight: number;
+        sex: string;
+        height: number;
+        build: string;
+      };
+    };
+    return {
+      biometricsRes,
+      biometrics: biometrics.biometrics,
+      success: true as const,
+    };
+  } else {
+    const biometrics = json as { errors: string[] };
+    return { biometricsRes, biometrics, success: false as const };
+  }
+};
+
+export const updateUserBiometricsAndReturn = async (
+  cookie: string,
+  biometricsData: Partial<{
+    weight: number;
+    sex: UserBiometrics["sex"];
+    height: number;
+    build: UserBiometrics["build"];
+  }>
+) => {
+  const biometricsRes = await app.fetch(
+    updateUserBiometricsRequest(cookie, biometricsData)
+  );
+  const json = await biometricsRes.json();
+
+  if (biometricsRes.ok) {
+    const biometrics = json as {
+      message: string;
+      biometrics: {
+        weight: number;
+        sex: string;
+        height: number;
+        build: string;
+      };
+    };
+    return {
+      biometricsRes,
+      biometrics: biometrics.biometrics,
+      success: true as const,
+    };
+  } else {
+    const biometrics = json as { errors: string[] };
+    return { biometricsRes, biometrics, success: false as const };
+  }
 };

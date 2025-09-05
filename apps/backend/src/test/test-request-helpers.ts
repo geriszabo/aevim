@@ -1,6 +1,7 @@
 import { API_ROUTES } from "@aevim/shared-types/api-routes";
 import env from "../env";
 import type { SetData } from "../types/set";
+import type { UserBiometrics } from "@aevim/shared-types";
 
 interface RequestOptions {
   method?: RequestInit["method"];
@@ -367,4 +368,38 @@ export const updateCompleteWorkoutRequest = (
       body: { workout, exercises },
     }
   );
+};
+
+export const getUserBiometricsRequest = (cookie: string): Request => {
+  return createAuthenticatedRequest(API_ROUTES.user.biometrics, cookie);
+};
+
+export const createUserBiometricsRequest = (
+  cookie: string,
+  biometricsData: {
+    weight: number;
+    sex: UserBiometrics["sex"];
+    height: number;
+    build: UserBiometrics["build"];
+  }
+): Request => {
+  return createAuthenticatedRequest(API_ROUTES.user.biometrics, cookie, {
+    method: "POST",
+    body: biometricsData,
+  });
+};
+
+export const updateUserBiometricsRequest = (
+  cookie: string,
+  biometricsData: Partial<{
+    weight: number;
+    sex: UserBiometrics["sex"];
+    height: number;
+    build: UserBiometrics["build"];
+  }>
+): Request => {
+  return createAuthenticatedRequest(API_ROUTES.user.biometrics, cookie, {
+    method: "PUT",
+    body: biometricsData,
+  });
 };
