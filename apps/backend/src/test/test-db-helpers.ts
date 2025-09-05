@@ -2,6 +2,8 @@ import { Database } from "bun:sqlite";
 import { insertWorkout } from "../db/queries/workout-queries";
 import { insertExerciseToWorkout } from "../db/queries/workout-exercises-queries";
 import { insertSet } from "../db/queries/set-queries";
+import { createUserBiometrics } from "../db/queries/user-queries";
+import type { UserBiometrics } from "@aevim/shared-types";
 
 
 export const getDataCounts = (db: Database, userId: string) => {
@@ -96,4 +98,25 @@ export const createCompleteWorkout = (db: Database, userId: string) => {
     workoutExercise,
     set,
   };
+};
+
+export const createTestUserBiometrics = (
+  db: Database, 
+  userId: string,
+  biometricsData: {
+    weight?: number;
+    sex?: UserBiometrics["sex"];
+    height?: number;
+    build?: UserBiometrics["build"];
+  } = {}
+) => {
+  const defaultBiometrics = {
+    weight: 75,
+    sex: "male" as const,
+    height: 180,
+    build: "athletic" as const,
+    ...biometricsData,
+  };
+  
+  return createUserBiometrics(db, userId, defaultBiometrics);
 };

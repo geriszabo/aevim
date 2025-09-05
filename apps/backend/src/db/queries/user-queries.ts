@@ -45,6 +45,11 @@ export const updateUserBiometrics = (
     Object.entries(biometricsData).filter(([_key, value]) => value !== undefined)
   );
 
+  // If no fields to update, return existing biometrics
+  if (Object.keys(filteredUpdates).length === 0) {
+    return existingBiometrics;
+  }
+
   const fields = Object.keys(filteredUpdates);
   const setClause = fields.map((field) => `${field} = ?`).join(", ");
   const values = Object.values(filteredUpdates);
