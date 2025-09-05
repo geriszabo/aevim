@@ -6,6 +6,8 @@ import exercises from "./routes/exercises";
 import { cors } from "hono/cors";
 import { authMiddleware } from "./middleware/auth";
 import completeWorkouts from "./routes/completeWorkouts";
+import user from "./routes/user";
+
 const app = new Hono();
 
 app
@@ -22,7 +24,8 @@ app
   .route("api/v1", auth)
   .route("api/v1/auth", workouts)
   .route("api/v1/auth", exercises)
-  .route("api/v1/auth", completeWorkouts);
+  .route("api/v1/auth", completeWorkouts)
+  .route("api/v1/auth", user);
 
 export default {
   port: env.PORT || 3000,

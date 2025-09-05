@@ -88,6 +88,7 @@ const ERROR_MAPPINGS = {
   SET_NOT_FOUND: { status: 404, message: "Set not found" },
   // Auth errors
   USER_NOT_FOUND: { status: 404, message: "User not found" },
+  USER_BIOMETRICS_NOT_FOUND: { status: 404, message: "No biometrics data found for user" },
   EMAIL_ALREADY_EXISTS: {
     status: 409,
     message: "Email address already exists",
