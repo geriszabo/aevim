@@ -27,6 +27,9 @@ export const API_ROUTES = {
     base: "/auth/completeWorkouts",
     single: (id: string) => `/auth/completeWorkouts/${id}`,
   },
+  user: {
+    biometrics: "/auth/user/biometrics",
+  },
 } as const;
 
 export type ApiRoutes = typeof API_ROUTES;
