@@ -79,6 +79,20 @@ export const applySchema = (dbInstance: Database) => {
           FOREIGN KEY (workout_exercise_id) REFERENCES workout_exercises(id) ON DELETE CASCADE
         `,
     },
+    {
+      name: "user_biometrics",
+      schema: `
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id TEXT NOT NULL UNIQUE,
+          weight REAL NOT NULL,
+          sex TEXT NOT NULL,
+          height INTEGER NOT NULL,
+          build TEXT NOT NULL,
+          created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+          updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        `,
+    },
   ];
 
   dbInstance.exec(`PRAGMA foreign_keys = ${env.FOREIGN_KEY_CHECKS};`);
