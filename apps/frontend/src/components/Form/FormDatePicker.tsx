@@ -88,7 +88,7 @@ export function FormDatePicker<T extends FieldValues>({
           </Popover>
         )}
       />
-      {error && <p className="text-sm text-red-500">{error.message}</p>}
+      {<p className="text-sm text-red-500">{error?.message}</p>}
     </div>
   );
 }

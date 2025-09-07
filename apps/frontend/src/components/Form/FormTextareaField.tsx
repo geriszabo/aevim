@@ -1,4 +1,4 @@
-import { Label } from "@radix-ui/react-label";
+
 import { ComponentProps, ReactNode } from "react";
 import {
   FieldError,
@@ -7,6 +7,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
 
 interface FormTextareaFieldProps<T extends FieldValues> {
   id: Path<T>;

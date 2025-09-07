@@ -1,4 +1,3 @@
-import { Label } from "@radix-ui/react-label";
 import { ComponentProps, ReactNode } from "react";
 import { Input } from "../ui/input";
 import {
@@ -7,6 +6,7 @@ import {
   Path,
   UseFormRegister,
 } from "react-hook-form";
+import { Label } from "../ui/label";
 
 interface FormInputFieldProps<T extends FieldValues> {
   id: Path<T>;
