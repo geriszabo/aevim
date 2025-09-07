@@ -8,19 +8,21 @@ interface LogoProps {
   size?: TypographySize;
   text?: string;
   routeToDashboard?: boolean;
+  onClick?: () => void;
 }
 
 export const Logo = ({
   size = "5xl",
   text = "aevim",
   routeToDashboard,
+  onClick
 }: LogoProps) => {
   const textSize = getTextSize(size);
   const router = useRouter();
   return (
     <span
       className={`relative ${textSize} font-bold font-heading`}
-      onClick={routeToDashboard ? () => router.push("/dashboard") : undefined}
+      onClick={routeToDashboard ? () => router.push("/dashboard") : onClick}
     >
       <span
         className={`absolute ${textSize} font-bold font-heading text-hotpink`}
