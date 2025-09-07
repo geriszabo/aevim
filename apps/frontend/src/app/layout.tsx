@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import QueryProvider from "@/components/query-provider";
 import { Toaster } from "sonner";
+import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,11 +46,12 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              {children}
+              <div className="mb-14">{children}</div>
               <Toaster position="top-center" richColors expand />
             </ThemeProvider>
           </AuthProvider>
         </QueryProvider>
+        <BottomNavBar />
       </body>
     </html>
   );
