@@ -13,22 +13,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCreateUserBiometrics } from "@/hooks/userBiometrics/useCreateUserBiometrics";
+import { useGetUserBiometrics } from "@/hooks/userBiometrics/useGetUserBiometrics";
 import { useUpdateUserBiometrics } from "@/hooks/userBiometrics/useUpdateUserBiometrics";
 import { UserBiometrics, userBiometricsSchema } from "@aevim/shared-types";
-import React from "react";
+import React, { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-interface UserBiometricsFormProps {
-  defaultValues: UserBiometrics;
-  isUpdateForm: boolean;
-}
 
-export const UserBiometricsForm = ({
-  defaultValues,
-  isUpdateForm,
-}: UserBiometricsFormProps) => {
+
+export const UserBiometricsForm = () => {
+  const { data } = useGetUserBiometrics();
   const { mutate: createUserBiometrics } = useCreateUserBiometrics();
   const { mutate: updateUserBiometrics } = useUpdateUserBiometrics();
+  const biometrics = data?.biometrics;
+
+  const defaultValues = useMemo(() => {
+    return {
+      build: (biometrics?.build ?? "") as UserBiometrics["build"],
+      height: (biometrics?.height ?? "") as unknown as UserBiometrics["height"],
+      sex: (biometrics?.sex ?? "") as UserBiometrics["sex"],
+      weight: (biometrics?.weight ?? "") as unknown as UserBiometrics["weight"],
+    };
+  }, [biometrics]);
+
+  const hasExistingData = !!biometrics;
 
   const {
     register,
@@ -40,7 +48,7 @@ export const UserBiometricsForm = ({
   });
 
   const onSubmit = (data: UserBiometrics) => {
-    if (isUpdateForm) {
+    if (hasExistingData) {
       updateUserBiometrics({ ...data });
     } else {
       createUserBiometrics({ ...data });
