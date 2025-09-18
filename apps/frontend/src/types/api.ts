@@ -5,6 +5,7 @@ import type {
   ExerciseToWorkout,
   WorkoutExercise,
   Set,
+  UserBiometrics,
 } from "@aevim/shared-types";
 
 export interface ApiErrorResponse {
@@ -61,3 +62,10 @@ export interface GetExercisesOfWorkoutResponse {
 export interface CreateSetResponse extends ApiResponse {
   set: Set;
 }
+
+export interface CreateUserBiometricsResponse extends ApiResponse {
+  biometrics: UserBiometrics;
+}
+export type GetUserBiometricsResponse = CreateUserBiometricsResponse;
+
+export type UpdateUserBiometricsResponse = CreateUserBiometricsResponse
