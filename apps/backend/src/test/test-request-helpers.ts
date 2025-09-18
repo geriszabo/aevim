@@ -371,7 +371,7 @@ export const updateCompleteWorkoutRequest = (
 };
 
 export const getUserBiometricsRequest = (cookie: string): Request => {
-  return createAuthenticatedRequest(API_ROUTES.user.biometrics, cookie);
+  return createAuthenticatedRequest(API_ROUTES.user.biometrics.base, cookie);
 };
 
 export const createUserBiometricsRequest = (
@@ -383,7 +383,7 @@ export const createUserBiometricsRequest = (
     build: UserBiometrics["build"];
   }
 ): Request => {
-  return createAuthenticatedRequest(API_ROUTES.user.biometrics, cookie, {
+  return createAuthenticatedRequest(API_ROUTES.user.biometrics.base, cookie, {
     method: "POST",
     body: biometricsData,
   });
@@ -398,7 +398,7 @@ export const updateUserBiometricsRequest = (
     build: UserBiometrics["build"];
   }>
 ): Request => {
-  return createAuthenticatedRequest(API_ROUTES.user.biometrics, cookie, {
+  return createAuthenticatedRequest(API_ROUTES.user.biometrics.base, cookie, {
     method: "PUT",
     body: biometricsData,
   });

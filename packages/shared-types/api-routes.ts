@@ -28,7 +28,9 @@ export const API_ROUTES = {
     single: (id: string) => `/auth/completeWorkouts/${id}`,
   },
   user: {
-    biometrics: "/auth/user/biometrics",
+    biometrics: {
+      base: "/auth/user/biometrics",
+    },
   },
 } as const;
 

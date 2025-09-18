@@ -6,7 +6,7 @@ export const signupSchema = z
     ...sharedSignupSchema.shape,
     confirmPassword: z
       .string()
-      .min(6, "Password must be at least 6 characters"),
+      .min(6, "Password must be at least 8 characters"),
   })
   .check((ctx) => {
     if (
