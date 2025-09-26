@@ -1,31 +1,15 @@
-"use client";
-
 import { ContentContainer } from "@/components/layouts/ContentContainer";
 import { PageContainer } from "@/components/layouts/PageContainer";
-import { SectionContainer } from "@/components/layouts/SectionContainer";
 import { Logo } from "@/components/Logo/Logo";
-import { Typography } from "@/components/ui/typography";
-import { use } from "react";
-import { EditWorkoutSection } from "./EditWorkoutSection";
-import { ExerciseSection } from "./ExerciseSection"
 import { DeleteWorkoutDialog } from "./DeleteWorkoutDialog";
-import { FormButton } from "@/components/Form/FormButton";
-import { useGetCompleteWorkout } from "@/hooks/workouts/useGetCompleteWorkout";
+import { Completeworkout } from "./Completeworkout";
 
-export default function WorkoutPage({
+export default async function WorkoutPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id: workoutId } = use(params);
-  const {data: completeWorkout} = useGetCompleteWorkout(workoutId)
-
-  if (!completeWorkout) {
-    return;
-  }
-
-  const {overview: {exercises, workout}} = completeWorkout
-
+  const workoutId = (await params).id;
 
   return (
     <PageContainer display={"block"}>
@@ -34,32 +18,10 @@ export default function WorkoutPage({
           <Logo size="2xl" routeToDashboard />
         </ContentContainer>
       </header>
-      <SectionContainer>
-        <ContentContainer textAlign="center">
-          <Typography
-            variant="heading"
-            size="3xl"
-            className="mb-2 font-heading"
-          >
-            Build Your Workout
-          </Typography>
-          <Typography variant="muted" size="lg">
-            Create the perfect session. No fluff, just results.
-          </Typography>
-        </ContentContainer>
-      </SectionContainer>
 
-      <EditWorkoutSection
-        editWorkoutData={workout}
-        workoutId={workoutId}
-      />
-      <ExerciseSection exercises={exercises} />
+      <Completeworkout workoutId={workoutId} />
       <div className="flex flex-col gap-2">
-
-      <FormButton type="submit" loadingText="Saving...">
-        Save exercise
-      </FormButton>
-      <DeleteWorkoutDialog workoutId={workoutId} />
+        <DeleteWorkoutDialog workoutId={workoutId} />
       </div>
     </PageContainer>
   );
