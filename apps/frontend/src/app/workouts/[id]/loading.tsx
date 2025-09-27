@@ -1,7 +1,7 @@
 import { ContentContainer } from "@/components/layouts/ContentContainer";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const loading = () => {
+const Loading = () => {
   return (
     <ContentContainer>
       <div className="flex flex-col gap-16 mt-8">
@@ -13,4 +13,4 @@ const loading = () => {
   );
 };
 
-export default loading;
+export default Loading;

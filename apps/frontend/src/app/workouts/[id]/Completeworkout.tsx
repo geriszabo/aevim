@@ -1,27 +1,31 @@
-"use client"
+"use server";
 
 import { WorkoutSection } from "./WorkoutSection";
 import { ExerciseSection } from "./ExerciseSection";
-import { useGetCompleteWorkout } from "@/hooks/workouts/useGetCompleteWorkout";
+
+import { cookies } from "next/headers";
+import { QueryClient } from "@tanstack/react-query";
+import { getWorkoutOverview } from "@/hooks/api/workouts/getWorkoutOverview";
 
 interface CompleteWorkoutParams {
   workoutId: string;
 }
 
-export const Completeworkout = ({ workoutId }: CompleteWorkoutParams) => {
-  const { data: completeWorkout } = useGetCompleteWorkout(workoutId);
+export const Completeworkout = async ({ workoutId }: CompleteWorkoutParams) => {
+  const cookieStore = await cookies();
+  const queryClient = new QueryClient();
 
-  if(!completeWorkout || !completeWorkout.overview) {
-    return <div>No workout data available.</div>;
-  }
+  const {
+    overview: { exercises, workout },
+  } = await queryClient.fetchQuery({
+    queryKey: ["completeWorkout", workoutId],
+    queryFn: () => getWorkoutOverview(workoutId, cookieStore.toString()),
+  });
 
   return (
     <>
-      <WorkoutSection
-        editWorkoutData={completeWorkout?.overview?.workout}
-        workoutId={workoutId}
-      />
-      <ExerciseSection exercises={completeWorkout.overview.exercises} />
+      <WorkoutSection editWorkoutData={workout} workoutId={workoutId} />
+      <ExerciseSection exercises={exercises} />
     </>
   );
 };
