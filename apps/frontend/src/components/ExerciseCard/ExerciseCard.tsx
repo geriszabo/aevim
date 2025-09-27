@@ -2,7 +2,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React from "react";
 import { ExerciseCardHeader } from "./ExerciseCardHeader";
-import { ExerciseCardInfo } from "./ExerciseCardInfo";
 import { WorkoutOverview } from "@aevim/shared-types";
 import { Typography } from "../ui/typography";
 
@@ -17,7 +16,15 @@ export const ExerciseCard = ({
   exerciseOrder,
 }: ExerciseCardProps) => {
   const { sets } = exercise;
-  
+
+  const metricMap = {
+    weight: "kg",
+    distance: "km",
+    duration: "min",
+  };
+
+  const metric = metricMap[exercise.metric];
+
   return (
     <Card className="mb-4">
       <CardHeader className="pb-3">
@@ -25,12 +32,10 @@ export const ExerciseCard = ({
           name={exercise.name}
           exerciseIndex={exerciseOrder}
         />
-        <ExerciseCardInfo exerciseOrder={exerciseOrder} />
       </CardHeader>
-
       <CardContent className="space-y-2">
         <div>
-          <div className="grid grid-cols-5 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
+          <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
             <span>Set</span>
             <span>Reps</span>
             <span>Metric</span>
@@ -40,7 +45,7 @@ export const ExerciseCard = ({
           return (
             <div
               key={set.id}
-              className="grid grid-cols-5 gap-2 items-center justify-center p-2"
+              className="grid grid-cols-3 gap-2 items-center justify-center p-2"
             >
               <Typography variant="body" size="xs">
                 #{index + 1}
@@ -48,8 +53,8 @@ export const ExerciseCard = ({
               <Typography variant="body" size="xs">
                 {set.reps}
               </Typography>
-              <Typography variant="body" size="xs" className="col-span-2">
-                {set.metric_value}
+              <Typography variant="body" size="xs" className="">
+                {set.metric_value} {metric}
               </Typography>
             </div>
           );
