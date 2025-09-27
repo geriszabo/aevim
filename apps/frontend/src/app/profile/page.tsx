@@ -1,4 +1,5 @@
 "use client";
+
 import { ContentContainer } from "@/components/layouts/ContentContainer";
 import { PageContainer } from "@/components/layouts/PageContainer";
 import { SectionContainer } from "@/components/layouts/SectionContainer";
