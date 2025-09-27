@@ -17,15 +17,11 @@ import { postLogout } from "@/hooks/api/auth/postLogout";
 import { useRouter } from "next/navigation";
 import { WorkoutTemplateCard } from "./WorkoutTemplateCard";
 import { RecentWorkoutsCard } from "./RecentWorkoutsCard";
-import { useState } from "react";
-import { CreateWorkoutDialog } from "./CreateWorkoutDialog";
 import { useGetWorkouts } from "@/hooks/workouts/useGetWorkouts";
 
 export default function Dashboard() {
-  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { data: recentWorkouts, isLoading } = useGetWorkouts();
-
   const { user } = useAuth();
 
   if (isLoading) {
@@ -163,7 +159,6 @@ export default function Dashboard() {
         </div>
         <div className="h-20"></div>
       </main>
-      <CreateWorkoutDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </PageContainer>
   );
 }
