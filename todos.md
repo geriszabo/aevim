@@ -30,7 +30,7 @@
 
 ### Components
 
-- [ ] Delete EditWorkoutDialog after implementing update workout page
+- [x] Delete EditWorkoutDialog after implementing update workout page
 
 ### Hooks
 
