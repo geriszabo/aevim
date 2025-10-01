@@ -52,7 +52,7 @@ const tabs = [
   {
     value: "workouts",
     name: "Workouts",
-    routeTo: "/dashboard",
+    routeTo: "/workouts",
   },
   {
     value: "statistics",
