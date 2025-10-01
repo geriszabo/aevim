@@ -1,7 +1,6 @@
 "use client";
 
 import { Calendar } from "@/components/ui/calendar";
-import { eu } from "date-fns/locale";
 import {
   Card,
   CardContent,
@@ -34,7 +33,6 @@ export const PreviousWorkoutsCard = ({
           mode="single"
           selected={date}
           onSelect={setDate}
-          locale={eu}
           className="w-full bg-transparent p-2"
           modifiers={{ highlighted: highlightedDates }}
           modifiersClassNames={{
