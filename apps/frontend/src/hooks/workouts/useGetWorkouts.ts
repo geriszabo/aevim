@@ -5,7 +5,7 @@ import { getWorkouts } from "../api/workouts/getWorkouts";
 export const useGetWorkouts = () => {
   return useQuery<GetWorkoutsResponse, ApiError>({
     queryKey: ["workouts"],
-    queryFn: getWorkouts,
+    queryFn: () => getWorkouts(),
     retry: 1,
   });
 };
