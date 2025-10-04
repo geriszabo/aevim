@@ -11,7 +11,7 @@ export const RecentWorkoutsCard = (workout: WorkoutOverview["workout"]) => {
   return (
     <Card
       key={workout.id}
-      className="p-4"
+      className="p-2"
       onClick={() => router.push(`/workouts/${workout.id}`)}
     >
       <div className="flex items-center justify-between">

@@ -10,6 +10,7 @@ import {
 import { Typography } from "@/components/ui/typography";
 import { WorkoutWithoutUserId } from "@aevim/shared-types";
 import { useState } from "react";
+import { eachDayOfInterval, endOfWeek, startOfWeek } from "date-fns";
 import { RecentWorkoutsCard } from "../dashboard/RecentWorkoutsCard";
 
 interface PreviousWorkoutsCardProps {
@@ -23,6 +24,13 @@ export const PreviousWorkoutsCard = ({
 
   const highlightedDates = workouts.map((workout) => new Date(workout.date));
 
+  const currentWeekDates = date
+    ? eachDayOfInterval({
+        start: startOfWeek(date, { weekStartsOn: 1 }),
+        end: endOfWeek(date, { weekStartsOn: 1 }),
+      })
+    : [];
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -31,12 +39,17 @@ export const PreviousWorkoutsCard = ({
       <CardContent className="px-4">
         <Calendar
           mode="single"
+          weekStartsOn={1}
           selected={date}
           onSelect={setDate}
           className="w-full bg-transparent p-2"
-          modifiers={{ highlighted: highlightedDates }}
+          modifiers={{
+            workoutDays: highlightedDates,
+            currentWeek: currentWeekDates,
+          }}
           modifiersClassNames={{
-            highlighted: "border-1 border-dashed border-black rounded-4xl",
+            workoutDays: "border-1 border-dashed border-black rounded-4xl",
+            currentWeek: "bg-gray-100 ",
           }}
         />
       </CardContent>
