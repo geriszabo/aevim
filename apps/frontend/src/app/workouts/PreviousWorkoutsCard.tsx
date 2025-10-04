@@ -10,7 +10,13 @@ import {
 import { Typography } from "@/components/ui/typography";
 import { WorkoutWithoutUserId } from "@aevim/shared-types";
 import { useState } from "react";
-import { eachDayOfInterval, endOfWeek, startOfWeek } from "date-fns";
+import {
+  eachDayOfInterval,
+  endOfWeek,
+  getWeek,
+  isSameDay,
+  startOfWeek,
+} from "date-fns";
 import { RecentWorkoutsCard } from "../dashboard/RecentWorkoutsCard";
 
 interface PreviousWorkoutsCardProps {
@@ -20,7 +26,7 @@ interface PreviousWorkoutsCardProps {
 export const PreviousWorkoutsCard = ({
   workouts,
 }: PreviousWorkoutsCardProps) => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date>(new Date());
 
   const highlightedDates = workouts.map((workout) => new Date(workout.date));
 
@@ -31,6 +37,14 @@ export const PreviousWorkoutsCard = ({
       })
     : [];
 
+  const filteredWorkouts = workouts.filter((workout) =>
+    currentWeekDates.some((weekday) =>
+      isSameDay(new Date(workout.date), weekday)
+    )
+  );
+
+  const weekString = `Workouts of week ${getWeek(date)}`;
+  console.log(filteredWorkouts);
   return (
     <Card className="w-full">
       <CardHeader>
@@ -42,6 +56,8 @@ export const PreviousWorkoutsCard = ({
           weekStartsOn={1}
           selected={date}
           onSelect={setDate}
+          required
+          showWeekNumber
           className="w-full bg-transparent p-2"
           modifiers={{
             workoutDays: highlightedDates,
@@ -54,19 +70,19 @@ export const PreviousWorkoutsCard = ({
         />
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-3 border-t px-4 !pt-4">
-        <div className="flex w-full items-center justify-between px-1">
-          <div className="text-sm font-medium">
-            {date?.toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </div>
-        </div>
+        <Typography className="font-bold" size="sm" variant="body">
+          {weekString}
+        </Typography>
         <div className="flex w-full flex-col gap-2">
-          {workouts.map((workout) => (
-            <RecentWorkoutsCard {...workout} key={workout.id} />
-          ))}
+          {filteredWorkouts.length ? (
+            filteredWorkouts.map((workout) => (
+              <RecentWorkoutsCard {...workout} key={workout.id} />
+            ))
+          ) : (
+            <Typography className="" size="sm" variant="body">
+              No workouts this week
+            </Typography>
+          )}
         </div>
       </CardFooter>
     </Card>
