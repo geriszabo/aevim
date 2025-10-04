@@ -29,7 +29,6 @@ export const PreviousWorkoutsCard = ({
   const [date, setDate] = useState<Date>(new Date());
 
   const highlightedDates = workouts.map((workout) => new Date(workout.date));
-
   const currentWeekDates = date
     ? eachDayOfInterval({
         start: startOfWeek(date, { weekStartsOn: 1 }),
@@ -37,14 +36,13 @@ export const PreviousWorkoutsCard = ({
       })
     : [];
 
+  const weekString = `Workouts of week ${getWeek(date)}`;
   const filteredWorkouts = workouts.filter((workout) =>
     currentWeekDates.some((weekday) =>
       isSameDay(new Date(workout.date), weekday)
     )
   );
 
-  const weekString = `Workouts of week ${getWeek(date)}`;
-  console.log(filteredWorkouts);
   return (
     <Card className="w-full">
       <CardHeader>
@@ -64,7 +62,8 @@ export const PreviousWorkoutsCard = ({
             currentWeek: currentWeekDates,
           }}
           modifiersClassNames={{
-            workoutDays: "border-1 border-dashed border-black rounded-4xl",
+            workoutDays:
+              "relative bg-green-100 after:content-['✓'] after:absolute after:bottom-1 after:right-1 after:text-[12px] after:font-bold after:text-neongreen after:z-10",
             currentWeek: "bg-gray-100 ",
           }}
         />
