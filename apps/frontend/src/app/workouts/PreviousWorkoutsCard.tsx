@@ -64,7 +64,7 @@ export const PreviousWorkoutsCard = ({
           modifiersClassNames={{
             workoutDays:
               "relative bg-green-100 after:content-['✓'] after:absolute after:bottom-1 after:right-1 after:text-[12px] after:font-bold after:text-neongreen after:z-10",
-            currentWeek: "bg-gray-100 ",
+            currentWeek: "bg-gray-100",
           }}
         />
       </CardContent>
