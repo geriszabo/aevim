@@ -66,6 +66,8 @@ export interface CreateSetResponse extends ApiResponse {
 export interface CreateUserBiometricsResponse extends ApiResponse {
   biometrics: UserBiometrics;
 }
-export type GetUserBiometricsResponse = CreateUserBiometricsResponse;
+export interface GetUserBiometricsResponse {
+  biometrics: UserBiometrics
+};
 
 export type UpdateUserBiometricsResponse = CreateUserBiometricsResponse

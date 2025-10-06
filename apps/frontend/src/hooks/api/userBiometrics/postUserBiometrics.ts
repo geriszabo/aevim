@@ -18,6 +18,7 @@ export const postUserBiometrics = async (  biometrics: UserBiometrics) => {
 
   if (!response.ok) {
     handleApiError(response);
+    throw new Error("Request failed")
   }
 
   return response.json();
