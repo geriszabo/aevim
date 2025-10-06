@@ -1,6 +1,6 @@
 "use client";
 
-import { FormButton } from "@/components/Form/FormButton";
+import { Controller, useForm } from "react-hook-form";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { Label } from "@/components/ui/label";
 import {
@@ -12,21 +12,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreateUserBiometrics } from "@/hooks/userBiometrics/useCreateUserBiometrics";
-import { useGetUserBiometrics } from "@/hooks/userBiometrics/useGetUserBiometrics";
-import { useUpdateUserBiometrics } from "@/hooks/userBiometrics/useUpdateUserBiometrics";
 import { UserBiometrics, userBiometricsSchema } from "@aevim/shared-types";
 import React, { useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { GetUserBiometricsResponse } from "@/types/api";
 
+interface UserBiometricsFormProps {
+  formId: string;
+  onCreate: (data: UserBiometrics) => void;
+  onUpdate: (data: UserBiometrics) => void;
+  biometrics: GetUserBiometricsResponse["biometrics"];
+}
 
-
-export const UserBiometricsForm = () => {
-  const { data } = useGetUserBiometrics();
-  const { mutate: createUserBiometrics } = useCreateUserBiometrics();
-  const { mutate: updateUserBiometrics } = useUpdateUserBiometrics();
-  const biometrics = data?.biometrics;
-
+export const UserBiometricsForm = ({
+  formId,
+  onCreate,
+  onUpdate,
+  biometrics,
+}: UserBiometricsFormProps) => {
   const defaultValues = useMemo(() => {
     return {
       build: (biometrics?.build ?? "") as UserBiometrics["build"],
@@ -49,14 +51,14 @@ export const UserBiometricsForm = () => {
 
   const onSubmit = (data: UserBiometrics) => {
     if (hasExistingData) {
-      updateUserBiometrics({ ...data });
+      onUpdate({ ...data });
     } else {
-      createUserBiometrics({ ...data });
+      onCreate({ ...data });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form id={formId} onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4">
         <FormInputField
           id="height"
@@ -122,10 +124,6 @@ export const UserBiometricsForm = () => {
             </div>
           )}
         />
-
-        <FormButton loadingText="Saving biometrics..." type="submit">
-          Save biometrics
-        </FormButton>
       </div>
     </form>
   );

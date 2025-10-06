@@ -1,27 +1,47 @@
-"use client";
+"use server";
 
 import { ContentContainer } from "@/components/layouts/ContentContainer";
 import { PageContainer } from "@/components/layouts/PageContainer";
 import { SectionContainer } from "@/components/layouts/SectionContainer";
-import { Logo } from "@/components/Logo/Logo";
-import { UserBiometricsForm } from "./UserBiometricsForm";
-import { Suspense } from "react";
-import { ProfilePageSkeleton } from "./ProfilePageSkeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Typography } from "@/components/ui/typography";
+import { cookies } from "next/headers";
+import { QueryClient } from "@tanstack/react-query";
+import { getUserBiometrics } from "@/hooks/api/userBiometrics/getUserBiometrics";
+import { UpdateProfilePage } from "./UpdateProfilePage";
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const cookieStore = await cookies();
+  const queryClient = new QueryClient();
+
+  const { biometrics } = await queryClient.fetchQuery({
+    queryKey: ["userBiometrics"],
+    queryFn: () => getUserBiometrics(cookieStore.toString()),
+  });
+
   return (
     <PageContainer display={"block"}>
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b">
-        <ContentContainer className="py-4">
-          <Logo size="2xl" routeToDashboard />
-        </ContentContainer>
-      </header>
       <SectionContainer>
         <ContentContainer>
-          <Suspense fallback={<ProfilePageSkeleton />}>
-            <UserBiometricsForm />
-          </Suspense>
+          <Card>
+            <CardHeader>
+              <Typography variant="heading">Biometrics</Typography>
+            </CardHeader>
+            <CardContent>
+              {Object.entries(biometrics).map(([bioKey, bioValue], index) => (
+                <div key={index} className="flex flex-col">
+                  <div className="flex flex-row justify-between">
+                    <Typography variant="body">{bioKey}</Typography>
+                    <Typography variant="body">{bioValue}</Typography>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </ContentContainer>
+      </SectionContainer>
+      <SectionContainer>
+        <UpdateProfilePage biometrics={biometrics} />
       </SectionContainer>
     </PageContainer>
   );
