@@ -35,6 +35,7 @@
 ### Hooks
 
 - [ ] Move workoutOverview api call and hook to completeWorkouts folder inside hooks
+- [ ] Check all hooks if they are necessary, remove whats not needed
 
 ## 🧪 Testing & Quality
 
