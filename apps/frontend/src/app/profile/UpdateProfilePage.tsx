@@ -2,7 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { Typography } from "@/components/ui/typography";
 import { UserBiometricsForm } from "./UserBiometricsForm";
 import { useCreateUserBiometrics } from "@/hooks/userBiometrics/useCreateUserBiometrics";
@@ -40,7 +48,9 @@ export const UpdateProfilePage = ({ biometrics }: UpdateProfilePageProps) => {
     <Drawer>
       <DrawerTrigger className="w-full" asChild>
         <Button className="w-full p-6">
-          <Typography size="xl" variant="heading">Update profile</Typography>
+          <Typography size="xl" variant="heading">
+            Update profile
+          </Typography>
         </Button>
       </DrawerTrigger>
       <DrawerContent>
@@ -55,10 +65,14 @@ export const UpdateProfilePage = ({ biometrics }: UpdateProfilePageProps) => {
         </DrawerHeader>
         <DrawerFooter>
           <Button type="submit" form="biometrics-form" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Submit"}
+            <Typography variant="heading" size="md">
+              {isLoading ? "Loading..." : "Submit"}
+            </Typography>
           </Button>
           <DrawerClose asChild>
-            <Button variant="outline" disabled={isLoading}>Cancel</Button>
+            <Button variant="outline" disabled={isLoading}>
+              Cancel
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
