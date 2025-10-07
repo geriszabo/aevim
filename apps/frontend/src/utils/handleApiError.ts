@@ -6,9 +6,7 @@ export const handleApiError = async (
 ) => {
   if (error instanceof Response) {
     try {
-      //For the suspense component to not throw an error in the browser
-      const clonedResponse = error.clone();
-      const errorData = await clonedResponse.json();
+      const errorData = await error.json();
 
       if (errorData.errors && Array.isArray(errorData.errors)) {
         errorData.errors.forEach((errorMessage: string) => {
