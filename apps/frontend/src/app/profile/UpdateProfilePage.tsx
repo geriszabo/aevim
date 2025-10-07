@@ -17,6 +17,7 @@ import { useCreateUserBiometrics } from "@/hooks/userBiometrics/useCreateUserBio
 import { useUpdateUserBiometrics } from "@/hooks/userBiometrics/useUpdateUserBiometrics";
 import { GetUserBiometricsResponse } from "@/types/api";
 import { UserBiometrics } from "@aevim/shared-types";
+import { useState } from "react";
 
 interface UpdateProfilePageProps {
   biometrics: GetUserBiometricsResponse["biometrics"];
@@ -24,6 +25,7 @@ interface UpdateProfilePageProps {
 
 export const UpdateProfilePage = ({ biometrics }: UpdateProfilePageProps) => {
   const router = useRouter();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const { mutate: createUserBiometrics, isPending: isPendingCreate } =
     useCreateUserBiometrics();
@@ -32,23 +34,27 @@ export const UpdateProfilePage = ({ biometrics }: UpdateProfilePageProps) => {
 
   const handleCreate = (data: UserBiometrics) => {
     createUserBiometrics(data, {
-      onSuccess: () => router.refresh(),
+      onSuccess: () => (router.refresh(), setIsDrawerOpen(false)),
     });
   };
 
   const handleUpdate = (data: UserBiometrics) => {
     updateUserBiometrics(data, {
-      onSuccess: () => router.refresh(),
+      onSuccess: () => (router.refresh(), setIsDrawerOpen(false)),
     });
   };
 
   const isLoading = isPendingCreate || isPendingUpdate;
 
   return (
-    <Drawer>
+    <Drawer open={isDrawerOpen}>
       <DrawerTrigger className="w-full" asChild>
         <Button className="w-full p-6">
-          <Typography size="xl" variant="heading">
+          <Typography
+            size="xl"
+            variant="heading"
+            onClick={() => setIsDrawerOpen(true)}
+          >
             Update profile
           </Typography>
         </Button>
@@ -70,7 +76,11 @@ export const UpdateProfilePage = ({ biometrics }: UpdateProfilePageProps) => {
             </Typography>
           </Button>
           <DrawerClose asChild>
-            <Button variant="outline" disabled={isLoading}>
+            <Button
+              variant="outline"
+              disabled={isLoading}
+              onClick={() => setIsDrawerOpen(false)}
+            >
               Cancel
             </Button>
           </DrawerClose>
