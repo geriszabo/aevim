@@ -40,7 +40,7 @@ const pageContainerVariants = cva(
       },
     },
     defaultVariants: {
-      display: "flex", // Add this default!
+      display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
@@ -58,7 +58,7 @@ interface PageContainerProps
 
 export const PageContainer = ({
   children,
-  display, // Add this prop
+  display,
   flexDirection,
   alignItems,
   justifyContent,
@@ -70,7 +70,7 @@ export const PageContainer = ({
     <div
       className={cn(
         pageContainerVariants({
-          display, // Pass it to the variants
+          display,
           flexDirection,
           alignItems,
           justifyContent,
