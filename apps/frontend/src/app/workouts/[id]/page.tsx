@@ -1,8 +1,13 @@
-import { ContentContainer } from "@/components/layouts/ContentContainer";
+"use server";
+
 import { PageContainer } from "@/components/layouts/PageContainer";
-import { Logo } from "@/components/Logo/Logo";
 import { DeleteWorkoutDialog } from "./DeleteWorkoutDialog";
 import { Completeworkout } from "./Completeworkout";
+import { UpdateWorkout } from "./UpdateWorkout";
+import { cookies } from "next/headers";
+import { QueryClient } from "@tanstack/react-query";
+import { getWorkoutOverview } from "@/hooks/api/workouts/getWorkoutOverview";
+import exercises from "@aevim/shared-types/exercises.json";
 
 export default async function WorkoutPage({
   params,
@@ -10,17 +15,20 @@ export default async function WorkoutPage({
   params: Promise<{ id: string }>;
 }) {
   const workoutId = (await params).id;
+  const cookieStore = await cookies();
+  const queryClient = new QueryClient();
 
+  const { overview: completeWorkout } = await queryClient.fetchQuery({
+    queryKey: ["completeWorkout", workoutId],
+    queryFn: () => getWorkoutOverview(workoutId, cookieStore.toString()),
+  });
+
+  console.log(exercises[0]);
   return (
     <PageContainer display={"block"}>
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b">
-        <ContentContainer className="py-4">
-          <Logo size="2xl" routeToDashboard />
-        </ContentContainer>
-      </header>
-
       <Completeworkout workoutId={workoutId} />
       <div className="flex flex-col gap-2">
+        <UpdateWorkout completeWorkout={completeWorkout} />
         <DeleteWorkoutDialog workoutId={workoutId} />
       </div>
     </PageContainer>

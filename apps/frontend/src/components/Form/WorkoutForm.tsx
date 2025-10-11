@@ -1,7 +1,5 @@
-import { ContentContainer } from "@/components/layouts/ContentContainer";
 import { PageContainer } from "@/components/layouts/PageContainer";
 import { SectionContainer } from "@/components/layouts/SectionContainer";
-import { Logo } from "@/components/Logo/Logo";
 import { Typography } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { FormButton } from "@/components/Form/FormButton";
@@ -17,13 +15,17 @@ import {
 import { CreateExerciseDataForm } from "@/app/workouts/create/CreateExerciseDataForm";
 import { WorkoutFormValues } from "@/types/form";
 
+interface WorkoutFormProps {
+  defaultValues: UpdateCompleteWorkoutData | CreateCompleteWorkoutData;
+  mutate: (data: UpdateCompleteWorkoutData | CreateCompleteWorkoutData) => void;
+  formId?: string;
+}
+
 export const WorkoutForm = ({
   defaultValues,
   mutate,
-}: {
-  defaultValues: UpdateCompleteWorkoutData | CreateCompleteWorkoutData;
-  mutate: (data: UpdateCompleteWorkoutData | CreateCompleteWorkoutData) => void;
-}) => {
+  formId,
+}: WorkoutFormProps) => {
   const {
     register,
     control,
@@ -63,9 +65,9 @@ export const WorkoutForm = ({
     mutate({ ...data });
   };
   return (
-    <PageContainer display={"block"}>
+    <PageContainer display={"block"} padding={"xl"}>
       <SectionContainer>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} id={formId}>
           <FormInputField
             id="workout.name"
             label="Workout name"
@@ -110,9 +112,11 @@ export const WorkoutForm = ({
           >
             Add exercise
           </Button>
-          <FormButton loadingText="Saving workout..." type="submit">
-            Save workout
-          </FormButton>
+          {!formId && (
+            <FormButton loadingText="Saving workout..." type="submit">
+              Save workout
+            </FormButton>
+          )}
         </form>
       </SectionContainer>
     </PageContainer>
