@@ -64,11 +64,6 @@ export const WorkoutForm = ({
   };
   return (
     <PageContainer display={"block"}>
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b">
-        <ContentContainer className="py-4">
-          <Logo size="2xl" routeToDashboard />
-        </ContentContainer>
-      </header>
       <SectionContainer>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormInputField
