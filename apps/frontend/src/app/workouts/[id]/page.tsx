@@ -7,7 +7,6 @@ import { UpdateWorkout } from "./UpdateWorkout";
 import { cookies } from "next/headers";
 import { QueryClient } from "@tanstack/react-query";
 import { getWorkoutOverview } from "@/hooks/api/workouts/getWorkoutOverview";
-import exercises from "@aevim/shared-types/exercises.json";
 
 export default async function WorkoutPage({
   params,
@@ -23,7 +22,6 @@ export default async function WorkoutPage({
     queryFn: () => getWorkoutOverview(workoutId, cookieStore.toString()),
   });
 
-  console.log(exercises[0]);
   return (
     <PageContainer display={"block"}>
       <Completeworkout workoutId={workoutId} />
