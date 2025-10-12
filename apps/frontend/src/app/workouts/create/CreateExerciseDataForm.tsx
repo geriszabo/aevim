@@ -10,9 +10,7 @@ import {
   UseFormGetValues,
   Controller,
 } from "react-hook-form";
-
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Typography } from "@/components/ui/typography";
@@ -20,6 +18,7 @@ import { WorkoutFormValues } from "@/types/form";
 import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCardSetRow";
 import { ExerciseCardMetricSelect } from "../../../components/ExerciseCard/ExerciseCardMetricSelect";
 import { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";
+import { ExerciseSelectComboBox } from "./ExerciseSelectCombobox";
 
 interface CreateExerciseDataFormProps {
   register: UseFormRegister<WorkoutFormValues>;
@@ -57,7 +56,7 @@ export const CreateExerciseDataForm = ({
       metric_value: lastSet?.metric_value ?? 0,
     });
   };
-  
+
   return (
     <Card className="mb-4">
       <CardHeader className="pb-3">
@@ -75,14 +74,12 @@ export const CreateExerciseDataForm = ({
             <Trash2 className="text-red-600" />
           </Button>
         </div>
-
-        <FormInputField
-          id={`exercises.${id}.name`}
-          label="Exercise name"
-          type="text"
-          register={register}
-          placeholder="Pull ups"
-          error={errors.name}
+        <Controller
+          control={control}
+          name={`exercises.${id}.name`}
+          render={({ field: { value, onChange } }) => (
+            <ExerciseSelectComboBox value={value} onChangeValue={onChange} />
+          )}
         />
         <FormInputField
           id={`exercises.${id}.category`}

@@ -42,7 +42,7 @@ export const UpdateWorkout = ({ completeWorkout }: UpdateWorkout) => {
   const formId = "update-workout-form";
 
   return (
-    <Drawer open={isDrawerOpen} onDrag={() => setIsDrawerOpen(false)}>
+    <Drawer open={isDrawerOpen}>
       <DrawerTrigger className="w-full" asChild>
         <Button className="w-full p-6">
           <Typography
@@ -59,7 +59,11 @@ export const UpdateWorkout = ({ completeWorkout }: UpdateWorkout) => {
           <DrawerTitle>Update workout</DrawerTitle>
         </DrawerHeader>
         <div className="flex-1 overflow-y-auto">
-          <WorkoutForm defaultValues={completeWorkout} mutate={handleUpdate} formId={formId} />
+          <WorkoutForm
+            defaultValues={completeWorkout}
+            mutate={handleUpdate}
+            formId={formId}
+          />
         </div>
         <DrawerFooter>
           <Button type="submit" form={formId} disabled={isPending}>
@@ -68,10 +72,7 @@ export const UpdateWorkout = ({ completeWorkout }: UpdateWorkout) => {
             </Typography>
           </Button>
           <DrawerClose asChild>
-            <Button
-              variant="outline"
-              disabled={isPending}
-            >
+            <Button variant="outline" disabled={isPending}>
               Cancel
             </Button>
           </DrawerClose>
