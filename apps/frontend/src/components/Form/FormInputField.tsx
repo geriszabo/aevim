@@ -47,7 +47,7 @@ export const FormInputField = <T extends FieldValues>({
           id={id}
           type={type}
           placeholder={placeholder}
-          className={`${icon ? "pl-10" : ""} h-12 bg-white`}
+          className={`${icon ? "pl-10" : ""} h-10 bg-white`}
           autoComplete={autoComplete}
           autoFocus={autoFocus}
           {...register(id)}
