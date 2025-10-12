@@ -1,4 +1,5 @@
 import type { SetMetrics } from "./set";
+import exercisesData from "./exercises.json";
 
 export interface Exercise {
   id: string;
@@ -8,3 +9,5 @@ export interface Exercise {
   user_id: string;
   metric?: SetMetrics | null
 }
+
+export type StaticExerciseList = typeof exercisesData;
