@@ -25,6 +25,7 @@
   - [x] Update form components to use value field instead of separate fields
   - [x] Update API hooks and data transformation logic
   - [x] Update tests to use new metric_value property
+- [ ] Extend complete workout api with workout id
 
 ## 🎨 Frontend Improvements
 
