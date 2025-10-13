@@ -56,7 +56,7 @@ export const LoginCard = () => {
               icon={<Mail className="h-4 w-4 text-muted-foreground" />}
               register={register}
               type="email"
-              placeholder="your@email.com bitch"
+              placeholder="your@email.com"
               error={errors.email}
             />
             <FormPasswordInputField

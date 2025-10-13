@@ -30,6 +30,10 @@
 
 ## 🎨 Frontend Improvements
 
+### Pages
+
+- [ ] Delete workouts/[id] because its not needed anymore
+
 ### Components
 
 - [x] Delete EditWorkoutDialog after implementing update workout page
@@ -39,6 +43,7 @@
 
 - [ ] Move workoutOverview api call and hook to completeWorkouts folder inside hooks
 - [ ] Check all hooks if they are necessary, remove whats not needed
+- [ ] Rename hooks / api functions to be more appropriate
 
 ## 🧪 Testing & Quality
 
