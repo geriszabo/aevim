@@ -15,24 +15,24 @@ import { Button } from "@/components/ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import exercises from "@aevim/shared-types/exercises.json";
 import { Label } from "@/components/ui/label";
+import {type StaticExerciseList} from "@aevim/shared-types"
 
 interface ExerciseSelectComboBoxProps {
   value?: string;
   onChangeValue: (value: string) => void;
-  
+  exerciseList: StaticExerciseList
 }
-
-const exerciseList = exercises.map((ex) => ({ id: ex.id, label: ex.name }));
 
 
 export const ExerciseSelectComboBox = ({
   onChangeValue,
   value,
+  exerciseList
 }: ExerciseSelectComboBoxProps) => {
   const [open, setOpen] = useState(false);
-  
+  const exerciseOptions = exerciseList.map((ex) => ({ id: ex.id, label: ex.name }));
+
   return (
     <>
       <Label>Exercise name</Label>
@@ -45,7 +45,7 @@ export const ExerciseSelectComboBox = ({
             className="w-full justify-between h-10"
           >
             {value
-              ? exerciseList.find((ex) => ex.label === value)?.label
+              ? exerciseOptions.find((ex) => ex.label === value)?.label
               : "Select exercise..."}
             <ChevronsUpDown className="opacity-50" />
           </Button>
@@ -56,7 +56,7 @@ export const ExerciseSelectComboBox = ({
             <CommandList>
               <CommandEmpty>No workout found.</CommandEmpty>
               <CommandGroup>
-                {exerciseList.map((ex) => (
+                {exerciseOptions.map((ex) => (
                   <CommandItem
                     key={ex.id}
                     value={ex.label}

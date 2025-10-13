@@ -19,6 +19,7 @@ import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCar
 import { ExerciseCardMetricSelect } from "../../../components/ExerciseCard/ExerciseCardMetricSelect";
 import { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";
 import { ExerciseSelectComboBox } from "./ExerciseSelectCombobox";
+import exercises from "@aevim/shared-types/exercises.json"
 
 interface CreateExerciseDataFormProps {
   register: UseFormRegister<WorkoutFormValues>;
@@ -78,7 +79,7 @@ export const CreateExerciseDataForm = ({
           control={control}
           name={`exercises.${id}.name`}
           render={({ field: { value, onChange } }) => (
-            <ExerciseSelectComboBox value={value} onChangeValue={onChange} />
+            <ExerciseSelectComboBox value={value} onChangeValue={onChange} exerciseList={exercises} />
           )}
         />
         <FormInputField
