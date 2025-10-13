@@ -2,16 +2,19 @@
 
 import { useState } from "react";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Logo } from "../Logo/Logo";
 import { Typography } from "../ui/typography";
 
 export default function BottomNavBar() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]["value"]>(
-    tabs[0].value
-  );
+  const pathName = usePathname();
+  const currentTab = tabs.find((tab) => tab.routeTo === pathName);
+
+  const [activeTab, setActiveTab] = useState<
+    (typeof tabs)[number]["value"] | undefined
+  >(currentTab?.value);
 
   const handleOnTabChange = (tab: {
     value: (typeof tabs)[number]["value"];
