@@ -16,7 +16,7 @@
 - [x] Create completeWorkouts route
 - [x] Move workouts/create and / or workouts/overview to completeWorkouts route (PUT & POST)
 - [ ] Remove newWorkout temporary variable that gets returned in /completeWorkouts/:id
-- [ ] Refactor sets metrics
+- [x] Refactor sets metrics
   - [x] Modify sets table: replace weight, duration, distance columns with single value column
   - [x] Update Set interface in packages/shared-types/set.ts
   - [x] Update all related types that reference sets (workout, exercise types)
