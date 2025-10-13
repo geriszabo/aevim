@@ -26,6 +26,7 @@
   - [x] Update API hooks and data transformation logic
   - [x] Update tests to use new metric_value property
 - [ ] Extend complete workout api with workout id
+- [ ] Make sets able to accept reps only as metrics
 
 ## 🎨 Frontend Improvements
 
