@@ -50,7 +50,7 @@ export const getAuthMeAndReturn = async (cookie: string) => {
   let json;
   try {
     json = await authMeRes.json();
-  } catch (error) {
+  } catch {
     json = { errors: ["Invalid response format"] };
   }
 

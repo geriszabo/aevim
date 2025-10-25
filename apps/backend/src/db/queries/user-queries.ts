@@ -1,6 +1,5 @@
 import { Database } from "bun:sqlite";
 import type { UserBiometrics, UserBiometricsUpdate } from "@aevim/shared-types/schemas/user-schema";
-import { checkItemExists } from "../../helpers";
 
 export const getUserBiometrics = (db: Database, userId: string): UserBiometrics | null => {
   const query = db.query(`

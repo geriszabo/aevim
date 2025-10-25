@@ -44,7 +44,7 @@ exercises
     const exerciseId = c.req.param("id");
     const payload = c.get("jwtPayload");
     try {
-      const deletedExercise = deleteExerciseById(db, exerciseId, payload.sub);
+      deleteExerciseById(db, exerciseId, payload.sub);
       return c.json(
         {
           message: `Exercise has been deleted successfuly`,

@@ -9,6 +9,7 @@ import {
   loginFlow,
   updateUserBiometricsAndReturn,
 } from "../../test/test-helpers";
+import type { UserBiometrics } from "@aevim/shared-types";
 
 let db: Database;
 
@@ -169,7 +170,7 @@ describe("/user/biometrics endpoint", () => {
       const { biometricsRes: sexRes, biometrics: sexBiometrics } =
         await createUserBiometricsAndReturn(cookie!, {
           weight: 75,
-          sex: "invalid" as any,
+          sex: "invalid" as UserBiometrics["sex"],
           height: 180,
           build: "athletic",
         });
@@ -185,7 +186,7 @@ describe("/user/biometrics endpoint", () => {
           weight: 75,
           sex: "male",
           height: 180,
-          build: "invalid" as any,
+          build: "invalid" as UserBiometrics["build"],
         });
 
       expect(buildRes.status).toBe(400);

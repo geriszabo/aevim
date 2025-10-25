@@ -8,11 +8,10 @@ import {
 } from "../../db/queries/auth-queries";
 
 let db: Database;
-let userId: string;
 
 beforeEach(() => {
   db = createTestDb();
-  userId = createTestUser(db);
+  createTestUser(db);
 });
 
 afterEach(() => {

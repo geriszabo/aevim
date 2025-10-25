@@ -18,7 +18,6 @@ import type { WorkoutOverview } from "@aevim/shared-types";
 import { getCompleteWorkoutByWorkoutId } from "../../db/queries/workout-queries";
 
 let db: Database;
-let userId: string;
 
 mock.module("../../db/db.ts", () => {
   return { dbConnect: () => db };
@@ -26,7 +25,7 @@ mock.module("../../db/db.ts", () => {
 
 beforeEach(() => {
   db = createTestDb();
-  userId = createTestUser(db);
+  createTestUser(db);
 });
 afterEach(() => {
   db.close();
@@ -101,7 +100,6 @@ describe("/completeWorkouts endpoint", () => {
       const { user } = await getAuthMeAndReturn(cookie!);
       if (!("id" in user)) return;
       const {
-        res,
         completeWorkout: {
           workout: {
             workout: { id: completeWorkoutId },
@@ -177,6 +175,7 @@ describe("/completeWorkouts endpoint", () => {
         ],
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       updatedWorkout.exercises.push(newExercise as any);
 
       const { res } = await updateCompleteWorkoutAndReturn(cookie!, workoutId, {
@@ -265,7 +264,7 @@ describe("/completeWorkouts endpoint", () => {
         workoutData
       );
       const workoutId = completeWorkout.workout.workout.id;
-      let workoutFromDB = getCompleteWorkoutByWorkoutId(db, workoutId, user.id);
+      const workoutFromDB = getCompleteWorkoutByWorkoutId(db, workoutId, user.id);
       
       expect(workoutFromDB.exercises).toHaveLength(2);
       expect(workoutFromDB.exercises[0]!.sets).toHaveLength(3);

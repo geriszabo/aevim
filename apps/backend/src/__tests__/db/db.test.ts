@@ -16,8 +16,8 @@ import {
 
 let db: Database;
 let userId: string;
-const secondUserId = "otherUserId"
-const secondUsername = "testuser70"
+const secondUserId = "otherUserId";
+const secondUsername = "testuser70";
 
 beforeEach(() => {
   db = createTestDb();
@@ -134,7 +134,7 @@ describe("Cascade Deletion Tests", () => {
 
       // Try to delete with wrong user
       try {
-        const result = deleteWorkoutById(db, workout.id, otherUserId);
+        deleteWorkoutById(db, workout.id, otherUserId);
       } catch (error) {
         if (error instanceof Error) {
           expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
@@ -271,8 +271,20 @@ describe("Cascade Deletion Tests", () => {
       );
 
       // Add sets to both
-      insertSet(db, { reps: 10, metric_value: 69 }, userId, workout1.id, ex1.id);
-      insertSet(db, { reps: 10, metric_value: 69 }, userId, workout2.id, ex2.id);
+      insertSet(
+        db,
+        { reps: 10, metric_value: 69 },
+        userId,
+        workout1.id,
+        ex1.id
+      );
+      insertSet(
+        db,
+        { reps: 10, metric_value: 69 },
+        userId,
+        workout2.id,
+        ex2.id
+      );
 
       // Verify initial state
       const beforeCounts = getDataCounts(db, userId);

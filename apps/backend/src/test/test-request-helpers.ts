@@ -5,7 +5,7 @@ import type { UserBiometrics } from "@aevim/shared-types";
 
 interface RequestOptions {
   method?: RequestInit["method"];
-  body?: Record<string, any>;
+  body?: Record<string, unknown>;
   cookie?: string;
   headers?: Record<string, string>;
 }

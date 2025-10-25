@@ -114,7 +114,7 @@ describe("getWorkoutById", () => {
     );
     const workouts = getWorkoutsByUserId(db, userId);
     expect(workouts).toHaveLength(2);
-    const firstWorkout = getWorkoutById(db, userId, workouts[1]?.id!);
+    const firstWorkout = getWorkoutById(db, userId, workouts[1]!.id!);
     expect(firstWorkout).toBeDefined();
 
     expect(firstWorkout).toEqual({
@@ -213,7 +213,7 @@ describe("updateWorkoutById", () => {
     } catch (error) {
       if (error instanceof Error) {
         expect(error).toBeInstanceOf(Error);
-        expect(error.message).toMatch(/near \"WHERE\": syntax error/);
+        expect(error.message).toMatch(/near "WHERE": syntax error/);
       }
     }
   });

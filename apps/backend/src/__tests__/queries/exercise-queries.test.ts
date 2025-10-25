@@ -121,7 +121,7 @@ describe("insertExercise", () => {
   it("throws error when name is missing", () => {
     const exerciseData = {
       category: "Strength",
-    } as any;
+    } as ExerciseData;
     expect(() => insertExercise(db, exerciseData, userId)).toThrow(
       /NOT NULL constraint failed/
     );
@@ -310,8 +310,8 @@ describe("updateExerciseById", () => {
     );
     try {
       updateExerciseById(db, exercise.id, userId, {
-        category: null as any,
-        name: null as any,
+        category: null,
+        name: null as unknown as ExerciseData["name"],
       });
     } catch (error) {
       if (error instanceof Error) {

@@ -5,9 +5,7 @@ import { createTestDb } from "../../test/test-db";
 import app from "../../index";
 import { addExerciseRequest } from "../../test/test-request-helpers";
 import {
-  createExerciseAddToWorkoutAndReturn,
   createExerciseAndReturn,
-  createWorkoutAndReturn,
   deleteExerciseAndReturn,
   getAllExercisesAndReturn,
   loginFlow,
@@ -56,8 +54,8 @@ describe("/exercises endpoint", () => {
     it("returns 400 if parameters are invalid", async () => {
       const { cookie } = await loginFlow();
       const { exerciseRes, exercise } = await createExerciseAndReturn(cookie!, {
-        category: null as any,
-        name: null as any,
+        category: null as unknown as string,
+        name: null as unknown as string,
       });
 
       expect(exerciseRes.status).toBe(400);

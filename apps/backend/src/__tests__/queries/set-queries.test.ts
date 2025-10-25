@@ -335,7 +335,7 @@ describe("updateSetById", () => {
     } catch (error) {
       if (error instanceof Error) {
         expect(error).toBeInstanceOf(Error);
-        expect(error.message).toMatch(/near \"WHERE\": syntax error/);
+        expect(error.message).toMatch(/near "WHERE": syntax error/);
       }
     }
   });
@@ -406,6 +406,7 @@ describe("updateSetById", () => {
       workout.id,
       exercise.id
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updates = { metric_value: null } as any;
     const updatedSet = updateSetById(db, set.id, updates, userId);
 

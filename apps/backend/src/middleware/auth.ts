@@ -26,7 +26,7 @@ export const authMiddleware = async (c: Context, next: Next) => {
         c.set("jwtPayload", payload);
         return next();
       }
-    } catch (error) {
+    } catch {
       console.log("Access token invalid, trying refresh token");
     }
   }

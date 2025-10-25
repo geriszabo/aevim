@@ -222,8 +222,8 @@ export const getCompleteWorkoutByWorkoutId = (
     ORDER BY workout_exercises.order_index, sets.order_index
   `);
 
-  const rows = query.all(workoutId, userId) as any[];
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rows = query.all(workoutId, userId) as any[]
   // Group the results by exercise
   const exercisesMap = new Map();
 

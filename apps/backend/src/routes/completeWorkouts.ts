@@ -53,7 +53,7 @@ completeWorkouts
 
         const { exercise_id: exerciseId } = workoutExercise;
         for (const setData of sets) {
-          const set = insertSet(
+          insertSet(
             db,
             {
               reps: setData.reps,
