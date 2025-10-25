@@ -27,6 +27,19 @@
   - [x] Update tests to use new metric_value property
 - [ ] Extend complete workout api with workout id
 - [ ] Make sets able to accept reps only as metrics
+- [ ] Clean up
+  - [x] Move DELETE /workouts/:id to completeWorkouts and rename accordingly
+  - [x] Delete /workouts/:id and replace the path in the FE hooks
+  - [x] Rename deleteWorkoutById to deleteCompleteWorkoutById
+  - [x] Delete getWorkout, hook, and delete endpoint: GET /workouts/:id
+  - [x] Delete useCreateExerciseToWorkout, postExerciseToWorkout and endpoint: POST workouts/:id/exercises
+  - [x] Delete useDeleteExerciseOfWorkout, deleteExerciseOfWorkout, endpoint: DELETE workouts/:id/exercises/:exerciseId
+  - [x] Delete useGetExercisesToWorkout, getExercisesToWorkout, endpoint: GET workouts/:id/exercises/:exerciseId
+  - [x] Delete useCreateWorkout, postWorkout, endpoint: POST workouts/
+  - [x] Delete useUpdateWorkout, putWorkout, endpoint: PUT /workouts/:id
+  - [x] Delete all unused exercise endpoints: POST/GET/PUT/DELETE /exercises
+  - [x] Fix failing tests that depend on deleted endpoints
+  - [ ] Remove test helper functions for deleted endpoints
 
 ## 🎨 Frontend Improvements
 
