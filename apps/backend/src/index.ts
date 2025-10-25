@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import auth from "./routes/auth";
 import workouts from "./routes/workouts";
 import env from "./env";
-import exercises from "./routes/exercises";
 import { cors } from "hono/cors";
 import { authMiddleware } from "./middleware/auth";
 import completeWorkouts from "./routes/completeWorkouts";
@@ -23,7 +22,6 @@ app
   .use("api/v1/auth/*", authMiddleware)
   .route("api/v1", auth)
   .route("api/v1/auth", workouts)
-  .route("api/v1/auth", exercises)
   .route("api/v1/auth", completeWorkouts)
   .route("api/v1/auth", user);
 
