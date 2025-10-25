@@ -10,11 +10,17 @@
     "db:workouts:reset": "bun run scripts/reset-workouts.ts",
     "db:we:reset": "bun run scripts/reset-workout-exercises.ts",
     "db:exercises:reset": "bun run scripts/reset-exercises.ts",
-    "db:sets:reset": "bun run scripts/reset-sets.ts"
+    "db:sets:reset": "bun run scripts/reset-sets.ts",
+     "lint": "eslint . --ext .ts"
   },
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@eslint/js": "^9.38.0",
+    "@types/bun": "latest",
+    "eslint": "^9.38.0",
+    "globals": "^16.4.0",
+    "jiti": "^2.6.1",
+    "typescript-eslint": "^8.46.2"
   },
   "peerDependencies": {
     "typescript": "^5"
