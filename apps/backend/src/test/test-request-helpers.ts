@@ -132,7 +132,7 @@ export const deleteWorkoutRequest = (
   cookie: string
 ): Request => {
   return createAuthenticatedRequest(
-    API_ROUTES.workouts.single(workoutId),
+    API_ROUTES.completeWorkouts.single(workoutId),
     cookie,
     { method: "DELETE" }
   );
