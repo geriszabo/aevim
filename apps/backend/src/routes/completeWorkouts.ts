@@ -5,6 +5,7 @@ import {
   getCompleteWorkoutByWorkoutId,
   insertWorkout,
   updateWorkoutById,
+  deleteWorkoutById,
 } from "../db/queries/workout-queries";
 import { insertExerciseToWorkout } from "../db/queries/workout-exercises-queries";
 import {
@@ -117,7 +118,7 @@ completeWorkouts
             payload.sub,
             workoutId
           );
-          
+
           exerciseId = workoutExercise.exercise_id;
         } else {
           const { name, category, notes, metric, exercise_id } = exerciseData;
@@ -156,6 +157,22 @@ completeWorkouts
         payload.sub
       );
       return c.json({ overview: workoutOverview }, 200);
+    } catch (error) {
+      return handleError(c, error);
+    }
+  })
+  .delete("/completeWorkouts/:id", async (c) => {
+    const db = dbConnect();
+    const workoutId = c.req.param("id");
+    const payload = c.get("jwtPayload");
+    try {
+      deleteWorkoutById(db, workoutId, payload.sub);
+      return c.json(
+        {
+          message: `Workout has been deleted successfuly`,
+        },
+        200
+      );
     } catch (error) {
       return handleError(c, error);
     }
