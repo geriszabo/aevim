@@ -17,6 +17,7 @@ let userId: string;
 const exerciseData = {
   name: "Push Up",
   category: "Strength",
+  code: "E69"
 };
 
 beforeEach(() => {
@@ -49,12 +50,14 @@ describe("insertExerciseToWorkout", () => {
       category: "Strength",
       metric: null,
       created_at: expect.any(String),
+      code: "E69"
     });
   });
 
   it("inserts exercise with no category", async () => {
     const exerciseData = {
       name: "Push Up",
+      code: "E69"
     };
     const workout = insertWorkout(db, workoutData, userId);
     const exercise = insertExerciseToWorkout(
@@ -70,6 +73,7 @@ describe("insertExerciseToWorkout", () => {
       category: null,
       metric: null,
       created_at: expect.any(String),
+      code: "E69"
     });
   });
 
@@ -99,12 +103,14 @@ describe("insertExercise", () => {
       category: "Strength",
       metric: null,
       created_at: expect.any(String),
+      code: "E69"
     });
   });
 
   it("inserts exercise with no category", () => {
     const exerciseData = {
       name: "Squat",
+      code: "E69"
     };
 
     const exercise = insertExercise(db, exerciseData, userId);
@@ -115,6 +121,7 @@ describe("insertExercise", () => {
       category: null,
       metric: null,
       created_at: expect.any(String),
+      code: "E69"
     });
   });
 
@@ -138,6 +145,7 @@ describe("getExerciseById", () => {
       category: "Strength",
       metric: null,
       created_at: expect.any(String),
+      code: "E69"
     });
   });
 
@@ -168,6 +176,7 @@ describe("deleteExerciseById", () => {
       category: "Strength",
       metric: null,
       created_at: expect.any(String),
+      code: "E69"
     });
     deleteExerciseById(db, exercise.id, userId);
     const deletedExercise = getExerciseById(db, exercise.id, userId);
@@ -200,6 +209,7 @@ describe("getAllExercises", () => {
         category: "Strength",
         metric: null,
         created_at: expect.any(String),
+        code: "E69"
       });
     });
   });
@@ -234,6 +244,7 @@ describe("updateExerciseById", () => {
       name: "updated name",
       category: "updated category",
       created_at: expect.any(String),
+      code: "E69"
     });
   });
 
@@ -254,7 +265,7 @@ describe("updateExerciseById", () => {
     const workout = insertWorkout(db, workoutData, userId);
     const { exercise } = insertExerciseToWorkout(
       db,
-      { name: "Test" },
+      { name: "Test", category: "Test", code: "E69" },
       userId,
       workout.id
     );
@@ -275,7 +286,7 @@ describe("updateExerciseById", () => {
     const workout = insertWorkout(db, workoutData, userId);
     const { exercise } = insertExerciseToWorkout(
       db,
-      { name: "name", category: "category" },
+      { name: "name", category: "category", code: "E69" },
       userId,
       workout.id
     );
@@ -287,6 +298,7 @@ describe("updateExerciseById", () => {
       name: "updated name",
       category: "category",
       created_at: expect.any(String),
+      code: "E69"
     });
 
     const updatedCategory = updateExerciseById(db, exercise.id, userId, {
@@ -297,6 +309,7 @@ describe("updateExerciseById", () => {
       name: "updated name",
       category: "updated category",
       created_at: expect.any(String),
+      code: "E69"
     });
   });
 
@@ -304,7 +317,7 @@ describe("updateExerciseById", () => {
     const workout = insertWorkout(db, workoutData, userId);
     const { exercise } = insertExerciseToWorkout(
       db,
-      { name: "name", category: "category" },
+      { name: "name", category: "category", code: "E69" },
       userId,
       workout.id
     );

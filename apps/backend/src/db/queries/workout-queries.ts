@@ -209,6 +209,7 @@ export const getCompleteWorkoutByWorkoutId = (
       exercises.name AS ex_name,
       exercises.metric AS ex_metric,
       exercises.category AS ex_category,
+      exercises.code AS ex_code,
       sets.id AS set_id,
       sets.reps AS set_reps,
       sets.metric_value AS set_metric_value,
@@ -240,6 +241,7 @@ export const getCompleteWorkoutByWorkoutId = (
         name: row.ex_name,
         category: row.ex_category,
         metric: row.ex_metric,
+        code: row.ex_code,
         sets: [],
       });
     }

@@ -8,6 +8,7 @@ export interface Exercise {
   created_at: string;
   user_id: string;
   metric?: SetMetrics | null
+  code: string
 }
 
 export type StaticExerciseList = typeof exercisesData;

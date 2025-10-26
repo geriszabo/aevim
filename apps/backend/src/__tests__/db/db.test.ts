@@ -84,7 +84,7 @@ describe("Cascade Deletion Tests", () => {
       for (let i = 0; i < 3; i++) {
         const { exercise } = insertExerciseToWorkout(
           db,
-          { name: `Exercise ${i + 1}`, category: "Test" },
+          { name: `Exercise ${i + 1}`, category: "Test", code: `E${i + 1}` },
           userId,
           workout.id
         );
@@ -189,7 +189,7 @@ describe("Cascade Deletion Tests", () => {
       const workout = insertWorkout(db, workoutData, userId);
       const { exercise } = insertExerciseToWorkout(
         db,
-        { name: "Test Exercise", category: "Test" },
+        { name: "Test Exercise", category: "Test", code: "E69" },
         userId,
         workout.id
       );
@@ -229,7 +229,6 @@ describe("Cascade Deletion Tests", () => {
     it("does not delete exercise that doesn't belong to user", () => {
       const { exercise } = createCompleteWorkout(db, userId);
       const otherUserId = createTestUser(db, secondUserId, secondUsername);
-
       try {
         deleteExerciseById(db, exercise.id, otherUserId);
       } catch (error) {
@@ -259,13 +258,13 @@ describe("Cascade Deletion Tests", () => {
       // Create separate exercises for each
       const { exercise: ex1 } = insertExerciseToWorkout(
         db,
-        { name: "Exercise 1", category: "Test" },
+        { name: "Exercise 1", category: "Test", code: "E69" },
         userId,
         workout1.id
       );
       const { exercise: ex2 } = insertExerciseToWorkout(
         db,
-        { name: "Exercise 2", category: "Test" },
+        { name: "Exercise 2", category: "Test", code: "E69" },
         userId,
         workout2.id
       );

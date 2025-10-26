@@ -39,6 +39,7 @@ const defaultCompleteWorkout: WorkoutOverview = {
       exercise_id: expect.any(String),
       id: expect.any(String),
       metric: "weight",
+      code: "E69",
       name: "Bench Press",
       order_index: 1,
       sets: [
@@ -135,7 +136,7 @@ describe("/completeWorkouts endpoint", () => {
         workout: updatedWorkout.workout,
         exercises: updatedWorkout.exercises,
       });
-
+      
       expect(res.status).toBe(200);
       const updatedWorkoutFromDB = getCompleteWorkoutByWorkoutId(
         db,
@@ -163,6 +164,7 @@ describe("/completeWorkouts endpoint", () => {
         category: "legs",
         metric: "weight",
         notes: "Focus on form",
+        code: "E69",
         sets: [
           {
             reps: 12,
@@ -220,6 +222,7 @@ describe("/completeWorkouts endpoint", () => {
             name: "Bench Press",
             category: "chest",
             metric: "weight",
+            code: "E69",
             notes: "Keep elbows at 45 degrees",
             sets: [
               {
@@ -240,6 +243,7 @@ describe("/completeWorkouts endpoint", () => {
             name: "Overhead Press",
             category: "shoulders",
             metric: "weight",
+            code: "E69",
             notes: "Full range of motion",
             sets: [
               {
@@ -304,6 +308,7 @@ describe("/completeWorkouts endpoint", () => {
       const updatedWorkout = structuredClone(completeWorkout.workout);
       updatedWorkout.workout.name = "";
       updatedWorkout.exercises[0]!.name = "";
+      updatedWorkout.exercises[0]!.code = "";
       updatedWorkout.exercises[0]!.sets[0]!.reps = -69;
 
       const { res, updateResponse } = await updateCompleteWorkoutAndReturn(
@@ -320,6 +325,7 @@ describe("/completeWorkouts endpoint", () => {
         errors: [
           "Workout name cannot be empty",
           "Exercise name cannot be empty",
+          "You must provide the exercise code",
           "Reps must be at least 1",
         ],
       });

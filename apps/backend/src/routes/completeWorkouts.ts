@@ -35,7 +35,7 @@ completeWorkouts
     const db = dbConnect();
     const payload = c.get("jwtPayload");
     const {
-      workout: { date, name, notes },
+      workout: { date, name, notes},
       exercises,
     } = c.req.valid("json");
 
@@ -43,10 +43,10 @@ completeWorkouts
       const workout = insertWorkout(db, { date, name, notes }, payload.sub);
       const { id: workoutId } = workout;
       for (const exerciseData of exercises) {
-        const { name, category, sets, notes, metric } = exerciseData;
+        const { name, category, sets, notes, metric, code } = exerciseData;
         const { workoutExercise } = insertExerciseToWorkout(
           db,
-          { name, category, notes, metric },
+          { name, category, notes, metric, code },
           payload.sub,
           workoutId
         );
@@ -121,13 +121,14 @@ completeWorkouts
 
           exerciseId = workoutExercise.exercise_id;
         } else {
-          const { name, category, notes, metric, exercise_id } = exerciseData;
+          const { name, category, notes, metric, exercise_id, code } = exerciseData;
           exerciseId = exercise_id;
           updateExerciseById(db, exercise_id, payload.sub, {
             category,
             metric,
             name,
             notes,
+            code
           });
         }
         for (const setData of sets) {

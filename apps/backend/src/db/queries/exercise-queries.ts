@@ -9,19 +9,20 @@ export const insertExercise = (
   exerciseData: ExerciseData,
   userId: string
 ) => {
-  const { name, category, metric } = exerciseData;
+  const { name, category, metric, code } = exerciseData;
   const exerciseId = randomUUID();
   const workoutQuery = db.query(`
-    INSERT INTO exercises (id, user_id, name, category, metric)
-    VALUES (?, ?, ?, ?, ?)
-    RETURNING id, name, category, metric, created_at
+    INSERT INTO exercises (id, user_id, name, category, metric, code)
+    VALUES (?, ?, ?, ?, ?, ?)
+    RETURNING id, name, category, metric, created_at, code
     `);
   const exercise = workoutQuery.get(
     exerciseId,
     userId,
     name,
     category || null,
-    metric || null
+    metric || null,
+    code
   ) as ExerciseWithouthUserId;
 
   return exercise;
@@ -83,7 +84,7 @@ export const getExerciseById = (
   userId: string
 ) => {
   const exerciseQuery = db.query(`
-    SELECT id, name, category, created_at, metric
+    SELECT id, name, category, created_at, metric, code
     FROM exercises
     WHERE id = ? AND user_id = ?
     `);
@@ -98,7 +99,7 @@ export const getExerciseById = (
 
 export const getAllExercises = (db: Database, userId: string) => {
   const exercisesQuery = db.query(`
-    SELECT id, name, category, created_at, metric
+    SELECT id, name, category, created_at, metric, code
     FROM exercises 
     WHERE user_id = ?`);
 
@@ -142,7 +143,7 @@ export const updateExerciseById = (
       UPDATE exercises
       SET ${setClause}
       WHERE id = ? AND user_id = ?
-      RETURNING id, name, category, created_at
+      RETURNING id, name, category, created_at, code
     `);
 
   const result = updateQuery.get(...values, exerciseId, userId);

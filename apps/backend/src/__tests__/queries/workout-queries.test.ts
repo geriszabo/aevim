@@ -300,9 +300,9 @@ describe("getWorkoutExercisesByWorkoutId", () => {
   it("returns all exercises for a given workout", async () => {
     const workout = insertWorkout(db, workoutData, userId);
     const exercises = [
-      { name: "Push Up", category: "Strength" },
-      { name: "Squat", category: "Strength" },
-      { name: "Running", category: "Cardio" },
+      { code: "E69", name: "Push Up", category: "Strength" },
+      { code: "E69", name: "Squat", category: "Strength" },
+      { code: "E69", name: "Running", category: "Cardio" },
     ];
     exercises.forEach((exercise) => {
       insertExerciseToWorkout(db, exercise, userId, workout.id);
@@ -344,11 +344,16 @@ describe("getWorkoutExercisesByWorkoutId", () => {
     const workout = insertWorkout(db, workoutData, userId);
     insertExerciseToWorkout(
       db,
-      { name: "First", category: "first category" },
+      { name: "First", code: "E69", category: "first category" },
       userId,
       workout.id
     );
-    insertExerciseToWorkout(db, { name: "Second" }, userId, workout.id);
+    insertExerciseToWorkout(
+      db,
+      { name: "Second", code: "E69" },
+      userId,
+      workout.id
+    );
 
     const exercises = getExercisesByWorkoutId(db, workout.id, userId);
 
@@ -362,9 +367,24 @@ describe("getCompleteWorkoutByWorkoutId", () => {
     const workout = insertWorkout(db, workoutData, userId);
 
     const exercisesArray = [
-      { name: "Exercise 1", category: "Category 1", metric: "weight" },
-      { name: "Exercise 2", category: "Category 2", metric: "weight" },
-      { name: "Exercise 3", category: "Category 3", metric: "weight" },
+      {
+        name: "Exercise 1",
+        category: "Category 1",
+        metric: "weight",
+        code: "E69",
+      },
+      {
+        name: "Exercise 2",
+        category: "Category 2",
+        metric: "weight",
+        code: "E69",
+      },
+      {
+        name: "Exercise 3",
+        category: "Category 3",
+        metric: "weight",
+        code: "E69",
+      },
     ];
 
     exercisesArray.forEach((exercise) => {
@@ -394,6 +414,7 @@ describe("getCompleteWorkoutByWorkoutId", () => {
         category: `Category ${exerciseIndex + 1}`,
         metric: "weight",
         sets: expect.any(Array),
+        code: "E69",
       });
 
       expect(exercise.sets).toHaveLength(3);
@@ -432,8 +453,8 @@ describe("getCompleteWorkoutByWorkoutId", () => {
     const workout = insertWorkout(db, workoutData, userId);
 
     const exercisesArray = [
-      { name: "Exercise 1", category: "Category 1" },
-      { name: "Exercise 2", category: "Category 2" },
+      { name: "Exercise 1", code: "E69", category: "Category 1" },
+      { name: "Exercise 2", code: "E69", category: "Category 2" },
     ];
     exercisesArray.forEach((exercise) => {
       insertExerciseToWorkout(db, exercise, userId, workout.id);
@@ -468,10 +489,10 @@ describe("getCompleteWorkoutByWorkoutId", () => {
     const workout = insertWorkout(db, workoutData, userId);
 
     const exercisesArray = [
-      { name: "First Exercise", category: "Category 1" },
-      { name: "Second Exercise", category: "Category 2" },
-      { name: "Third Exercise", category: "Category 3" },
-      { name: "Fourth Exercise", category: "Category 4" },
+      { name: "First Exercise", code: "E69", category: "Category 1" },
+      { name: "Second Exercise", code: "E69", category: "Category 2" },
+      { name: "Third Exercise", code: "E69", category: "Category 3" },
+      { name: "Fourth Exercise", code: "E69", category: "Category 4" },
     ];
 
     exercisesArray.forEach((exercise) => {

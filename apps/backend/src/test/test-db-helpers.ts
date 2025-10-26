@@ -75,6 +75,7 @@ export const createCompleteWorkout = (db: Database, userId: string) => {
   const exerciseData = {
     name: "Test Exercise",
     category: "Test Category",
+    code: "E69"
   };
 
   const setData = {

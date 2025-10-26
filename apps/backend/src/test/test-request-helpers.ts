@@ -297,6 +297,7 @@ export const addCompleteWorkoutRequest = (
     category?: string;
     metric?: string;
     notes?: string;
+    code?: string;
     sets?: Array<{
       reps?: number;
       metric_value?: number;
@@ -307,6 +308,7 @@ export const addCompleteWorkoutRequest = (
       category: "chest",
       metric: "weight",
       notes: "Focus on form",
+      code: "E69",
       sets: [
         { reps: 10, metric_value: 135 },
         { reps: 8, metric_value: 145 },
@@ -314,14 +316,10 @@ export const addCompleteWorkoutRequest = (
     },
   ]
 ): Request => {
-  return createAuthenticatedRequest(
-    API_ROUTES.completeWorkouts.base,
-    cookie,
-    {
-      method: "POST",
-      body: { workout, exercises },
-    }
-  );
+  return createAuthenticatedRequest(API_ROUTES.completeWorkouts.base, cookie, {
+    method: "POST",
+    body: { workout, exercises },
+  });
 };
 
 export const updateCompleteWorkoutRequest = (
@@ -342,6 +340,7 @@ export const updateCompleteWorkoutRequest = (
     category?: string;
     metric?: string;
     notes?: string;
+    code?: string;
     sets?: Array<{
       id?: string;
       reps?: number;
@@ -353,6 +352,7 @@ export const updateCompleteWorkoutRequest = (
       category: "chest",
       metric: "weight",
       notes: "Updated form focus",
+      code: "E69",
       sets: [
         { reps: 12, metric_value: 140 },
         { reps: 10, metric_value: 150 },

@@ -21,6 +21,7 @@ const workoutData = {
 const exerciseData = {
   name: "Push Up",
   category: "Strength",
+  code: "E69"
 };
 const setData: SetData = { reps: 4, metric_value: 20 };
 
@@ -224,13 +225,13 @@ describe("deleteSetBySetId", () => {
     const workout = insertWorkout(db, workoutData, userId);
     const { exercise: exercise1 } = insertExerciseToWorkout(
       db,
-      { name: "Exercise 1", category: "test" },
+      { name: "Exercise 1", category: "test", code: "E69" },
       userId,
       workout.id
     );
     const { exercise: exercise2 } = insertExerciseToWorkout(
       db,
-      { name: "Exercise 2", category: "test" },
+      { name: "Exercise 2", category: "test", code: "E69" },
       userId,
       workout.id
     );

@@ -415,6 +415,7 @@ export const createCompleteWorkoutAndReturn = async (
       category?: string;
       metric?: string;
       notes?: string;
+      code?: string;
       sets?: Array<{
         reps?: number;
         metric_value?: number;

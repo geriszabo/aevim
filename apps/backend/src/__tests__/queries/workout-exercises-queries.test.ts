@@ -14,6 +14,7 @@ let userId: string;
 const exerciseData = {
   name: "Push Up",
   category: "Strength",
+  code: "E69",
 };
 
 beforeEach(() => {
@@ -33,9 +34,9 @@ describe("getWorkoutExercisesByWorkoutId", () => {
   };
 
   const exercises = [
-    { name: "Push Up", category: "Strength" },
-    { name: "Squat", category: "Strength" },
-    { name: "Running", category: "Cardio" },
+    { code: "E69", name: "Push Up", category: "Strength" },
+    { code: "E69", name: "Squat", category: "Strength" },
+    { code: "E69", name: "Running", category: "Cardio" },
   ];
   it("returns workout exercises for a given workout id", () => {
     const workout = insertWorkout(db, workoutData, userId);
@@ -52,6 +53,7 @@ describe("getWorkoutExercisesByWorkoutId", () => {
         order_index: index + 1,
         category: exercises[index]!.category,
         created_at: expect.any(String),
+        code: "E69"
       });
     });
   });
