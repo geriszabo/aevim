@@ -16,22 +16,24 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
-import {type StaticExerciseList} from "@aevim/shared-types"
+import { type StaticExerciseList } from "@aevim/shared-types";
 
 interface ExerciseSelectComboBoxProps {
   value?: string;
-  onChangeValue: (value: string) => void;
-  exerciseList: StaticExerciseList
+  onChangeValue: (id: string, label: string) => void;
+  exerciseList: StaticExerciseList;
 }
-
 
 export const ExerciseSelectComboBox = ({
   onChangeValue,
   value,
-  exerciseList
+  exerciseList,
 }: ExerciseSelectComboBoxProps) => {
   const [open, setOpen] = useState(false);
-  const exerciseOptions = exerciseList.map((ex) => ({ id: ex.id, label: ex.name }));
+  const exerciseOptions = exerciseList.map((ex) => ({
+    id: ex.id,
+    label: ex.name,
+  }));
 
   return (
     <>
@@ -61,7 +63,11 @@ export const ExerciseSelectComboBox = ({
                     key={ex.id}
                     value={ex.label}
                     onSelect={() => {
-                      onChangeValue(ex.label === value ? "" : ex.label);
+                      if (ex.label === value) {
+                        onChangeValue("", "");
+                      } else {
+                        onChangeValue(ex.id, ex.label);
+                      }
                       setOpen(false);
                     }}
                   >

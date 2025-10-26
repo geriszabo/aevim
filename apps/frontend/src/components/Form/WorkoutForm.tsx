@@ -3,7 +3,7 @@ import { SectionContainer } from "@/components/layouts/SectionContainer";
 import { Typography } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { FormButton } from "@/components/Form/FormButton";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, FormProvider } from "react-hook-form";
 import { FormInputField } from "@/components/Form/FormInputField";
 import { FormDatePicker } from "@/components/Form/FormDatePicker";
 import { FormTextareaField } from "@/components/Form/FormTextareaField";
@@ -26,16 +26,18 @@ export const WorkoutForm = ({
   mutate,
   formId,
 }: WorkoutFormProps) => {
+  const methods = useForm<UpdateCompleteWorkoutData>({
+    defaultValues,
+    mode: "onSubmit",
+  });
+
   const {
     register,
     control,
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<UpdateCompleteWorkoutData>({
-    defaultValues,
-    mode: "onSubmit",
-  });
+  } = methods;
 
   const {
     fields: exerciseFields,
@@ -52,6 +54,7 @@ export const WorkoutForm = ({
       category: "",
       notes: "",
       metric: "",
+      code: "",
       sets: [
         {
           reps: "" as unknown as number,
@@ -67,57 +70,59 @@ export const WorkoutForm = ({
   return (
     <PageContainer display={"block"} padding={"xl"}>
       <SectionContainer>
-        <form onSubmit={handleSubmit(onSubmit)} id={formId}>
-          <FormInputField
-            id="workout.name"
-            label="Workout name"
-            register={register}
-            type="text"
-            error={errors.workout?.name}
-            placeholder="Gym session"
-          />
-          <FormDatePicker
-            id="workout.date"
-            label="Date"
-            control={control}
-            error={errors.workout?.date}
-            placeholder="Select workout date"
-          />
-          <FormTextareaField
-            id="workout.notes"
-            label="Notes for the workout"
-            error={errors.workout?.notes}
-            placeholder="Heavy session, saw a hot girl doing lifts"
-            register={register}
-          />
-          <Typography variant="heading" size="2xl" className="py-4">
-            Exercises
-          </Typography>
-          {exerciseFields.map((field, index) => (
-            <CreateExerciseDataForm
-              key={index}
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)} id={formId}>
+            <FormInputField
+              id="workout.name"
+              label="Workout name"
               register={register}
-              control={control}
-              id={index}
-              onDelete={() => removeExercise(index)}
-              errors={errors.exercises?.[index] || {}}
-              onNewSetAppending={getValues}
+              type="text"
+              error={errors.workout?.name}
+              placeholder="Gym session"
             />
-          ))}
-          <Button
-            onClick={handleAddExercise}
-            variant="outline"
-            className="w-full font-heading mb-4"
-            type="button"
-          >
-            Add exercise
-          </Button>
-          {!formId && (
-            <FormButton loadingText="Saving workout..." type="submit">
-              Save workout
-            </FormButton>
-          )}
-        </form>
+            <FormDatePicker
+              id="workout.date"
+              label="Date"
+              control={control}
+              error={errors.workout?.date}
+              placeholder="Select workout date"
+            />
+            <FormTextareaField
+              id="workout.notes"
+              label="Notes for the workout"
+              error={errors.workout?.notes}
+              placeholder="Heavy session, saw a hot girl doing lifts"
+              register={register}
+            />
+            <Typography variant="heading" size="2xl" className="py-4">
+              Exercises
+            </Typography>
+            {exerciseFields.map((field, index) => (
+              <CreateExerciseDataForm
+                key={index}
+                register={register}
+                control={control}
+                id={index}
+                onDelete={() => removeExercise(index)}
+                errors={errors.exercises?.[index] || {}}
+                onNewSetAppending={getValues}
+              />
+            ))}
+            <Button
+              onClick={handleAddExercise}
+              variant="outline"
+              className="w-full font-heading mb-4"
+              type="button"
+            >
+              Add exercise
+            </Button>
+            {!formId && (
+              <FormButton loadingText="Saving workout..." type="submit">
+                Save workout
+              </FormButton>
+            )}
+          </form>
+        </FormProvider>
       </SectionContainer>
     </PageContainer>
   );

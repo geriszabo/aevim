@@ -9,6 +9,7 @@ import {
   useFieldArray,
   UseFormGetValues,
   Controller,
+  useFormContext,
 } from "react-hook-form";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCar
 import { ExerciseCardMetricSelect } from "../../../components/ExerciseCard/ExerciseCardMetricSelect";
 import { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";
 import { ExerciseSelectComboBox } from "./ExerciseSelectCombobox";
-import exercises from "@aevim/shared-types/exercises.json"
+import exercises from "@aevim/shared-types/exercises.json";
 
 interface CreateExerciseDataFormProps {
   register: UseFormRegister<WorkoutFormValues>;
@@ -58,6 +59,12 @@ export const CreateExerciseDataForm = ({
     });
   };
 
+  const { setValue } = useFormContext<WorkoutFormValues>();
+  const handleExerciseSelect = (exerciseId: string, exerciseName: string) => {
+    setValue(`exercises.${id}.name`, exerciseName);
+    setValue(`exercises.${id}.code`, exerciseId);
+  };
+
   return (
     <Card className="mb-4">
       <CardHeader className="pb-3">
@@ -78,8 +85,12 @@ export const CreateExerciseDataForm = ({
         <Controller
           control={control}
           name={`exercises.${id}.name`}
-          render={({ field: { value, onChange } }) => (
-            <ExerciseSelectComboBox value={value} onChangeValue={onChange} exerciseList={exercises} />
+          render={({ field: { value } }) => (
+            <ExerciseSelectComboBox
+              value={value}
+              onChangeValue={handleExerciseSelect}
+              exerciseList={exercises}
+            />
           )}
         />
         <FormInputField

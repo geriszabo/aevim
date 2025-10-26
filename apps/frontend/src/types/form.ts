@@ -7,6 +7,7 @@ export type WorkoutFormValues = {
     category?: string | null | undefined;
     notes?: string;
     metric: string;
+    code: string;
     sets: { reps: number; metric_value: number }[];
   }[];
 };

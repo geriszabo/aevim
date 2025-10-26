@@ -19,6 +19,7 @@ interface FormInputFieldProps<T extends FieldValues> {
   autoFocus?: boolean;
   className?: ComponentProps<"input">["className"];
   error?: FieldError;
+  value?: string | number;
 }
 
 export const FormInputField = <T extends FieldValues>({
@@ -31,6 +32,7 @@ export const FormInputField = <T extends FieldValues>({
   autoComplete,
   autoFocus = false,
   error,
+  value
 }: FormInputFieldProps<T>) => {
   return (
     <div className="space-y-2">
@@ -45,6 +47,7 @@ export const FormInputField = <T extends FieldValues>({
         )}
         <Input
           id={id}
+          value={value}
           type={type}
           placeholder={placeholder}
           className={`${icon ? "pl-10" : ""} h-10 bg-white`}
