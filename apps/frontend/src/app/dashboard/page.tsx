@@ -123,7 +123,7 @@ export default function Dashboard() {
                 <Typography
                   variant="muted"
                   size="xs"
-                  className="bg-white dark:bg-slate-900 px-2 uppercase"
+                  className="bg-card px-2 uppercase"
                 >
                   or choose template
                 </Typography>
