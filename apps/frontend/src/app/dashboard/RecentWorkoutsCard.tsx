@@ -16,7 +16,7 @@ export const RecentWorkoutsCard = (workout: WorkoutOverview["workout"]) => {
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+          <div className="h-10 w-10 bg-decor rounded-lg flex items-center justify-center">
             <Dumbbell className="h-5 w-5 text-green-500" />
           </div>
           <div>
@@ -33,7 +33,7 @@ export const RecentWorkoutsCard = (workout: WorkoutOverview["workout"]) => {
         </div>
 
         <Button variant="ghost" size="icon" className="h-10 w-10">
-          <TrendingUp className="h-4 w-4" />
+          <TrendingUp className="h-4 w-4 text-decor "  />
         </Button>
       </div>
     </Card>

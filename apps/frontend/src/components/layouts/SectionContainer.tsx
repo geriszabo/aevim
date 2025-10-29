@@ -6,7 +6,7 @@ const sectionContainerVariants = cva("", {
   variants: {
     background: {
       default: "",
-      white: "bg-white dark:bg-slate-900",
+      white: "bg-white dark:bg-black",
       gray: "bg-slate-50 dark:bg-slate-900",
     },
     padding: {

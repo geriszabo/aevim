@@ -25,7 +25,7 @@ export default function BottomNavBar() {
   };
 
   return (
-    <div className="w-full h-14 bg-background flex justify-around align-middle fixed bottom-0">
+    <div className="w-full h-14 bg-background dark:bg-black flex justify-around align-middle fixed bottom-0">
       {tabs.map((tab) => (
         <Button
           className="h-14"

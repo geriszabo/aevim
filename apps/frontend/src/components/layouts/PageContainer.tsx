@@ -3,13 +3,13 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const pageContainerVariants = cva(
-  "min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800",
+  "min-h-screen bg-gradient-to-br from-65% to-100% from-slate-50 to-slate-100 dark:from-black dark:to-black",
   {
     variants: {
       display: {
         flex: "flex",
         grid: "grid",
-        block: "block"
+        block: "block",
       },
       flexDirection: {
         row: "flex-row",

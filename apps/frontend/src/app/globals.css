@@ -47,6 +47,9 @@
   --radius-xl: calc(var(--radius) + 4px);
   --color-hotpink: var(--hotpink);
   --color-neongreen: var(--neongreen);
+  --color-button-primary: var(--button-primary);
+  --color-button-primary-hover: var(--button-primary-hover);
+  --color-decor: var(--button-primary);
 }
 
 :root {
@@ -86,10 +89,12 @@
     65.473% 0.27005 353.526 / 0.874
   ); /* Adjust chroma/hue as desired */
   --neongreen: oklch(85.21% 0.28007 143.575);
+  --button-primary: #d2ff00;
+  --button-primary-hover: rgba(208, 255, 0, 0.922);
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: #1f2219;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
   --card-foreground: oklch(0.985 0 0);
@@ -122,6 +127,9 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
   --hotpink: oklch(0.95 0.27 330);
   --neongreen: oklch(0.98 0.29 140);
+  --button-primary: #d2ff00;
+  --button-primary-hover: rgba(208, 255, 0, 0.922);
+
 }
 
 @layer base {

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   AlertDialog,
@@ -32,7 +32,7 @@ export function DeleteWorkoutDialog({ workoutId }: DeleteWorkoutDialogProps) {
       <AlertDialogTrigger asChild>
         <Button
           variant="outline"
-          className="w-full h-12 text-base font-bold font-heading uppercase text-red-600"
+          className="w-full h-12 text-base font-bold font-heading uppercase text-red-700"
         >
           Delete workout
         </Button>

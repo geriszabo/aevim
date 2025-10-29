@@ -28,14 +28,20 @@ export default async function ProfilePage() {
               <Typography variant="heading">Biometrics</Typography>
             </CardHeader>
             <CardContent>
-              {Object.entries(biometrics).map(([bioKey, bioValue], index) => (
-                <div key={index} className="flex flex-col">
-                  <div className="flex flex-row justify-between">
-                    <Typography variant="body">{bioKey}</Typography>
-                    <Typography variant="body">{bioValue}</Typography>
+              {biometrics ? (
+                Object.entries(biometrics).map(([bioKey, bioValue], index) => (
+                  <div key={index} className="flex flex-col">
+                    <div className="flex flex-row justify-between">
+                      <Typography variant="body">{bioKey}</Typography>
+                      <Typography variant="body">{bioValue}</Typography>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <Typography variant="body">
+                  No biometrics data available. Please add your biometrics below.
+                </Typography>
+              )}
             </CardContent>
           </Card>
         </ContentContainer>

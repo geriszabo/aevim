@@ -47,7 +47,7 @@ export const UpdateProfilePage = ({ biometrics }: UpdateProfilePageProps) => {
   const isLoading = isPendingCreate || isPendingUpdate;
 
   return (
-    <Drawer open={isDrawerOpen}>
+    <Drawer open={isDrawerOpen} onRelease={() => setIsDrawerOpen(false)}>
       <DrawerTrigger className="w-full" asChild>
         <Button className="w-full p-6">
           <Typography
