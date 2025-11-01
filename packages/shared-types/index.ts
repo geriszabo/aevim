@@ -6,3 +6,4 @@ export * from "./api-routes";
 export * from "./schemas/workout-schema";
 export * from "./schemas/exercise-schema";
 export * from "./schemas";
+export * from "./exercise";
