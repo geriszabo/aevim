@@ -95,7 +95,7 @@
       "Fully extend arms overhead",
       "Reverse the motion to return to start"
     ],
-    "metrics": "reps",
+    "metrics": "weight",
     "tips": "The rotation engages more shoulder fibers than a standard press",
     "isCustom": false
   },
