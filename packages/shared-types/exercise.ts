@@ -11,4 +11,4 @@ export interface Exercise {
   code: string
 }
 
-export type StaticExerciseList = typeof exercisesData;
+export type StaticExercise = typeof exercisesData[number];

@@ -16,12 +16,12 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
-import { type StaticExerciseList } from "@aevim/shared-types";
+import { type StaticExercise } from "@aevim/shared-types";
 
 interface ExerciseSelectComboBoxProps {
   value?: string;
   onChangeValue: (id: string, label: string) => void;
-  exerciseList: StaticExerciseList;
+  exerciseList: StaticExercise[];
 }
 
 export const ExerciseSelectComboBox = ({
