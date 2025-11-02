@@ -5,6 +5,7 @@ import { SetMetrics } from "@aevim/shared-types";
 import { Trash2 } from "lucide-react";
 import React from "react";
 import { UseFieldArrayRemove, UseFormRegister } from "react-hook-form";
+import { getUnit } from "@/lib/utils";
 
 interface ExerciseCardSetRowProps {
   register: UseFormRegister<WorkoutFormValues>;
@@ -21,19 +22,6 @@ export const ExerciseCardSetRow = ({
   metric,
   onDelete,
 }: ExerciseCardSetRowProps) => {
-  const getUnit = (metricType: SetMetrics | undefined) => {
-    switch (metricType) {
-      case "distance":
-        return "km";
-      case "duration":
-        return "min";
-      case "weight":
-        return "kg";
-      default:
-        return "";
-    }
-  };
-
   const unit = getUnit(metric);
 
   return (
@@ -50,21 +38,25 @@ export const ExerciseCardSetRow = ({
               valueAsNumber: true,
             })}
           />
+
           <div className="relative col-span-2">
-            <Input
-              type="number"
-              step="0.1"
-              className="h-8 text-xs pr-8 text-right"
-              placeholder="0"
-              {...register(
-                `exercises.${exerciseIndex}.sets.${setIndex}.metric_value`,
-                { valueAsNumber: true }
-              )}
-            />
-            {unit && (
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
-                {unit}
-              </span>
+            {metric !== "reps" && (
+              <>
+                <Input
+                  type="number"
+                  step="0.1"
+                  className="h-8 text-xs pr-8 text-right"
+                  placeholder="0"
+                  {...register(
+                    `exercises.${exerciseIndex}.sets.${setIndex}.metric_value`,
+                    { valueAsNumber: true }
+                  )}
+                />
+
+                <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
+                  {unit}
+                </span>
+              </>
             )}
           </div>
           <Button
