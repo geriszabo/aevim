@@ -70,18 +70,18 @@ export const CreateExerciseDataForm = ({
   const metric = exercise?.metrics;
   const { setValue } = useFormContext<WorkoutFormValues>();
 
-  const handleExerciseSelect = (
-    selectedExerciseId: string,
-    exerciseName: string
-  ) => {
-    const selectedExercise = exercises.find(
-      (ex) => ex.id === selectedExerciseId
-    );
-    if (!selectedExercise) return;
-
+  const handleExerciseSelect = ({
+    exerciseName,
+    selectedExerciseId,
+    metric,
+  }: {
+    metric: string;
+    selectedExerciseId: string;
+    exerciseName: string;
+  }) => {
     setValue(`exercises.${id}.name`, exerciseName);
     setValue(`exercises.${id}.code`, selectedExerciseId);
-    setValue(`exercises.${id}.metric`, selectedExercise?.metrics);
+    setValue(`exercises.${id}.metric`, metric);
     replaceSets([
       { reps: "" as unknown as number, metric_value: "" as unknown as number },
     ]);

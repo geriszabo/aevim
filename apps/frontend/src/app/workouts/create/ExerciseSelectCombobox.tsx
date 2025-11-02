@@ -17,10 +17,19 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { type StaticExercise } from "@aevim/shared-types";
+import exercises from "@aevim/shared-types/exercises.json";
 
 interface ExerciseSelectComboBoxProps {
   value?: string;
-  onChangeValue: (id: string, label: string) => void;
+  onChangeValue: ({
+    exerciseName,
+    selectedExerciseId,
+    metric,
+  }: {
+    metric: string;
+    selectedExerciseId: string;
+    exerciseName: string;
+  }) => void;
   exerciseList: StaticExercise[];
 }
 
@@ -64,9 +73,19 @@ export const ExerciseSelectComboBox = ({
                     value={ex.label}
                     onSelect={() => {
                       if (ex.label === value) {
-                        onChangeValue("", "");
+                        onChangeValue({
+                          exerciseName: "",
+                          selectedExerciseId: "",
+                          metric: "",
+                        });
                       } else {
-                        onChangeValue(ex.id, ex.label);
+                        onChangeValue({
+                          exerciseName: ex.label,
+                          selectedExerciseId: ex.id,
+                          metric:
+                            exercises.find((exercise) => exercise.id === ex.id)
+                              ?.metrics || "",
+                        });
                       }
                       setOpen(false);
                     }}
