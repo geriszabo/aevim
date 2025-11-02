@@ -7,4 +7,4 @@ export interface Set {
   created_at: string;
 }
 
-export type SetMetrics = "weight" | "duration" | "distance";
+export type SetMetrics = "weight" | "duration" | "distance" | "reps";
