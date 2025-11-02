@@ -21,6 +21,7 @@ export const ExerciseCard = ({
     weight: "kg",
     distance: "km",
     duration: "min",
+    reps: "reps",
   };
 
   const metric = metricMap[exercise.metric];
