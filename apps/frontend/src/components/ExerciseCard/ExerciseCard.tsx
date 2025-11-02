@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React from "react";
 import { ExerciseCardHeader } from "./ExerciseCardHeader";
@@ -25,6 +24,7 @@ export const ExerciseCard = ({
   };
 
   const metric = metricMap[exercise.metric];
+  const metricIsReps = metric === "reps";
 
   return (
     <Card className="mb-4">
@@ -39,7 +39,7 @@ export const ExerciseCard = ({
           <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
             <span>Set</span>
             <span>Reps</span>
-            <span>Metric</span>
+            {!metricIsReps && <span>Metric</span>}
           </div>
         </div>
         {sets.map((set, index) => {
@@ -54,17 +54,14 @@ export const ExerciseCard = ({
               <Typography variant="body" size="xs">
                 {set.reps}
               </Typography>
-              <Typography variant="body" size="xs" className="">
-                {set.metric_value} {metric}
-              </Typography>
+              {!metricIsReps && (
+                <Typography variant="body" size="xs" className="">
+                  {set.metric_value} {metric}
+                </Typography>
+              )}
             </div>
           );
         })}
-        <div className="pt-4 border-t">
-          <Label className="text-xs text-muted-foreground mb-2 block">
-            Exercise Notes
-          </Label>
-        </div>
       </CardContent>
     </Card>
   );

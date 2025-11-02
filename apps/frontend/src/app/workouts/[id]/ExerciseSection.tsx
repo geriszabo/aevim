@@ -8,10 +8,10 @@ import { ContentContainer } from "@/components/layouts/ContentContainer";
 import { WorkoutOverview } from "@aevim/shared-types";
 
 interface ExerciseSectionProps {
-  exercises: WorkoutOverview['exercises']
+  exercises: WorkoutOverview["exercises"];
 }
 
-export const ExerciseSection = ({exercises }: ExerciseSectionProps) => {
+export const ExerciseSection = ({ exercises }: ExerciseSectionProps) => {
   return (
     <SectionContainer padding="sm">
       <ContentContainer>
@@ -24,25 +24,24 @@ export const ExerciseSection = ({exercises }: ExerciseSectionProps) => {
                     Exercises
                   </CardTitle>
                   <Typography variant="muted" size="sm">
-                   {exercises.length} total exercises
+                    {exercises.length} total exercises
                   </Typography>
                 </div>
               </div>
-     
             </div>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            {!exercises.length && (
+            {exercises.length === 0 ? (
               <EmptyExerciseListPlaceholder />
-            )}
-            {exercises &&
+            ) : (
               exercises.map((exercise, index) => (
                 <ExerciseCard
                   exercise={exercise}
                   exerciseOrder={index + 1}
                   key={exercise.id}
                 />
-              ))}
+              ))
+            )}
           </CardContent>
         </Card>
       </ContentContainer>
