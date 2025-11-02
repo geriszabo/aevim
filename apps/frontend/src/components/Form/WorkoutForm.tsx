@@ -99,7 +99,7 @@ export const WorkoutForm = ({
             </Typography>
             {exerciseFields.map((field, index) => (
               <CreateExerciseDataForm
-                key={index}
+                key={field.id}
                 register={register}
                 control={control}
                 id={index}

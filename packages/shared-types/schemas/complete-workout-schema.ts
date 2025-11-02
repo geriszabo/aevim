@@ -11,7 +11,7 @@ export const createCompleteWorkoutSchema = z.object({
       sets: z.array(
         z.object({
           reps: z.number().min(1, "Reps must be at least 1"),
-          metric_value: z.number().min(0, "Values must be larger than 0"),
+          metric_value: z.coerce.number().default(0),
         })
       ),
     })
@@ -46,7 +46,7 @@ export const updateCompleteWorkoutSchema = z.object({
       code: z.string().min(1, "You must provide the exercise code"),
       sets: z.array(
         z.object({
-          metric_value: z.number().min(0, "Values must be larger than 0"),
+          metric_value: z.coerce.number().default(0),
           id: z.string().optional(),
           reps: z.number().min(1, "Reps must be at least 1"),
         })

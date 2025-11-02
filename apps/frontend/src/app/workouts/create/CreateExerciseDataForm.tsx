@@ -1,26 +1,29 @@
 "use client";
 
 import { FormInputField } from "@/components/Form/FormInputField";
-import {
-  UseFormRegister,
-  FieldErrors,
-  Control,
-  UseFieldArrayRemove,
-  useFieldArray,
-  UseFormGetValues,
-  Controller,
-  useFormContext,
-} from "react-hook-form";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography";
 import { WorkoutFormValues } from "@/types/form";
-import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCardSetRow";
-import { ExerciseCardMetricSelect } from "../../../components/ExerciseCard/ExerciseCardMetricSelect";
-import { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";
-import { ExerciseSelectComboBox } from "./ExerciseSelectCombobox";
 import exercises from "@aevim/shared-types/exercises.json";
+import { ExerciseData } from "@aevim/shared-types/schemas/exercise-schema";
+import { Trash2 } from "lucide-react";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  useFieldArray,
+  UseFieldArrayRemove,
+  useFormContext,
+  UseFormGetValues,
+  UseFormRegister,
+  useWatch,
+} from "react-hook-form";
+
+import { ExerciseCardSetRow } from "../../../components/ExerciseCard/ExerciseCardSetRow";
+import { ExerciseSelectComboBox } from "./ExerciseSelectCombobox";
+import { SetMetrics } from "@aevim/shared-types";
+import { toSentenceCase } from "@/lib/utils";
 
 interface CreateExerciseDataFormProps {
   register: UseFormRegister<WorkoutFormValues>;
@@ -43,6 +46,7 @@ export const CreateExerciseDataForm = ({
     fields: setFields,
     append: appendSet,
     remove: removeSet,
+    replace: replaceSets,
   } = useFieldArray({
     control,
     name: `exercises.${id}.sets`,
@@ -58,11 +62,29 @@ export const CreateExerciseDataForm = ({
       metric_value: lastSet?.metric_value ?? 0,
     });
   };
-
+  const exerciseId = useWatch({
+    control,
+    name: `exercises.${id}.code`,
+  });
+  const exercise = exercises.find((ex) => ex.id === exerciseId);
+  const metric = exercise?.metrics;
   const { setValue } = useFormContext<WorkoutFormValues>();
-  const handleExerciseSelect = (exerciseId: string, exerciseName: string) => {
+
+  const handleExerciseSelect = (
+    selectedExerciseId: string,
+    exerciseName: string
+  ) => {
+    const selectedExercise = exercises.find(
+      (ex) => ex.id === selectedExerciseId
+    );
+    if (!selectedExercise) return;
+
     setValue(`exercises.${id}.name`, exerciseName);
-    setValue(`exercises.${id}.code`, exerciseId);
+    setValue(`exercises.${id}.code`, selectedExerciseId);
+    setValue(`exercises.${id}.metric`, selectedExercise?.metrics);
+    replaceSets([
+      { reps: "" as unknown as number, metric_value: "" as unknown as number },
+    ]);
   };
 
   return (
@@ -107,16 +129,8 @@ export const CreateExerciseDataForm = ({
           <div className="grid grid-cols-5 gap-2 text-xs text-muted-foreground font-medium px-2 items-center">
             <span>Set</span>
             <span>Reps</span>
-            <Controller
-              control={control}
-              name={`exercises.${id}.metric`}
-              render={({ field }) => (
-                <ExerciseCardMetricSelect
-                  value={field.value}
-                  onValueChange={field.onChange}
-                />
-              )}
-            />
+            <span>{metric === "reps" ? "" : toSentenceCase(metric)}</span>
+
             <Button
               variant="outline"
               size="icon"
@@ -127,13 +141,14 @@ export const CreateExerciseDataForm = ({
               +
             </Button>
           </div>
-          {setFields.map((_set, index) => (
+          {setFields.map((field, index) => (
             <ExerciseCardSetRow
-              key={index}
+              key={field.id}
               register={register}
               exerciseIndex={id}
               setIndex={index}
               onDelete={() => removeSet(index)}
+              metric={metric as SetMetrics}
             />
           ))}
         </div>
