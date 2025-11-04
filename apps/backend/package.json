@@ -11,7 +11,7 @@
     "db:we:reset": "bun run scripts/reset-workout-exercises.ts",
     "db:exercises:reset": "bun run scripts/reset-exercises.ts",
     "db:sets:reset": "bun run scripts/reset-sets.ts",
-     "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts"
   },
   "private": true,
   "devDependencies": {
@@ -26,8 +26,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@hono/zod-validator": "^0.6.0",
+    "@hono/zod-validator": "^0.7.4",
     "hono": "^4.7.10",
-    "zod": "^3.25.30"
+    "zod": "^4.1.12"
   }
 }
