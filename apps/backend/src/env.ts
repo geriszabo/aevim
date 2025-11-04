@@ -1,4 +1,4 @@
-import * as z from "zod/v4";
+import * as z from "zod";
 
 const EnvSchema = z.object({
   JWT_SECRET: z.string(),

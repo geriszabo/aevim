@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 
 export const editWorkoutSchema = z.object({
   name: z.string({ message: "No string for name update provided" }).optional(),

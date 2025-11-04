@@ -1,4 +1,4 @@
-import * as z from "zod/v4";
+import * as z from "zod";
 
 const EnvSchema = z.object({
   BASE_URL: z.url().default("http://localhost:3000"),

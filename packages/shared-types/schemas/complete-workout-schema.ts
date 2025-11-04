@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 import { workoutSchema } from "./workout-schema";
 import { exerciseSchema } from "./exercise-schema";
 

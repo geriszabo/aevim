@@ -1,6 +1,6 @@
 import { exerciseSchema } from "@aevim/shared-types/schemas/exercise-schema";
 import { zValidator } from "@hono/zod-validator";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 export const exerciseValidator = zValidator(
   "json",
