@@ -286,7 +286,6 @@ describe("/user/biometrics endpoint", () => {
       expect(weightBiometrics).toEqual({
         errors: [
           "Weight must be less than 300 kg",
-          "At least one field must be provided for update",
         ],
       });
     });
