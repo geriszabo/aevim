@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${permanentMarker.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${permanentMarker.variable} antialiased bg-gradient-to-br from-65% to-100% from-slate-50 to-slate-100 dark:from-black dark:to-black`}
       >
         <QueryProvider>
           <AuthProvider>
@@ -46,8 +46,10 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <div className="mb-14">{children}</div>
-              <Toaster position="top-center" richColors expand />
+              <div className="max-w-md mx-auto min-h-screen">
+                <div className="mb-14">{children}</div>
+                <Toaster position="top-center" richColors expand />
+              </div>
             </ThemeProvider>
           </AuthProvider>
         </QueryProvider>
