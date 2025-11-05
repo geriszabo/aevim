@@ -284,9 +284,7 @@ describe("/user/biometrics endpoint", () => {
 
       expect(weightRes.status).toBe(400);
       expect(weightBiometrics).toEqual({
-        errors: [
-          "Weight must be less than 300 kg",
-        ],
+        errors: ["Weight must be less than 300 kg"],
       });
     });
   });
