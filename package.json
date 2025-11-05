@@ -27,12 +27,19 @@
     "db:we:reset": "cd apps/backend && bun run db:we:reset",
     "db:exercises:reset": "cd apps/backend && bun run db:exercises:reset",
     "db:sets:reset": "cd apps/backend && bun run db:sets:reset",
-    "lint:backend": "cd apps/backend && bun run lint",
-    "lint:frontend": "cd apps/frontend && bun run lint",
-    "lint": "bun run lint:backend && bun run lint:frontend"
+    "lint": "prettier --check .",
+    "format": "prettier --write .",
+    "prepare": "husky"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "bun run format && git add -A ."
+    }
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "husky": "^9.1.7",
+    "prettier": "3.6.2"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -42,5 +49,11 @@
     "url": "https://github.com/geriszabo/aevim.git"
   },
   "author": "Gergo Szabo",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "lint-staged": "^16.2.6"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,html,css,ts,tsx,json}": "prettier --write"
+  }
 }

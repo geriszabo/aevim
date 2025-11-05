@@ -1,0 +1,2 @@
+bun lint-staged
+cd apps/backend && bun test
