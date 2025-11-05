@@ -11,8 +11,9 @@ export const deleteWorkout = async (workoutId: string) => {
         "Content-Type": "application/json",
       },
       credentials: "include",
-    }
+    },
   );
+
   if (!response.ok) {
     handleApiError(response);
   }
