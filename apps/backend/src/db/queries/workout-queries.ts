@@ -12,7 +12,7 @@ import { checkItemExists } from "../../helpers";
 export const insertWorkout = (
   db: Database,
   workoutData: WorkoutData,
-  userId: string
+  userId: string,
 ) => {
   const { date, name, notes } = workoutData;
   const workoutId = randomUUID();
@@ -26,27 +26,40 @@ export const insertWorkout = (
     userId,
     name,
     notes || null,
-    date
+    date,
   ) as WorkoutWithoutUserId;
 
   return workout;
 };
 
-export const getWorkoutsByUserId = (db: Database, userId: string) => {
-  const userWorkoutsQuery = db.query(`
-    SELECT id, name, notes, date, created_at FROM workouts
-    WHERE user_id = ?
-    ORDER BY date DESC
-    `);
+export const getWorkoutsByUserId = (
+  db: Database,
+  userId: string,
+  options?: { limit?: number; offset?: number },
+) => {
+  const { limit, offset = 0 } = options || {};
 
-  const workoutsArray = userWorkoutsQuery.all(userId) as Workout[];
+  let dbString = `SELECT id, name, notes, date, created_at FROM workouts
+    WHERE user_id = ?
+    ORDER BY date DESC`;
+
+  const params: (string | number)[] = [userId];
+
+  if (limit !== undefined) {
+    dbString += " LIMIT ? OFFSET ?";
+    params.push(limit, offset);
+  }
+  const userWorkoutsQuery = db.query(dbString);
+
+  console.log(dbString);
+  const workoutsArray = userWorkoutsQuery.all(...params) as Workout[];
   return workoutsArray;
 };
 
 export const getWorkoutById = (
   db: Database,
   userId: string,
-  workoutId: string
+  workoutId: string,
 ) => {
   checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
   const userWorkoutQuery = db.query(`
@@ -56,7 +69,7 @@ export const getWorkoutById = (
 
   const workout = userWorkoutQuery.get(
     userId,
-    workoutId
+    workoutId,
   ) as WorkoutWithoutUserId;
   return workout;
 };
@@ -65,12 +78,12 @@ export const updateWorkoutById = (
   db: Database,
   workoutId: string,
   userId: string,
-  updates: Partial<WorkoutData>
+  updates: Partial<WorkoutData>,
 ) => {
   checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
 
   const filteredUpdates = Object.fromEntries(
-    Object.entries(updates).filter(([_key, value]) => value !== undefined)
+    Object.entries(updates).filter(([_key, value]) => value !== undefined),
   );
 
   const fields = Object.keys(filteredUpdates);
@@ -87,7 +100,7 @@ export const updateWorkoutById = (
   const result = updateQuery.get(
     ...values,
     workoutId,
-    userId
+    userId,
   ) as WorkoutWithoutUserId | null;
 
   return result;
@@ -96,7 +109,7 @@ export const updateWorkoutById = (
 export const deleteWorkoutById = (
   db: Database,
   workoutId: string,
-  userId: string
+  userId: string,
 ) => {
   const transaction = db.transaction(() => {
     //verify the workout exists for the user
@@ -105,7 +118,7 @@ export const deleteWorkoutById = (
         `
       SELECT name, id FROM workouts 
       WHERE id = ? AND user_id = ?
-    `
+    `,
       )
       .get(workoutId, userId) as { name: string; id: string } | null;
 
@@ -116,7 +129,7 @@ export const deleteWorkoutById = (
         `
       SELECT exercise_id FROM workout_exercises 
       WHERE workout_id = ?
-    `
+    `,
       )
       .all(workoutId) as { exercise_id: string }[];
     //2: Delete all sets for this workout
@@ -127,14 +140,14 @@ export const deleteWorkoutById = (
         SELECT id FROM workout_exercises 
         WHERE workout_id = ?
       )
-    `
+    `,
     ).run(workoutId);
     //3: Delete all workout_exercises for this workout
     db.query(
       `
       DELETE FROM workout_exercises 
       WHERE workout_id = ?
-    `
+    `,
     ).run(workoutId);
     //4: Delete all exercises that belonged to this workout
     for (const { exercise_id } of exerciseIds) {
@@ -142,7 +155,7 @@ export const deleteWorkoutById = (
         `
         DELETE FROM exercises 
         WHERE id = ? AND user_id = ?
-      `
+      `,
       ).run(exercise_id, userId);
     }
     //5: Delete the workout itself
@@ -150,7 +163,7 @@ export const deleteWorkoutById = (
       `
       DELETE FROM workouts 
       WHERE id = ? AND user_id = ?
-    `
+    `,
     ).run(workoutId, userId);
 
     return workout;
@@ -162,7 +175,7 @@ export const deleteWorkoutById = (
 export const getExercisesByWorkoutId = (
   db: Database,
   workoutId: string,
-  userId: string
+  userId: string,
 ) => {
   checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
 
@@ -185,7 +198,7 @@ export const getExercisesByWorkoutId = (
 
   const exercises = workoutExerciseQuery.all(
     workoutId,
-    userId
+    userId,
   ) as WorkoutExercise[];
   return exercises;
 };
@@ -193,7 +206,7 @@ export const getExercisesByWorkoutId = (
 export const getCompleteWorkoutByWorkoutId = (
   db: Database,
   workoutId: string,
-  userId: string
+  userId: string,
 ): WorkoutOverview => {
   checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
   const workout = getWorkoutById(db, userId, workoutId);
@@ -224,7 +237,7 @@ export const getCompleteWorkoutByWorkoutId = (
   `);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const rows = query.all(workoutId, userId) as any[]
+  const rows = query.all(workoutId, userId) as any[];
   // Group the results by exercise
   const exercisesMap = new Map();
 
@@ -267,7 +280,7 @@ export const getCompleteWorkoutByWorkoutId = (
 export const getWorkoutExerciseAndSetIds = (
   db: Database,
   workoutId: string,
-  userId: string
+  userId: string,
 ) => {
   checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
 
@@ -303,6 +316,6 @@ export const getWorkoutExerciseAndSetIds = (
   // Convert to array format that's easy to map through
   return Array.from(exerciseMap.entries()).map(([exerciseId, setIds]) => ({
     exerciseId,
-    setIds
+    setIds,
   }));
 };
