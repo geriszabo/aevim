@@ -1,5 +1,18 @@
 # TODO List
 
+## Features Improvements
+
+### New Features
+
+- [ ] Progress Charts: Visualize strength gains over time (weight lifted, volume, reps)
+- [ ] Personal Records (PRs): Track max weight, max reps, best time for each exercise
+- [ ] Volume Tracking: Total volume (weight × reps) per workout/week/month
+- [ ] Workout Frequency: Calendar view showing workout days
+- [ ] Exercise Progress: Line charts for individual exercises showing progression
+- [ ] Bodyweight Progress: Track bodyweight changes over time (if user inputs it)
+- [ ] Workout Streaks: Calculate actual workout streaks (currently hardcoded)
+- [ ] Muscle Group Distribution: Pie chart showing which muscle groups are trained most
+
 ## 🫩 Shared Improvements
 
 ### Types
@@ -46,6 +59,7 @@
 ### Pages
 
 - [ ] Delete workouts/[id] because its not needed anymore
+- [ ] Convert Dashboard to SSR where possible
 
 ### Components
 
