@@ -35,23 +35,41 @@ export const insertWorkout = (
 export const getWorkoutsByUserId = (
   db: Database,
   userId: string,
-  options?: { limit?: number; offset?: number },
+  options?: {
+    limit?: number;
+    offset?: number;
+    startDate?: string;
+    endDate?: string;
+  },
 ) => {
-  const { limit, offset = 0 } = options || {};
-
-  let dbString = `SELECT id, name, notes, date, created_at FROM workouts
-    WHERE user_id = ?
-    ORDER BY date DESC`;
+  const { limit, offset = 0, startDate, endDate } = options || {};
 
   const params: (string | number)[] = [userId];
 
+  let whereClause = "WHERE user_id = ?";
+
+  if (startDate) {
+    whereClause += " AND date >= ?";
+    params.push(startDate);
+  }
+
+  if (endDate) {
+    whereClause += " AND date <= ?"; // Fixed: was =<, should be
+    params.push(endDate);
+  }
+
+  let dbString = `SELECT id, name, notes, date, created_at FROM workouts
+    ${whereClause}
+    ORDER BY date DESC`;
+
   if (limit !== undefined) {
+    // Moved: LIMIT goes after ORDER BY
     dbString += " LIMIT ? OFFSET ?";
     params.push(limit, offset);
   }
+
   const userWorkoutsQuery = db.query(dbString);
 
-  console.log(dbString);
   const workoutsArray = userWorkoutsQuery.all(...params) as Workout[];
   return workoutsArray;
 };

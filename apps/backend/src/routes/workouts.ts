@@ -9,12 +9,19 @@ workouts.get("/workouts", async (c) => {
   const payload = c.get("jwtPayload");
   const limitParam = c.req.query("limit");
   const offsetParam = c.req.query("offset");
+  const startDate = c.req.query("startDate");
+  const endDate = c.req.query("endDate");
 
   const limit = limitParam ? parseInt(limitParam) : undefined;
   const offset = offsetParam ? parseInt(offsetParam) : 0;
 
   try {
-    const workouts = getWorkoutsByUserId(db, payload.sub, { limit, offset });
+    const workouts = getWorkoutsByUserId(db, payload.sub, {
+      limit,
+      offset,
+      startDate,
+      endDate,
+    });
     return c.json({ workouts }, 200);
   } catch (error) {
     console.error(error);

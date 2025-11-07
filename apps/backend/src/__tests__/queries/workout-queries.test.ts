@@ -98,6 +98,178 @@ describe("getWorkoutsByUserId", () => {
     const workouts = getWorkoutsByUserId(db, userId);
     expect(workouts).toHaveLength(2);
   });
+
+  describe("query parameters", () => {
+    it("limits the number of workouts returned", async () => {
+      const count = 5;
+      for (let i = 0; i < count; i++) {
+        insertWorkout(db, workoutData, userId);
+      }
+      const limit = 3;
+      const workouts = getWorkoutsByUserId(db, userId, { limit });
+      expect(workouts).toHaveLength(limit);
+    });
+
+    it("returns all workouts when limit is greater than total", async () => {
+      const count = 3;
+      for (let i = 0; i < count; i++) {
+        insertWorkout(db, workoutData, userId);
+      }
+      const limit = 10;
+      const workouts = getWorkoutsByUserId(db, userId, { limit });
+      expect(workouts).toHaveLength(count);
+    });
+
+    it("applies offset to skip workouts", async () => {
+      const count = 5;
+      const workouts = [];
+      for (let i = 0; i < count; i++) {
+        const workout = insertWorkout(db, workoutData, userId);
+        workouts.push(workout);
+      }
+      const offset = 2;
+      const limit = 2;
+      const result = getWorkoutsByUserId(db, userId, { limit, offset });
+      expect(result).toHaveLength(limit);
+      // Results should be ordered by date DESC, so offset 2 should skip first 2
+      expect(result[0]?.id).toBe(workouts[2]?.id);
+      expect(result[1]?.id).toBe(workouts[3]?.id);
+    });
+
+    it("returns empty array when offset exceeds total workouts", async () => {
+      const count = 3;
+      for (let i = 0; i < count; i++) {
+        insertWorkout(db, workoutData, userId);
+      }
+      const offset = 10;
+      const limit = 5;
+      const workouts = getWorkoutsByUserId(db, userId, { limit, offset });
+      expect(workouts).toEqual([]);
+    });
+
+    it("filters workouts by startDate", async () => {
+      const testData = [
+        { date: "2025-01-10", name: "Early workout" },
+        { date: "2025-01-15", name: "Middle workout" },
+        { date: "2025-01-20", name: "Late workout" },
+      ];
+
+      for (const data of testData) {
+        insertWorkout(db, data, userId);
+      }
+
+      const startDate = "2025-01-15";
+      const workouts = getWorkoutsByUserId(db, userId, { startDate });
+      expect(workouts).toHaveLength(2);
+      workouts.forEach((workout) => {
+        expect(workout.date >= startDate).toBe(true);
+      });
+    });
+
+    it("filters workouts by endDate", async () => {
+      const testData = [
+        { date: "2025-01-10", name: "Early workout" },
+        { date: "2025-01-15", name: "Middle workout" },
+        { date: "2025-01-20", name: "Late workout" },
+      ];
+
+      for (const data of testData) {
+        insertWorkout(db, data, userId);
+      }
+
+      const endDate = "2025-01-15";
+      const workouts = getWorkoutsByUserId(db, userId, { endDate });
+      expect(workouts).toHaveLength(2);
+      workouts.forEach((workout) => {
+        expect(workout.date <= endDate).toBe(true);
+      });
+    });
+
+    it("filters workouts by both startDate and endDate", async () => {
+      const testData = [
+        { date: "2025-01-10", name: "Early workout" },
+        { date: "2025-01-15", name: "Middle workout" },
+        { date: "2025-01-20", name: "Late workout" },
+        { date: "2025-01-25", name: "Very late workout" },
+      ];
+
+      for (const data of testData) {
+        insertWorkout(db, data, userId);
+      }
+
+      const startDate = "2025-01-12";
+      const endDate = "2025-01-22";
+      const workouts = getWorkoutsByUserId(db, userId, { startDate, endDate });
+      expect(workouts).toHaveLength(2);
+      workouts.forEach((workout) => {
+        expect(workout.date >= startDate).toBe(true);
+        expect(workout.date <= endDate).toBe(true);
+      });
+    });
+
+    it("returns empty array when date range has no matches", async () => {
+      const testData = [
+        { date: "2025-01-10", name: "Early workout" },
+        { date: "2025-01-20", name: "Late workout" },
+      ];
+
+      for (const data of testData) {
+        insertWorkout(db, data, userId);
+      }
+
+      const startDate = "2025-02-01";
+      const endDate = "2025-02-10";
+      const workouts = getWorkoutsByUserId(db, userId, { startDate, endDate });
+      expect(workouts).toEqual([]);
+    });
+
+    it("combines limit, offset, startDate, and endDate", async () => {
+      const testData = [
+        { date: "2025-01-10", name: "Workout 1" },
+        { date: "2025-01-15", name: "Workout 2" },
+        { date: "2025-01-20", name: "Workout 3" },
+        { date: "2025-01-25", name: "Workout 4" },
+        { date: "2025-02-01", name: "Workout 5" },
+      ];
+
+      for (const data of testData) {
+        insertWorkout(db, data, userId);
+      }
+
+      const startDate = "2025-01-12";
+      const endDate = "2025-01-30";
+      const limit = 2;
+      const offset = 1;
+      const workouts = getWorkoutsByUserId(db, userId, {
+        startDate,
+        endDate,
+        limit,
+        offset,
+      });
+
+      expect(workouts).toHaveLength(limit);
+      workouts.forEach((workout) => {
+        expect(workout.date >= startDate).toBe(true);
+        expect(workout.date <= endDate).toBe(true);
+      });
+    });
+
+    it("handles startDate equal to endDate", async () => {
+      const testData = [
+        { date: "2025-01-15", name: "Exact date workout" },
+        { date: "2025-01-20", name: "Other workout" },
+      ];
+
+      for (const data of testData) {
+        insertWorkout(db, data, userId);
+      }
+      const startDate = "2025-01-15";
+      const endDate = "2025-01-15";
+      const workouts = getWorkoutsByUserId(db, userId, { startDate, endDate });
+      expect(workouts).toHaveLength(1);
+      expect(workouts[0]?.date).toBe("2025-01-15");
+    });
+  });
 });
 
 describe("getWorkoutById", () => {
@@ -105,12 +277,12 @@ describe("getWorkoutById", () => {
     insertWorkout(
       db,
       { date: "2025-02-10", name: "workout 1", notes: "note for workout 1" },
-      userId
+      userId,
     );
     insertWorkout(
       db,
       { date: "2025-02-11", name: "workout 2", notes: "note for workout 2" },
-      userId
+      userId,
     );
     const workouts = getWorkoutsByUserId(db, userId);
     expect(workouts).toHaveLength(2);
@@ -141,7 +313,7 @@ describe("getWorkoutById", () => {
     const workoutId = insertWorkout(
       db,
       { date: "2025-02-10", name: "workout 1", notes: "note for workout 1" },
-      userId
+      userId,
     ).id;
     try {
       getWorkoutById(db, "invalidUserId", workoutId);
@@ -167,7 +339,7 @@ describe("updateWorkoutById", () => {
     const workout = insertWorkout(
       db,
       { date: "today", name: "workout 1", notes: "note for workout 1" },
-      userId
+      userId,
     );
     const updatedFields = {
       date: "updated date",
@@ -178,7 +350,7 @@ describe("updateWorkoutById", () => {
       db,
       workout.id,
       userId,
-      updatedFields
+      updatedFields,
     );
     expect(updatedWorkout).toEqual({
       ...updatedFields,
@@ -192,7 +364,7 @@ describe("updateWorkoutById", () => {
       const workout = insertWorkout(
         db,
         { date: "today", name: "workout 1", notes: "note for workout 1" },
-        userId
+        userId,
       );
       const updatedWorkout = updateWorkoutById(db, workout.id, userId, update);
       expect(updatedWorkout).toEqual({
@@ -206,7 +378,7 @@ describe("updateWorkoutById", () => {
     const workout = insertWorkout(
       db,
       { date: "today", name: "workout 1", notes: "note for workout 1" },
-      userId
+      userId,
     );
     try {
       updateWorkoutById(db, workout.id, userId, {});
@@ -222,7 +394,7 @@ describe("updateWorkoutById", () => {
     const workout = insertWorkout(
       db,
       { date: "today", name: "workout 1", notes: "note for workout 1" },
-      userId
+      userId,
     );
     try {
       updateWorkoutById(db, workout.id, userId, {
@@ -238,17 +410,20 @@ describe("updateWorkoutById", () => {
   });
 
   it("returns null when trying to update another user's workout", async () => {
-    it("returns null when trying to update another user's workout", async () => {
-      const workout = insertWorkout(db, workoutData, userId);
-      const differentUserId = createTestUser(db);
-      const result = updateWorkoutById(
+    const workout = insertWorkout(db, workoutData, userId);
+    const differentUserId = createTestUser(db);
+    try {
+      updateWorkoutById(
         db,
         workout.id,
         differentUserId, // Try to update with different user
-        { name: "new name" }
+        { name: "new name" },
       );
-      expect(result).toBeNull();
-    });
+    } catch (error) {
+      if (error instanceof Error) {
+        expect(error.message).toMatch(/WORKOUT_NOT_FOUND/);
+      }
+    }
   });
 
   describe("deleteWorkoutById", () => {
@@ -256,7 +431,7 @@ describe("updateWorkoutById", () => {
       const workout = insertWorkout(
         db,
         { date: "2024-06-01", name: "delete me", notes: "to be deleted" },
-        userId
+        userId,
       );
       const deleted = deleteWorkoutById(db, workout.id, userId);
       expect(deleted).toEqual({
@@ -346,13 +521,13 @@ describe("getWorkoutExercisesByWorkoutId", () => {
       db,
       { name: "First", code: "E69", category: "first category" },
       userId,
-      workout.id
+      workout.id,
     );
     insertExerciseToWorkout(
       db,
       { name: "Second", code: "E69" },
       userId,
-      workout.id
+      workout.id,
     );
 
     const exercises = getExercisesByWorkoutId(db, workout.id, userId);
