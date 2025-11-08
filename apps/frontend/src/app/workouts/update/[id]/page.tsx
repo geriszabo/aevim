@@ -2,7 +2,7 @@
 
 import { QueryClient } from "@tanstack/react-query";
 import { cookies } from "next/headers";
-import { getWorkoutOverview } from "@/hooks/api/workouts/getWorkoutOverview";
+import { getCompleteWorkout } from "@/hooks/api/completeworkouts/getCompleteWorkout";
 import { WorkoutFormParent } from "./WorkoutFormParent";
 
 export default async function UpdateWorkoutPage({
@@ -18,7 +18,7 @@ export default async function UpdateWorkoutPage({
     overview: { exercises, workout },
   } = await queryClient.fetchQuery({
     queryKey: ["completeWorkout", workoutId],
-    queryFn: () => getWorkoutOverview(workoutId, cookieStore.toString()),
+    queryFn: () => getCompleteWorkout(workoutId, cookieStore.toString()),
   });
 
   const defaultValues = {
@@ -29,7 +29,7 @@ export default async function UpdateWorkoutPage({
     },
     exercises: exercises ?? [],
   };
-  
+
   return (
     <WorkoutFormParent defaultValues={defaultValues} workoutId={workoutId} />
   );

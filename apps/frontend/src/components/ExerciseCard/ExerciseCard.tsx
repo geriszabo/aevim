@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React from "react";
 import { ExerciseCardHeader } from "./ExerciseCardHeader";
-import { WorkoutOverview } from "@aevim/shared-types";
+import { CompleteWorkout } from "@aevim/shared-types";
 import { Typography } from "../ui/typography";
 
 //TODO: make this drag and droppable
 interface ExerciseCardProps {
-  exercise: WorkoutOverview["exercises"][number];
+  exercise: CompleteWorkout["exercises"][number];
   exerciseOrder: number;
 }
 

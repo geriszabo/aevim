@@ -6,7 +6,7 @@ import { Completeworkout } from "./Completeworkout";
 import { UpdateWorkout } from "./UpdateWorkout";
 import { cookies } from "next/headers";
 import { QueryClient } from "@tanstack/react-query";
-import { getWorkoutOverview } from "@/hooks/api/workouts/getWorkoutOverview";
+import { getCompleteWorkout } from "@/hooks/api/completeworkouts/getCompleteWorkout";
 
 export default async function WorkoutPage({
   params,
@@ -19,7 +19,7 @@ export default async function WorkoutPage({
 
   const { overview: completeWorkout } = await queryClient.fetchQuery({
     queryKey: ["completeWorkout", workoutId],
-    queryFn: () => getWorkoutOverview(workoutId, cookieStore.toString()),
+    queryFn: () => getCompleteWorkout(workoutId, cookieStore.toString()),
   });
 
   return (
