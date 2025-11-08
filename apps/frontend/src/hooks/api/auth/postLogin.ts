@@ -1,5 +1,5 @@
 import env from "@/env";
-import { handleApiError } from "@/utils/handleApiError";
+import { handleApiError } from "@/lib/handleApiError";
 import { API_ROUTES } from "@aevim/shared-types/api-routes";
 import type { LoginSchema } from "@aevim/shared-types/schemas";
 

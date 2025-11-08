@@ -1,6 +1,6 @@
 import env from "@/env";
 import { SignupFormData } from "@/schemas/signup-schema";
-import { handleApiError } from "@/utils/handleApiError";
+import { handleApiError } from "@/lib/handleApiError";
 import { API_ROUTES } from "@aevim/shared-types/api-routes";
 
 export const postSignup = async ({
@@ -18,7 +18,7 @@ export const postSignup = async ({
   });
 
   if (!response.ok) {
-   handleApiError(response)
+    handleApiError(response);
   }
 
   return response.json();

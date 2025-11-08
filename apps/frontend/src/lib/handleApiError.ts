@@ -2,7 +2,7 @@ import { toast } from "sonner";
 
 export const handleApiError = async (
   error: unknown,
-  fallbackMessage = "Something went wrong"
+  fallbackMessage = "Something went wrong",
 ) => {
   if (error instanceof Response) {
     try {

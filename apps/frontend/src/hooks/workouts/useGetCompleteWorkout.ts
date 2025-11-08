@@ -1,11 +1,11 @@
-import { ApiError, GetWorkoutOverviewResponse } from "@/types/api";
+import { ApiError, GetCompleteWorkoutResponse } from "@/types/api";
 import { useQuery } from "@tanstack/react-query";
-import { getWorkoutOverview } from "../api/workouts/getWorkoutOverview";
+import { getCompleteWorkout } from "../api/completeworkouts/getCompleteWorkout";
 
 export const useGetCompleteWorkout = (workoutId: string) => {
-  return useQuery<GetWorkoutOverviewResponse, ApiError>({
+  return useQuery<GetCompleteWorkoutResponse, ApiError>({
     queryKey: ["completeWorkout", workoutId],
-    queryFn: () => getWorkoutOverview(workoutId),
+    queryFn: () => getCompleteWorkout(workoutId),
     retry: 1,
   });
 };
