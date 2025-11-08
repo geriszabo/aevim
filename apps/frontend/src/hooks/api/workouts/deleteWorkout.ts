@@ -1,21 +1,12 @@
-import env from "@/env";
-import { handleApiError } from "@/utils/handleApiError";
+import { apiClient } from "@/hooks/helpers";
+import { DeleteWorkoutResponse } from "@/types/api";
 import { API_ROUTES } from "@aevim/shared-types";
 
 export const deleteWorkout = async (workoutId: string) => {
-  const response = await fetch(
-    `${env.API_BASE_URL}${API_ROUTES.completeWorkouts.single(workoutId)}`,
+  return apiClient<DeleteWorkoutResponse>(
+    API_ROUTES.completeWorkouts.single(workoutId),
     {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
     },
   );
-
-  if (!response.ok) {
-    handleApiError(response);
-  }
-  return response.json();
 };

@@ -1,5 +1,5 @@
-import env from "@/env";
-import { handleApiError } from "@/utils/handleApiError";
+import { apiClient } from "@/hooks/helpers";
+import { UpdateCompleteWorkoutResponse } from "@/types/api";
 import { UpdateCompleteWorkoutData } from "@aevim/shared-types";
 import { API_ROUTES } from "@aevim/shared-types/api-routes";
 
@@ -12,20 +12,11 @@ export const putCompleteWorkout = async ({
   workoutId,
   editCompleteWorkoutData,
 }: PutCompleteWorkoutProps) => {
-  const response = await fetch(
-    `${env.API_BASE_URL}${API_ROUTES.completeWorkouts.single(workoutId)}`,
+  return apiClient<UpdateCompleteWorkoutResponse>(
+    API_ROUTES.completeWorkouts.single(workoutId),
     {
+      body: editCompleteWorkoutData,
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ ...editCompleteWorkoutData }),
-    }
+    },
   );
-  if (!response.ok) {
-    handleApiError(response);
-  }
-
-  return response.json();
 };
