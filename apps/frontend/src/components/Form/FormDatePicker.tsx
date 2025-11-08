@@ -47,10 +47,11 @@ export function FormDatePicker<T extends FieldValues>({
         name={id}
         control={control}
         render={({ field }) => (
-          <Popover open={open} onOpenChange={setOpen}>
+          <Popover open={open} onOpenChange={setOpen} modal={true}>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
+                type="button"
                 id={id}
                 className={`w-full justify-between font-normal h-12 ${
                   className || ""
