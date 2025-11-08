@@ -4,7 +4,7 @@ import {
   type Workout,
   type WorkoutData,
   type WorkoutExercise,
-  type WorkoutOverview,
+  type CompleteWorkout,
   type WorkoutWithoutUserId,
 } from "@aevim/shared-types";
 import { checkItemExists } from "../../helpers";
@@ -225,7 +225,7 @@ export const getCompleteWorkoutByWorkoutId = (
   db: Database,
   workoutId: string,
   userId: string,
-): WorkoutOverview => {
+): CompleteWorkout => {
   checkItemExists(db, "workouts", { id: workoutId, user_id: userId });
   const workout = getWorkoutById(db, userId, workoutId);
 

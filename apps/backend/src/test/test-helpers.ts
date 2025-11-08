@@ -3,7 +3,7 @@ import type {
   Set,
   UserBiometrics,
   WorkoutExercise,
-  WorkoutOverview,
+  CompleteWorkout,
   WorkoutWithoutUserId,
 } from "@aevim/shared-types";
 import app from "../index";
@@ -24,7 +24,7 @@ import {
   getAllWorkoutsRequest,
   getExercisesByWorkoutIdRequest,
   getSingleWorkoutRequest,
-  getWorkoutOverviewRequest,
+  getCompleteWorkoutRequest,
   loginrequest,
   logoutRequest,
   signupRequest,
@@ -70,10 +70,10 @@ export const createWorkoutAndReturn = async (
     name?: string;
     notes?: string;
     userId?: string;
-  } = {}
+  } = {},
 ) => {
   const workoutRes = await app.fetch(
-    addWorkoutRequest({ cookie, ...workoutData })
+    addWorkoutRequest({ cookie, ...workoutData }),
   );
   const json = await workoutRes.json();
 
@@ -96,7 +96,7 @@ export const createExerciseAddToWorkoutAndReturn = async (
     name,
     category,
     notes,
-  }: { name?: string; category?: string; notes?: string } = {}
+  }: { name?: string; category?: string; notes?: string } = {},
 ) => {
   const exerciseRes = await app.fetch(
     addExerciseToWorkoutRequest({
@@ -105,7 +105,7 @@ export const createExerciseAddToWorkoutAndReturn = async (
       category,
       name,
       notes,
-    })
+    }),
   );
   const json = await exerciseRes.json();
 
@@ -124,10 +124,10 @@ export const createExerciseAddToWorkoutAndReturn = async (
 
 export const getAllExercisesOfWorkoutAndReturn = async (
   cookie: string,
-  workoutId: string
+  workoutId: string,
 ) => {
   const exercisesRes = await app.fetch(
-    getExercisesByWorkoutIdRequest(cookie!, workoutId)
+    getExercisesByWorkoutIdRequest(cookie!, workoutId),
   );
   const json = (await exercisesRes.json()) as {
     exercises: WorkoutExercise[];
@@ -144,10 +144,10 @@ export const getAllExercisesOfWorkoutAndReturn = async (
 export const deleteExerciseFromWorkoutAndReturn = async (
   cookie: string,
   workoutId: string,
-  exerciseId: string
+  exerciseId: string,
 ) => {
   const deletedExerciseRes = await app.fetch(
-    deleteExerciseFromWorkoutRequest(cookie, workoutId, exerciseId)
+    deleteExerciseFromWorkoutRequest(cookie, workoutId, exerciseId),
   );
   const deletedExercise = await deletedExerciseRes.json();
   return { deletedExerciseRes, deletedExercise };
@@ -155,7 +155,7 @@ export const deleteExerciseFromWorkoutAndReturn = async (
 
 export const deleteWorkoutAndReturn = async (
   cookie: string,
-  workoutId: string
+  workoutId: string,
 ) => {
   const deleteRes = await app.fetch(deleteWorkoutRequest(workoutId, cookie!));
   const deletedWorkout = await deleteRes.json();
@@ -165,10 +165,10 @@ export const deleteWorkoutAndReturn = async (
 
 export const getSingleWorkoutAndReturn = async (
   cookie: string,
-  workoutId: string
+  workoutId: string,
 ) => {
   const workoutRes = await app.fetch(
-    getSingleWorkoutRequest(workoutId, cookie)
+    getSingleWorkoutRequest(workoutId, cookie),
   );
   const workout = await workoutRes.json();
 
@@ -178,10 +178,10 @@ export const getSingleWorkoutAndReturn = async (
 export const updateWorkoutAndReturn = async (
   cookie: string,
   workoutId: string,
-  update: { name?: string; date?: string; notes?: string }
+  update: { name?: string; date?: string; notes?: string },
 ) => {
   const updateWorkoutRes = await app.fetch(
-    updateWorkoutRequest(workoutId, update, cookie)
+    updateWorkoutRequest(workoutId, update, cookie),
   );
   const updatedWorkout = await updateWorkoutRes.json();
 
@@ -199,7 +199,7 @@ export const getAllWorkoutsAndReturn = async (cookie: string) => {
 export const signupAndReturn = async (
   email?: string,
   password?: string,
-  username?: string
+  username?: string,
 ) => {
   const signupRes = await app.fetch(signupRequest(email, password, username));
   const json = await signupRes.json();
@@ -222,7 +222,7 @@ export const logoutAndReturn = async () => {
 export const completeAuthFlow = async (
   email?: string,
   password?: string,
-  username?: string
+  username?: string,
 ) => {
   await signupAndReturn(email, password, username);
   return await loginAndReturn(email, password);
@@ -230,10 +230,10 @@ export const completeAuthFlow = async (
 
 export const createExerciseAndReturn = async (
   cookie: string,
-  exerciseData: { name?: string; category?: string } = {}
+  exerciseData: { name?: string; category?: string } = {},
 ) => {
   const exerciseRes = await app.fetch(
-    addExerciseRequest({ cookie, ...exerciseData })
+    addExerciseRequest({ cookie, ...exerciseData }),
   );
   const exercise = await exerciseRes.json();
 
@@ -250,10 +250,10 @@ export const getAllExercisesAndReturn = async (cookie: string) => {
 
 export const deleteExerciseAndReturn = async (
   cookie: string,
-  exerciseId: string
+  exerciseId: string,
 ) => {
   const deletedExerciseRes = await app.fetch(
-    deleteExerciseRequest(exerciseId, cookie)
+    deleteExerciseRequest(exerciseId, cookie),
   );
   const deletedExercise = await deletedExerciseRes.json();
   return { deletedExerciseRes, deletedExercise };
@@ -262,10 +262,10 @@ export const deleteExerciseAndReturn = async (
 export const updateExerciseAndReturn = async (
   cookie: string,
   exerciseId: string,
-  updateData: { name?: string; category?: string }
+  updateData: { name?: string; category?: string },
 ) => {
   const updatedExerciseRes = await app.fetch(
-    updateExerciseRequest(exerciseId, updateData, cookie)
+    updateExerciseRequest(exerciseId, updateData, cookie),
   );
   const updatedExercise = await updatedExerciseRes.json();
   return { updatedExerciseRes, updatedExercise };
@@ -278,7 +278,7 @@ export const createSetAddToWorkoutAndReturn = async (
   setData: {
     reps?: number;
     metric_value?: number;
-  } = {}
+  } = {},
 ) => {
   const setRes = await app.fetch(
     addSetRequest({
@@ -286,7 +286,7 @@ export const createSetAddToWorkoutAndReturn = async (
       workoutId,
       exerciseId,
       ...setData,
-    })
+    }),
   );
   const set = await setRes.json();
   if (setRes.ok) {
@@ -310,10 +310,10 @@ export const createSetAddToWorkoutAndReturn = async (
 export const getAllSetsByExerciseIdAndReturn = async (
   cookie: string,
   workoutId: string,
-  exerciseId: string
+  exerciseId: string,
 ) => {
   const setsRes = await app.fetch(
-    getAllSetsByExerciseIdRequest(cookie, workoutId, exerciseId)
+    getAllSetsByExerciseIdRequest(cookie, workoutId, exerciseId),
   );
   const sets = await setsRes.json();
   if (setsRes.ok) {
@@ -331,17 +331,17 @@ export const getAllSetsByExerciseIdAndReturn = async (
   }
 };
 
-export const getWorkoutOverviewAndReturn = async (
+export const getCompleteWorkoutAndReturn = async (
   cookie: string,
-  workoutId: string
+  workoutId: string,
 ) => {
   const overviewRes = await app.fetch(
-    getWorkoutOverviewRequest(workoutId, cookie)
+    getCompleteWorkoutRequest(workoutId, cookie),
   );
   const json = await overviewRes.json();
 
   if (overviewRes.ok) {
-    const overview = json as { overview: WorkoutOverview };
+    const overview = json as { overview: CompleteWorkout };
     return { overviewRes, overview: overview.overview, success: true as const };
   } else {
     const overview = json as { errors: string[] };
@@ -353,10 +353,10 @@ export const deleteSetAndReturn = async (
   cookie: string,
   workoutId: string,
   exerciseId: string,
-  setId: string
+  setId: string,
 ) => {
   const deletedSetRes = await app.fetch(
-    deleteSetRequest(workoutId, exerciseId, setId, cookie)
+    deleteSetRequest(workoutId, exerciseId, setId, cookie),
   );
   const deletedSet = await deletedSetRes.json();
 
@@ -380,10 +380,10 @@ export const updateSetAndReturn = async (
   update: {
     reps?: number;
     metric_value?: number;
-  }
+  },
 ) => {
   const updatedSetRes = await app.fetch(
-    updateSetRequest(workoutId, exerciseId, setId, update, cookie)
+    updateSetRequest(workoutId, exerciseId, setId, update, cookie),
   );
   const updatedSet = await updatedSetRes.json();
 
@@ -421,15 +421,15 @@ export const createCompleteWorkoutAndReturn = async (
         metric_value?: number;
       }>;
     }>;
-  } = {}
+  } = {},
 ) => {
   const { exercises, workout } = completeWorkoutData;
   const res = await app.fetch(
-    addCompleteWorkoutRequest(cookie, workout, exercises)
+    addCompleteWorkoutRequest(cookie, workout, exercises),
   );
   const completeWorkout = (await res.json()) as {
     message: string;
-    workout: WorkoutOverview;
+    workout: CompleteWorkout;
   };
   return { res, completeWorkout };
 };
@@ -437,11 +437,11 @@ export const createCompleteWorkoutAndReturn = async (
 export const updateCompleteWorkoutAndReturn = async (
   cookie: string,
   workoutId: string,
-  updateData: WorkoutOverview
+  updateData: CompleteWorkout,
 ) => {
   const { exercises, workout } = updateData;
   const res = await app.fetch(
-    updateCompleteWorkoutRequest(workoutId, cookie, workout, exercises)
+    updateCompleteWorkoutRequest(workoutId, cookie, workout, exercises),
   );
   const updateResponse = await res.json();
   return { res, updateResponse };
@@ -478,10 +478,10 @@ export const createUserBiometricsAndReturn = async (
     sex: UserBiometrics["sex"];
     height: number;
     build: UserBiometrics["build"];
-  }
+  },
 ) => {
   const biometricsRes = await app.fetch(
-    createUserBiometricsRequest(cookie, biometricsData)
+    createUserBiometricsRequest(cookie, biometricsData),
   );
   const json = await biometricsRes.json();
 
@@ -513,10 +513,10 @@ export const updateUserBiometricsAndReturn = async (
     sex: UserBiometrics["sex"];
     height: number;
     build: UserBiometrics["build"];
-  }>
+  }>,
 ) => {
   const biometricsRes = await app.fetch(
-    updateUserBiometricsRequest(cookie, biometricsData)
+    updateUserBiometricsRequest(cookie, biometricsData),
   );
   const json = await biometricsRes.json();
 

@@ -8,7 +8,7 @@ import {
   createCompleteWorkoutAndReturn,
   deleteWorkoutAndReturn,
   getAllWorkoutsAndReturn,
-  getWorkoutOverviewAndReturn,
+  getCompleteWorkoutAndReturn,
   loginFlow,
 } from "../../test/test-helpers";
 
@@ -67,21 +67,21 @@ describe("/workouts endpoint", () => {
     it("deletes a workout by id for the authenticated user", async () => {
       const { cookie } = await loginFlow();
       const { completeWorkout, res } = await createCompleteWorkoutAndReturn(
-        cookie!
+        cookie!,
       );
       if (!res.ok) return;
 
       const { workout } = completeWorkout.workout;
       const { deleteRes, deletedWorkout } = await deleteWorkoutAndReturn(
         cookie!,
-        workout.id
+        workout.id,
       );
       expect(deleteRes.status).toBe(200);
       expect(deletedWorkout).toEqual({
         message: "Workout has been deleted successfuly",
       });
       const { overviewRes: foundWorkoutRes, overview: foundWorkout } =
-        await getWorkoutOverviewAndReturn(cookie!, workout.id);
+        await getCompleteWorkoutAndReturn(cookie!, workout.id);
       expect(foundWorkoutRes.status).toBe(404);
       expect(foundWorkout).toEqual({
         errors: ["Workout not found"],
@@ -92,7 +92,7 @@ describe("/workouts endpoint", () => {
       const { cookie } = await loginFlow();
       const { deleteRes, deletedWorkout } = await deleteWorkoutAndReturn(
         cookie!,
-        "imaginaryWorkoutId"
+        "imaginaryWorkoutId",
       );
       expect(deleteRes.status).toBe(404);
       expect(deletedWorkout).toEqual({
@@ -105,13 +105,13 @@ describe("/workouts endpoint", () => {
     it("returns a workout with its exercises and sets", async () => {
       const { cookie } = await loginFlow();
       const { completeWorkout, res } = await createCompleteWorkoutAndReturn(
-        cookie!
+        cookie!,
       );
       if (!res.ok) return;
 
-     const {workout} = completeWorkout.workout
+      const { workout } = completeWorkout.workout;
       const { overview, success, overviewRes } =
-        await getWorkoutOverviewAndReturn(cookie!, workout.id);
+        await getCompleteWorkoutAndReturn(cookie!, workout.id);
 
       if (success) {
         expect(overviewRes.status).toBe(200);
@@ -126,15 +126,14 @@ describe("/workouts endpoint", () => {
         expect(overview.exercises).toHaveLength(1);
         expect(overview.exercises[0]!.name).toBe("Bench Press");
         expect(overview.exercises[0]!.sets).toHaveLength(2);
-       
       }
     });
 
     it("returns 404 when workout does not exist", async () => {
       const { cookie } = await loginFlow();
-      const { overview, overviewRes } = await getWorkoutOverviewAndReturn(
+      const { overview, overviewRes } = await getCompleteWorkoutAndReturn(
         cookie!,
-        "fakeWorkoutId"
+        "fakeWorkoutId",
       );
       expect(overviewRes.status).toBe(404);
       expect(overview).toEqual({

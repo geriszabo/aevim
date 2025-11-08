@@ -12,7 +12,7 @@ interface RequestOptions {
 
 const createRequest = (
   route: string,
-  options: RequestOptions = {}
+  options: RequestOptions = {},
 ): Request => {
   const { method = "GET", body, cookie, headers = {} } = options;
   const requestHeaders: Record<string, string> = {
@@ -38,7 +38,7 @@ export const authMeRequest = (cookie: string): Request => {
 export const createAuthenticatedRequest = (
   route: string,
   cookie: string,
-  options: Omit<RequestOptions, "cookie"> = {}
+  options: Omit<RequestOptions, "cookie"> = {},
 ): Request => {
   return createRequest(route, { ...options, cookie });
 };
@@ -46,7 +46,7 @@ export const createAuthenticatedRequest = (
 export const signupRequest = (
   email = "test@test.com",
   password = "password123",
-  username = "testuser69"
+  username = "testuser69",
 ): Request => {
   return new Request(env.API_BASE_URL + API_ROUTES.auth.signup, {
     method: "POST",
@@ -64,7 +64,7 @@ export const signupRequest = (
 export const loginrequest = (
   email = "test@test.com",
   password = "password123",
-  username = "testuser69"
+  username = "testuser69",
 ): Request => {
   return new Request(env.API_BASE_URL + API_ROUTES.auth.login, {
     method: "POST",
@@ -107,44 +107,44 @@ export const getAllWorkoutsRequest = (cookie: string): Request => {
 
 export const getSingleWorkoutRequest = (
   workoutId: string,
-  cookie: string
+  cookie: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.workouts.single(workoutId),
-    cookie
+    cookie,
   );
 };
 
 export const updateWorkoutRequest = (
   workoutId: string,
   update: { name?: string; date?: string; notes?: string },
-  cookie: string
+  cookie: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.workouts.single(workoutId),
     cookie,
-    { method: "PUT", body: update }
+    { method: "PUT", body: update },
   );
 };
 
 export const deleteWorkoutRequest = (
   workoutId: string,
-  cookie: string
+  cookie: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.completeWorkouts.single(workoutId),
     cookie,
-    { method: "DELETE" }
+    { method: "DELETE" },
   );
 };
 
-export const getWorkoutOverviewRequest = (
+export const getCompleteWorkoutRequest = (
   workoutId: string,
-  cookie: string
+  cookie: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.completeWorkouts.single(workoutId),
-    cookie
+    cookie,
   );
 };
 
@@ -173,18 +173,18 @@ export const addExerciseToWorkoutRequest = ({
     {
       method: "POST",
       body: { name, category, notes },
-    }
+    },
   );
 };
 
 export const deleteExerciseRequest = (
   exerciseId: string,
-  cookie: string
+  cookie: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.exercises.single(exerciseId),
     cookie,
-    { method: "DELETE" }
+    { method: "DELETE" },
   );
 };
 
@@ -194,35 +194,35 @@ export const getAllExercisesRequest = (cookie: string): Request => {
 
 export const getExercisesByWorkoutIdRequest = (
   cookie: string,
-  workoutId: string
+  workoutId: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.exercises.workout(workoutId),
-    cookie
+    cookie,
   );
 };
 
 export const deleteExerciseFromWorkoutRequest = (
   cookie: string,
   workoutId: string,
-  exerciseId: string
+  exerciseId: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.exercises.workoutSingle(workoutId, exerciseId),
     cookie,
-    { method: "DELETE" }
+    { method: "DELETE" },
   );
 };
 
 export const updateExerciseRequest = (
   exerciseId: string,
   update: { name?: string; category?: string },
-  cookie: string
+  cookie: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.exercises.single(exerciseId),
     cookie,
-    { method: "PUT", body: update }
+    { method: "PUT", body: update },
   );
 };
 
@@ -239,18 +239,18 @@ export const addSetRequest = ({
     {
       method: "POST",
       body: { reps, metric_value },
-    }
+    },
   );
 };
 
 export const getAllSetsByExerciseIdRequest = (
   cookie: string,
   workoutId: string,
-  exerciseId: string
+  exerciseId: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.sets.base(workoutId, exerciseId),
-    cookie
+    cookie,
   );
 };
 
@@ -258,12 +258,12 @@ export const deleteSetRequest = (
   workoutId: string,
   exerciseId: string,
   setId: string,
-  cookie: string
+  cookie: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.sets.single(workoutId, exerciseId, setId),
     cookie,
-    { method: "DELETE" }
+    { method: "DELETE" },
   );
 };
 
@@ -272,12 +272,12 @@ export const updateSetRequest = (
   exerciseId: string,
   setId: string,
   update: Partial<SetData>,
-  cookie: string
+  cookie: string,
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.sets.single(workoutId, exerciseId, setId),
     cookie,
-    { method: "PUT", body: update }
+    { method: "PUT", body: update },
   );
 };
 
@@ -314,7 +314,7 @@ export const addCompleteWorkoutRequest = (
         { reps: 8, metric_value: 145 },
       ],
     },
-  ]
+  ],
 ): Request => {
   return createAuthenticatedRequest(API_ROUTES.completeWorkouts.base, cookie, {
     method: "POST",
@@ -358,7 +358,7 @@ export const updateCompleteWorkoutRequest = (
         { reps: 10, metric_value: 150 },
       ],
     },
-  ]
+  ],
 ): Request => {
   return createAuthenticatedRequest(
     API_ROUTES.completeWorkouts.single(workoutId),
@@ -366,7 +366,7 @@ export const updateCompleteWorkoutRequest = (
     {
       method: "PUT",
       body: { workout, exercises },
-    }
+    },
   );
 };
 
@@ -381,7 +381,7 @@ export const createUserBiometricsRequest = (
     sex: UserBiometrics["sex"];
     height: number;
     build: UserBiometrics["build"];
-  }
+  },
 ): Request => {
   return createAuthenticatedRequest(API_ROUTES.user.biometrics.base, cookie, {
     method: "POST",
@@ -396,7 +396,7 @@ export const updateUserBiometricsRequest = (
     sex: UserBiometrics["sex"];
     height: number;
     build: UserBiometrics["build"];
-  }>
+  }>,
 ): Request => {
   return createAuthenticatedRequest(API_ROUTES.user.biometrics.base, cookie, {
     method: "PUT",

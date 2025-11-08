@@ -1,6 +1,6 @@
 import type {
   WorkoutWithoutUserId,
-  WorkoutOverview,
+  CompleteWorkout,
   Exercise,
   ExerciseToWorkout,
   WorkoutExercise,
@@ -38,12 +38,12 @@ export interface CreateWorkoutResponse extends ApiResponse {
 }
 
 export interface CreateCompleteWorkoutResponse extends ApiResponse {
-  workout: WorkoutOverview;
+  workout: CompleteWorkout;
 }
 export type UpdateCompleteWorkoutResponse = ApiResponse;
 
-export interface GetWorkoutOverviewResponse {
-  overview: WorkoutOverview;
+export interface GetCompleteWorkoutResponse {
+  overview: CompleteWorkout;
 }
 
 export interface UpdateWorkoutResponse extends ApiResponse {
@@ -67,7 +67,7 @@ export interface CreateUserBiometricsResponse extends ApiResponse {
   biometrics: UserBiometrics;
 }
 export interface GetUserBiometricsResponse {
-  biometrics: UserBiometrics
-};
+  biometrics: UserBiometrics;
+}
 
-export type UpdateUserBiometricsResponse = CreateUserBiometricsResponse
+export type UpdateUserBiometricsResponse = CreateUserBiometricsResponse;

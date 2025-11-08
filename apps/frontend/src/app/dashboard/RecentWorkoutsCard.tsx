@@ -3,11 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography";
 import { Calendar, Dumbbell, TrendingUp } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { type WorkoutOverview } from "@aevim/shared-types";
+import { type CompleteWorkout } from "@aevim/shared-types";
 
-export const RecentWorkoutsCard = (workout: WorkoutOverview["workout"]) => {
+export const RecentWorkoutsCard = (workout: CompleteWorkout["workout"]) => {
   const router = useRouter();
-  
+
   return (
     <Card
       key={workout.id}
@@ -33,7 +33,7 @@ export const RecentWorkoutsCard = (workout: WorkoutOverview["workout"]) => {
         </div>
 
         <Button variant="ghost" size="icon" className="h-10 w-10">
-          <TrendingUp className="h-4 w-4 text-decor "  />
+          <TrendingUp className="h-4 w-4 text-decor " />
         </Button>
       </div>
     </Card>

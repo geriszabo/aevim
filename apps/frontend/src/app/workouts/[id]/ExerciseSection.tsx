@@ -5,10 +5,10 @@ import { EmptyExerciseListPlaceholder } from "./EmptyExerciseListPlaceholder";
 import { ExerciseCard } from "../../../components/ExerciseCard/ExerciseCard";
 import { SectionContainer } from "@/components/layouts/SectionContainer";
 import { ContentContainer } from "@/components/layouts/ContentContainer";
-import { WorkoutOverview } from "@aevim/shared-types";
+import { CompleteWorkout } from "@aevim/shared-types";
 
 interface ExerciseSectionProps {
-  exercises: WorkoutOverview["exercises"];
+  exercises: CompleteWorkout["exercises"];
 }
 
 export const ExerciseSection = ({ exercises }: ExerciseSectionProps) => {

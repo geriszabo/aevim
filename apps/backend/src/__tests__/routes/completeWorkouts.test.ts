@@ -10,11 +10,11 @@ import app from "../../index";
 import {
   createCompleteWorkoutAndReturn,
   getAuthMeAndReturn,
-  getWorkoutOverviewAndReturn,
+  getCompleteWorkoutAndReturn,
   loginFlow,
   updateCompleteWorkoutAndReturn,
 } from "../../test/test-helpers";
-import type { WorkoutOverview } from "@aevim/shared-types";
+import type { CompleteWorkout } from "@aevim/shared-types";
 import { getCompleteWorkoutByWorkoutId } from "../../db/queries/workout-queries";
 
 let db: Database;
@@ -31,7 +31,7 @@ afterEach(() => {
   db.close();
 });
 
-const defaultCompleteWorkout: WorkoutOverview = {
+const defaultCompleteWorkout: CompleteWorkout = {
   exercises: [
     {
       category: "chest",
@@ -84,7 +84,7 @@ describe("/completeWorkouts endpoint", () => {
     it("creates a complete workout", async () => {
       const { cookie } = await loginFlow();
       const { res, completeWorkout } = await createCompleteWorkoutAndReturn(
-        cookie!
+        cookie!,
       );
       expect(res.status).toBe(200);
       expect(completeWorkout).toEqual({
@@ -107,9 +107,9 @@ describe("/completeWorkouts endpoint", () => {
           },
         },
       } = await createCompleteWorkoutAndReturn(cookie!);
-      const { overview, overviewRes } = await getWorkoutOverviewAndReturn(
+      const { overview, overviewRes } = await getCompleteWorkoutAndReturn(
         cookie!,
-        completeWorkoutId
+        completeWorkoutId,
       );
       expect(overviewRes.status).toBe(200);
       expect(overview).toEqual({
@@ -136,12 +136,12 @@ describe("/completeWorkouts endpoint", () => {
         workout: updatedWorkout.workout,
         exercises: updatedWorkout.exercises,
       });
-      
+
       expect(res.status).toBe(200);
       const updatedWorkoutFromDB = getCompleteWorkoutByWorkoutId(
         db,
         workoutId,
-        user.id
+        user.id,
       );
       expect(updatedWorkoutFromDB.workout.name).toBe("Updated Workout Name");
       expect(updatedWorkoutFromDB.exercises[0]!.name).toBe("Squats");
@@ -189,20 +189,20 @@ describe("/completeWorkouts endpoint", () => {
       const updatedWorkoutFromDB = getCompleteWorkoutByWorkoutId(
         db,
         workoutId,
-        user.id
+        user.id,
       );
 
       expect(updatedWorkoutFromDB.exercises).toHaveLength(2);
       expect(updatedWorkoutFromDB.exercises[0]!.name).toBe("Bench Press");
       expect(updatedWorkoutFromDB.exercises[1]!.name).toBe("Dumbbell Lunges");
       expect(updatedWorkoutFromDB.exercises[1]!.exercise_id).toEqual(
-        expect.any(String)
+        expect.any(String),
       );
       expect(updatedWorkoutFromDB.exercises[1]!.category).toBe("legs");
       expect(updatedWorkoutFromDB.exercises[1]!.sets).toHaveLength(2);
       expect(updatedWorkoutFromDB.exercises[1]!.sets[0]!.reps).toBe(12);
       expect(updatedWorkoutFromDB.exercises[1]!.sets[0]!.metric_value).toBe(
-        185
+        185,
       );
     });
 
@@ -265,11 +265,15 @@ describe("/completeWorkouts endpoint", () => {
 
       const { completeWorkout } = await createCompleteWorkoutAndReturn(
         cookie!,
-        workoutData
+        workoutData,
       );
       const workoutId = completeWorkout.workout.workout.id;
-      const workoutFromDB = getCompleteWorkoutByWorkoutId(db, workoutId, user.id);
-      
+      const workoutFromDB = getCompleteWorkoutByWorkoutId(
+        db,
+        workoutId,
+        user.id,
+      );
+
       expect(workoutFromDB.exercises).toHaveLength(2);
       expect(workoutFromDB.exercises[0]!.sets).toHaveLength(3);
       expect(workoutFromDB.exercises[1]!.sets).toHaveLength(3);
@@ -282,13 +286,13 @@ describe("/completeWorkouts endpoint", () => {
         workout: finalUpdate.workout,
         exercises: finalUpdate.exercises,
       });
-      
+
       const finalWorkoutFromDB = getCompleteWorkoutByWorkoutId(
         db,
         workoutId,
-        user.id
+        user.id,
       );
-      
+
       expect(res.status).toBe(200);
       expect(finalWorkoutFromDB.exercises).toHaveLength(1);
       expect(finalWorkoutFromDB.exercises[0]!.name).toBe("Bench Press");
@@ -317,7 +321,7 @@ describe("/completeWorkouts endpoint", () => {
         {
           workout: updatedWorkout.workout,
           exercises: updatedWorkout.exercises,
-        }
+        },
       );
 
       expect(res.status).toBe(400);

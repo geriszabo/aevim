@@ -35,7 +35,7 @@ completeWorkouts
     const db = dbConnect();
     const payload = c.get("jwtPayload");
     const {
-      workout: { date, name, notes},
+      workout: { date, name, notes },
       exercises,
     } = c.req.valid("json");
 
@@ -48,7 +48,7 @@ completeWorkouts
           db,
           { name, category, notes, metric, code },
           payload.sub,
-          workoutId
+          workoutId,
         );
 
         const { exercise_id: exerciseId } = workoutExercise;
@@ -61,14 +61,14 @@ completeWorkouts
             },
             payload.sub,
             workoutId,
-            exerciseId
+            exerciseId,
           );
         }
       }
       const completeWorkout = getCompleteWorkoutByWorkoutId(
         db,
         workoutId,
-        payload.sub
+        payload.sub,
       );
       return c.json({
         message: "Complete workout created successfully",
@@ -91,13 +91,13 @@ completeWorkouts
       const currentExerciseSets = getWorkoutExerciseAndSetIds(
         db,
         workoutId,
-        payload.sub
+        payload.sub,
       );
       const incomingIds = extractIncomingIds(exercises);
       const { exercisesToDelete, setsToDelete } =
         calculateItemsToDeleteWithDependencies(
           currentExerciseSets,
-          incomingIds
+          incomingIds,
         );
 
       deleteIds(exercisesToDelete, db, payload.sub, deleteExerciseById);
@@ -116,19 +116,20 @@ completeWorkouts
             db,
             exerciseData,
             payload.sub,
-            workoutId
+            workoutId,
           );
 
           exerciseId = workoutExercise.exercise_id;
         } else {
-          const { name, category, notes, metric, exercise_id, code } = exerciseData;
+          const { name, category, notes, metric, exercise_id, code } =
+            exerciseData;
           exerciseId = exercise_id;
           updateExerciseById(db, exercise_id, payload.sub, {
             category,
             metric,
             name,
             notes,
-            code
+            code,
           });
         }
         for (const setData of sets) {
@@ -152,12 +153,12 @@ completeWorkouts
     const workoutId = c.req.param("id");
     const payload = c.get("jwtPayload");
     try {
-      const workoutOverview = getCompleteWorkoutByWorkoutId(
+      const completeWorkout = getCompleteWorkoutByWorkoutId(
         db,
         workoutId,
-        payload.sub
+        payload.sub,
       );
-      return c.json({ overview: workoutOverview }, 200);
+      return c.json({ overview: completeWorkout }, 200);
     } catch (error) {
       return handleError(c, error);
     }
@@ -172,7 +173,7 @@ completeWorkouts
         {
           message: `Workout has been deleted successfuly`,
         },
-        200
+        200,
       );
     } catch (error) {
       return handleError(c, error);

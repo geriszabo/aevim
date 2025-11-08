@@ -11,7 +11,7 @@ export interface Workout {
 
 export type WorkoutWithoutUserId = Omit<Workout, "user_id">;
 
-export type WorkoutOverview = {
+export type CompleteWorkout = {
   workout: WorkoutWithoutUserId;
   exercises: Array<{
     id: string;

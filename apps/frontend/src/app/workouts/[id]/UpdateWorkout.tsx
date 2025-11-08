@@ -15,14 +15,14 @@ import { Typography } from "@/components/ui/typography";
 
 import {
   UpdateCompleteWorkoutData,
-  WorkoutOverview,
+  CompleteWorkout,
 } from "@aevim/shared-types";
 import { useState } from "react";
 import { useUpdateCompleteWorkout } from "@/hooks/completeWorkouts/useUpdateCompleteWorkout";
 import { WorkoutForm } from "@/components/Form/WorkoutForm";
 
 interface UpdateWorkout {
-  completeWorkout: WorkoutOverview;
+  completeWorkout: CompleteWorkout;
 }
 
 export const UpdateWorkout = ({ completeWorkout }: UpdateWorkout) => {
@@ -30,7 +30,7 @@ export const UpdateWorkout = ({ completeWorkout }: UpdateWorkout) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const { mutate, isPending } = useUpdateCompleteWorkout(
-    completeWorkout.workout.id
+    completeWorkout.workout.id,
   );
 
   const handleUpdate = (data: UpdateCompleteWorkoutData) => {
