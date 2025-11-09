@@ -49,6 +49,7 @@ describe("/workouts endpoint", () => {
           notes: "Great session",
           date: "2025-08-27",
           created_at: expect.any(String),
+          exercise_codes: ["E69"],
         });
       });
     });

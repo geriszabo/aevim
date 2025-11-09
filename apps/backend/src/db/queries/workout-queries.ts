@@ -43,35 +43,61 @@ export const getWorkoutsByUserId = (
   },
 ) => {
   const { limit, offset = 0, startDate, endDate } = options || {};
-
   const params: (string | number)[] = [userId];
 
-  let whereClause = "WHERE user_id = ?";
+  let whereClause = "WHERE workouts.user_id = ?";
 
   if (startDate) {
-    whereClause += " AND date >= ?";
+    whereClause += " AND workouts.date >= ?";
     params.push(startDate);
   }
 
   if (endDate) {
-    whereClause += " AND date <= ?";
+    whereClause += " AND workouts.date <= ?";
     params.push(endDate);
   }
 
-  let dbString = `SELECT id, name, notes, date, created_at FROM workouts
-    ${whereClause}
-    ORDER BY date DESC`;
+  let dbString = `
+  SELECT 
+    workouts.id,
+    workouts.name,
+    workouts.notes,
+    workouts.date,
+    workouts.created_at,
+    GROUP_CONCAT(DISTINCT exercises.code) as exercise_codes
+  FROM workouts
+  LEFT JOIN workout_exercises ON workouts.id = workout_exercises.workout_id
+  LEFT JOIN exercises ON workout_exercises.exercise_id = exercises.id
+  ${whereClause}
+  GROUP BY workouts.id
+  ORDER BY workouts.date DESC, workouts.created_at DESC
+`;
 
   if (limit !== undefined) {
-    // Moved: LIMIT goes after ORDER BY
     dbString += " LIMIT ? OFFSET ?";
     params.push(limit, offset);
   }
 
   const userWorkoutsQuery = db.query(dbString);
+  const workouts = userWorkoutsQuery.all(...params) as Array<{
+    id: string;
+    name: string;
+    notes: string | null;
+    date: string;
+    created_at: string;
+    exercise_codes: string | null;
+  }>;
 
-  const workoutsArray = userWorkoutsQuery.all(...params) as Workout[];
-  return workoutsArray;
+  return workouts.map((workout) => ({
+    id: workout.id,
+    name: workout.name,
+    notes: workout.notes,
+    date: workout.date,
+    created_at: workout.created_at,
+    exercise_codes: workout.exercise_codes
+      ? workout.exercise_codes.split(",")
+      : [],
+  })) as Workout[];
 };
 
 export const getWorkoutById = (

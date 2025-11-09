@@ -7,6 +7,7 @@ export interface Workout {
   date: string;
   created_at: string;
   user_id: string;
+  exercise_codes?: string[];
 }
 
 export type WorkoutWithoutUserId = Omit<Workout, "user_id">;

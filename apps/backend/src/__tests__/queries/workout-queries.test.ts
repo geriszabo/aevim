@@ -122,16 +122,23 @@ describe("getWorkoutsByUserId", () => {
 
     it("applies offset to skip workouts", async () => {
       const count = 5;
-      const workouts = [];
-      for (let i = 0; i < count; i++) {
-        const workout = insertWorkout(db, workoutData, userId);
-        workouts.push(workout);
-      }
+      const workouts = Array.from({ length: count }, (_, i) =>
+        insertWorkout(
+          db,
+          {
+            ...workoutData,
+            date: `2025-01-${15 + i}`,
+          },
+          userId,
+        ),
+      ).sort((a, b) => b.date.localeCompare(a.date));
+
       const offset = 2;
       const limit = 2;
       const result = getWorkoutsByUserId(db, userId, { limit, offset });
+
       expect(result).toHaveLength(limit);
-      // Results should be ordered by date DESC, so offset 2 should skip first 2
+      // Results are ordered by date DESC, so offset 2 will skip first 2
       expect(result[0]?.id).toBe(workouts[2]?.id);
       expect(result[1]?.id).toBe(workouts[3]?.id);
     });
