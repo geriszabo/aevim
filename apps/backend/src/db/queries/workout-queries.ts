@@ -54,7 +54,7 @@ export const getWorkoutsByUserId = (
   }
 
   if (endDate) {
-    whereClause += " AND date <= ?"; // Fixed: was =<, should be
+    whereClause += " AND date <= ?";
     params.push(endDate);
   }
 

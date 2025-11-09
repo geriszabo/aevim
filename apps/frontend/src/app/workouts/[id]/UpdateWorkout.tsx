@@ -42,7 +42,7 @@ export const UpdateWorkout = ({ completeWorkout }: UpdateWorkout) => {
   const formId = "update-workout-form";
 
   return (
-    <Drawer open={isDrawerOpen} onRelease={() => setIsDrawerOpen(false)}>
+    <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
       <DrawerTrigger className="w-full" asChild>
         <Button className="w-full p-6">
           <Typography
