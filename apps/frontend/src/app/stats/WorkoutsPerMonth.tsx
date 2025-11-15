@@ -46,7 +46,7 @@ export function WorkoutsPerMonth({ workouts }: WorkoutsPerMonthProps) {
   const months = Array.from({ length: 12 }, (_, i) =>
     format(addMonths(yearStart, i), "MMMM"),
   );
-  console.log(months);
+
   const getChartData = groupWorkoutsByMonth(workouts);
   const data = months.map((month) =>
     getChartData.find((data) => data.month === month)

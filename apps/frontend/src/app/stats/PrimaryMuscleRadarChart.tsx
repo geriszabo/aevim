@@ -30,16 +30,13 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface PrimaryMuscleRadarChartProps {
-  data: WorkoutWithoutUserId;
+  data: WorkoutWithoutUserId[];
 }
 
 export function PrimaryMuscleRadarChart({
   data,
 }: PrimaryMuscleRadarChartProps) {
-  const allPrimaryMuscles = Array.from(
-    new Set(exercises.map((exercise) => exercise.primaryMuscle)),
-  );
-  const lksg = [
+  const chartCategories = [
     "Back",
     "Full Body",
     "Chest",
@@ -49,9 +46,17 @@ export function PrimaryMuscleRadarChart({
     "Legs",
   ];
 
-  const primaryMuscles = data.exercise_codes
-    ?.map((code) => exercises.find((exercise) => exercise.id === code))
-    .map((exercise) => exercise?.primaryMuscle);
+  const primaryMuscles = data
+    .map((d) =>
+      d.exercise_codes
+        ?.map((code) => exercises.find((exercise) => exercise.id === code))
+        .map((exercise) => exercise?.primaryMuscle),
+    )
+    .flat();
+
+  const dateInterval = data.map((d) => d.date);
+  const workoutDateInterval = `${dateInterval.at(0)}${dateInterval.at(0) !== dateInterval.at(-1) ? "-" + dateInterval.at(-1) : ""}`;
+  console.log({ dateInterval });
 
   const mapPrimaryMuscles = primaryMuscles?.reduce(
     (acc, muscle) => {
@@ -68,22 +73,16 @@ export function PrimaryMuscleRadarChart({
     {} as Record<string, number>,
   );
 
-  const chartData = lksg.map((muscle) => ({
+  const chartData = chartCategories.map((muscle) => ({
     muscle: muscle,
     desktop: mapPrimaryMuscles?.[muscle] || 0.1,
   }));
 
-  console.log({ allPrimaryMuscles });
-
-  console.log({ primaryMuscles });
-
   return (
     <Card>
       <CardHeader className="items-center pb-4">
-        <CardTitle>Radar Chart</CardTitle>
-        <CardDescription>
-          Showing total visitors for the last 6 months
-        </CardDescription>
+        <CardTitle>Exercises breakdown</CardTitle>
+        <CardDescription>Showing exercises per muscle area</CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
         <ChartContainer
@@ -107,7 +106,7 @@ export function PrimaryMuscleRadarChart({
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground flex items-center gap-2 leading-none">
-          January - June 2024
+          {workoutDateInterval}
         </div>
       </CardFooter>
     </Card>

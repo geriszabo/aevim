@@ -22,8 +22,7 @@ const Stats = async () => {
     queryKey: ["workouts"],
     queryFn: () => getWorkouts(cookieStore.toString(), { startDate }),
   });
-
-  console.log({ workouts });
+  // console.log(workouts[1]);
   return (
     <PageContainer>
       <ContentContainer>
@@ -43,12 +42,13 @@ const Stats = async () => {
           </TabsContent>
           <TabsContent value="monthly">
             <WorkoutsPerMonth workouts={workouts} />
+            <PrimaryMuscleRadarChart data={workouts} />
           </TabsContent>
           <TabsContent value="yearly">
             <WorkoutsPerMonth workouts={workouts} />
           </TabsContent>
         </Tabs>
-        <PrimaryMuscleRadarChart data={workouts[1]} />
+        <PrimaryMuscleRadarChart data={workouts} />
       </ContentContainer>
     </PageContainer>
   );
