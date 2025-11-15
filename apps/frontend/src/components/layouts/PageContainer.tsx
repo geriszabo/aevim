@@ -43,11 +43,10 @@ const pageContainerVariants = cva(
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      justifyContent: "center",
       spacing: "md",
       padding: "md",
     },
-  }
+  },
 );
 
 interface PageContainerProps
@@ -77,7 +76,7 @@ export const PageContainer = ({
           spacing,
           padding,
         }),
-        className
+        className,
       )}
     >
       {children}

@@ -10,11 +10,14 @@ interface AuthPageLayoutProps {
   subtitle?: string;
 }
 
-export const AuthPageLayout = ({ children, subtitle = "Log with power, train with purpose" }: AuthPageLayoutProps) => {
+export const AuthPageLayout = ({
+  children,
+  subtitle = "Log with power, train with purpose",
+}: AuthPageLayoutProps) => {
   const router = useRouter();
-  
+
   return (
-    <PageContainer>
+    <PageContainer justifyContent="center">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Logo />
