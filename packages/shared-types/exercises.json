@@ -2,7 +2,7 @@
   {
     "id": "e1",
     "name": "21s Bicep Curl",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -119,7 +119,7 @@
   {
     "id": "e8",
     "name": "Assisted Pistol Squats",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "None",
     "category": "Strength",
@@ -136,7 +136,7 @@
   {
     "id": "e9",
     "name": "Back Extension (Hyperextension)",
-    "primaryMuscle": "Lower Back",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Glutes", "Hamstrings"],
     "equipment": "Hyperextension Bench",
     "category": "Strength",
@@ -153,7 +153,7 @@
   {
     "id": "e10",
     "name": "Back Extension (Machine)",
-    "primaryMuscle": "Lower Back",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Machine",
     "category": "Strength",
@@ -170,7 +170,7 @@
   {
     "id": "e11",
     "name": "Back Extension (Weighted Hyperextension)",
-    "primaryMuscle": "Lower Back",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Glutes", "Hamstrings"],
     "equipment": "Hyperextension Bench",
     "category": "Strength",
@@ -204,7 +204,7 @@
   {
     "id": "e13",
     "name": "Band Pullaparts",
-    "primaryMuscle": "Rear Delts",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Upper Back"],
     "equipment": "Band",
     "category": "Strength",
@@ -238,7 +238,7 @@
   {
     "id": "e15",
     "name": "Behind the Back Bicep Wrist Curl (Barbell)",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Biceps"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -255,7 +255,7 @@
   {
     "id": "e16",
     "name": "Behind the Back Curl (Cable)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Cable",
     "category": "Strength",
@@ -272,7 +272,7 @@
   {
     "id": "e17",
     "name": "Belt Squat (Machine)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Machine",
     "category": "Strength",
@@ -289,7 +289,7 @@
   {
     "id": "e18",
     "name": "Bench Dip",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest", "Shoulders"],
     "equipment": "Bench",
     "category": "Strength",
@@ -374,7 +374,7 @@
   {
     "id": "e23",
     "name": "Bench Press - Close Grip (Barbell)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -459,7 +459,7 @@
   {
     "id": "e28",
     "name": "Bicep Curl (Barbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -476,7 +476,7 @@
   {
     "id": "e29",
     "name": "Bicep Curl (Cable)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Cable",
     "category": "Strength",
@@ -493,7 +493,7 @@
   {
     "id": "e30",
     "name": "Bicep Curl (Dumbbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -510,7 +510,7 @@
   {
     "id": "e31",
     "name": "Bicep Curl (Machine)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Machine",
     "category": "Strength",
@@ -527,7 +527,7 @@
   {
     "id": "e32",
     "name": "Bicep Curl (Suspension)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Core"],
     "equipment": "Suspension Trainer",
     "category": "Strength",
@@ -595,7 +595,7 @@
   {
     "id": "e36",
     "name": "Box Jump",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "Plyo Box",
     "category": "Plyometric",
@@ -612,7 +612,7 @@
   {
     "id": "e37",
     "name": "Box Squat (Barbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -646,7 +646,7 @@
   {
     "id": "e39",
     "name": "Bulgarian Split Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Bench",
     "category": "Strength",
@@ -765,7 +765,7 @@
   {
     "id": "e46",
     "name": "Cable Pull Through",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "Cable",
     "category": "Strength",
@@ -816,8 +816,8 @@
   {
     "id": "e49",
     "name": "Calf Extension (Machine)",
-    "primaryMuscle": "Calves",
-    "secondaryMuscles": [],
+    "primaryMuscle": "Legs",
+    "secondaryMuscles": ["Calves"],
     "equipment": "Machine",
     "category": "Strength",
     "instructions": [
@@ -833,8 +833,8 @@
   {
     "id": "e50",
     "name": "Calf Press (Machine)",
-    "primaryMuscle": "Calves",
-    "secondaryMuscles": [],
+    "primaryMuscle": "Legs",
+    "secondaryMuscles": ["Calves"],
     "equipment": "Machine",
     "category": "Strength",
     "instructions": [
@@ -1020,7 +1020,7 @@
   {
     "id": "e61",
     "name": "Chest Supported Reverse Fly (Dumbbell)",
-    "primaryMuscle": "Rear Delts",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Upper Back"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -1105,7 +1105,7 @@
   {
     "id": "e66",
     "name": "Clamshell",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hip Abductors"],
     "equipment": "None",
     "category": "Strength",
@@ -1224,7 +1224,7 @@
   {
     "id": "e73",
     "name": "Concentration Curl",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -1241,7 +1241,7 @@
   {
     "id": "e74",
     "name": "Cross Body Hammer Curl",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -1309,7 +1309,7 @@
   {
     "id": "e78",
     "name": "Curtsy Lunge (Dumbbell)",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Quads"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -1326,7 +1326,7 @@
   {
     "id": "e79",
     "name": "Cycling",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "Bike",
     "category": "Cardio",
@@ -1360,7 +1360,7 @@
   {
     "id": "e81",
     "name": "Dead Hang",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Back", "Core"],
     "equipment": "Pull Up Bar",
     "category": "Strength",
@@ -1445,7 +1445,7 @@
   {
     "id": "e86",
     "name": "Deadlift (Trap bar)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Back"],
     "equipment": "Trap Bar",
     "category": "Strength",
@@ -1615,7 +1615,7 @@
   {
     "id": "e96",
     "name": "Diamond Push Up",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest"],
     "equipment": "None",
     "category": "Strength",
@@ -1649,7 +1649,7 @@
   {
     "id": "e98",
     "name": "Drag Curl",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -1751,7 +1751,7 @@
   {
     "id": "e104",
     "name": "Dumbbell Step Up",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -1802,7 +1802,7 @@
   {
     "id": "e107",
     "name": "EZ Bar Biceps Curl",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "EZ Bar",
     "category": "Strength",
@@ -1819,7 +1819,7 @@
   {
     "id": "e108",
     "name": "Face Pull",
-    "primaryMuscle": "Rear Delts",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Upper Back"],
     "equipment": "Cable",
     "category": "Strength",
@@ -1836,7 +1836,7 @@
   {
     "id": "e109",
     "name": "Farmers Walk",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Traps", "Core"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -1870,7 +1870,7 @@
   {
     "id": "e111",
     "name": "Fire Hydrants",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hip Abductors"],
     "equipment": "None",
     "category": "Strength",
@@ -1921,7 +1921,7 @@
   {
     "id": "e114",
     "name": "Floor Triceps Dip",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Shoulders"],
     "equipment": "None",
     "category": "Strength",
@@ -1955,7 +1955,7 @@
   {
     "id": "e116",
     "name": "Frog Jumps",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "None",
     "category": "Plyometric",
@@ -1972,7 +1972,7 @@
   {
     "id": "e117",
     "name": "Frog Pumps (Dumbbell)",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -2108,7 +2108,7 @@
   {
     "id": "e125",
     "name": "Front Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Core", "Glutes"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -2125,7 +2125,7 @@
   {
     "id": "e126",
     "name": "Full Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "None",
     "category": "Strength",
@@ -2142,7 +2142,7 @@
   {
     "id": "e127",
     "name": "Glute Bridge",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "None",
     "category": "Strength",
@@ -2159,7 +2159,7 @@
   {
     "id": "e128",
     "name": "Glute Ham Raise",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Lower Back"],
     "equipment": "GHD Machine",
     "category": "Strength",
@@ -2176,7 +2176,7 @@
   {
     "id": "e129",
     "name": "Glute Kickback (Machine)",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -2193,7 +2193,7 @@
   {
     "id": "e130",
     "name": "Glute Kickback on Floor",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "None",
     "category": "Strength",
@@ -2210,7 +2210,7 @@
   {
     "id": "e131",
     "name": "Goblet Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -2227,7 +2227,7 @@
   {
     "id": "e132",
     "name": "Good Morning (Barbell)",
-    "primaryMuscle": "Lower Back",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Hamstrings", "Glutes"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -2261,7 +2261,7 @@
   {
     "id": "e134",
     "name": "Hack Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -2278,7 +2278,7 @@
   {
     "id": "e135",
     "name": "Hack Squat (Machine)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Machine",
     "category": "Strength",
@@ -2295,7 +2295,7 @@
   {
     "id": "e136",
     "name": "Hammer Curl (Band)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Band",
     "category": "Strength",
@@ -2312,7 +2312,7 @@
   {
     "id": "e137",
     "name": "Hammer Curl (Cable)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Cable",
     "category": "Strength",
@@ -2329,7 +2329,7 @@
   {
     "id": "e138",
     "name": "Hammer Curl (Dumbbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -2380,7 +2380,7 @@
   {
     "id": "e141",
     "name": "Hang Clean",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Back", "Shoulders"],
     "equipment": "Barbell",
     "category": "Olympic",
@@ -2482,7 +2482,7 @@
   {
     "id": "e147",
     "name": "High Knee Skips",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Calves", "Core"],
     "equipment": "None",
     "category": "Cardio",
@@ -2499,7 +2499,7 @@
   {
     "id": "e148",
     "name": "High Knees",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Calves", "Core"],
     "equipment": "None",
     "category": "Cardio",
@@ -2533,7 +2533,7 @@
   {
     "id": "e150",
     "name": "Hiking",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "None",
     "category": "Cardio",
@@ -2550,7 +2550,7 @@
   {
     "id": "e151",
     "name": "Hip Abduction (Machine)",
-    "primaryMuscle": "Hip Abductors",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Machine",
     "category": "Strength",
@@ -2567,7 +2567,7 @@
   {
     "id": "e152",
     "name": "Hip Adduction (Machine)",
-    "primaryMuscle": "Hip Adductors",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -2584,7 +2584,7 @@
   {
     "id": "e153",
     "name": "Hip Thrust",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "Bench",
     "category": "Strength",
@@ -2601,7 +2601,7 @@
   {
     "id": "e154",
     "name": "Hip Thrust (Barbell)",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -2618,7 +2618,7 @@
   {
     "id": "e155",
     "name": "Hip Thrust (Machine)",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "Machine",
     "category": "Strength",
@@ -2635,7 +2635,7 @@
   {
     "id": "e156",
     "name": "Hip Thrust (Smith Machine)",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "Smith Machine",
     "category": "Strength",
@@ -2890,7 +2890,7 @@
   {
     "id": "e171",
     "name": "JM Press (Barbell)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -2907,7 +2907,7 @@
   {
     "id": "e172",
     "name": "Jump Rope",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Shoulders"],
     "equipment": "Jump Rope",
     "category": "Cardio",
@@ -2924,7 +2924,7 @@
   {
     "id": "e173",
     "name": "Jump Shrug",
-    "primaryMuscle": "Traps",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Calves"],
     "equipment": "Barbell",
     "category": "Power",
@@ -2941,7 +2941,7 @@
   {
     "id": "e174",
     "name": "Jump Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "None",
     "category": "Plyometric",
@@ -2975,7 +2975,7 @@
   {
     "id": "e176",
     "name": "Jumping Lunge",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "None",
     "category": "Plyometric",
@@ -3026,7 +3026,7 @@
   {
     "id": "e179",
     "name": "Kettlebell Curl",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Kettlebell",
     "category": "Strength",
@@ -3043,7 +3043,7 @@
   {
     "id": "e180",
     "name": "Kettlebell Goblet Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "Kettlebell",
     "category": "Strength",
@@ -3128,7 +3128,7 @@
   {
     "id": "e185",
     "name": "Kettlebell Swing",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings", "Core"],
     "equipment": "Kettlebell",
     "category": "Power",
@@ -3281,7 +3281,7 @@
   {
     "id": "e194",
     "name": "Landmine Squat and Press",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Shoulders", "Core"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -3366,7 +3366,7 @@
   {
     "id": "e199",
     "name": "Lateral Band Walks",
-    "primaryMuscle": "Hip Abductors",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Band",
     "category": "Strength",
@@ -3383,7 +3383,7 @@
   {
     "id": "e200",
     "name": "Lateral Box Jump",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "Plyo Box",
     "category": "Plyometric",
@@ -3400,7 +3400,7 @@
   {
     "id": "e201",
     "name": "Lateral Leg Raises",
-    "primaryMuscle": "Hip Abductors",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "None",
     "category": "Strength",
@@ -3417,7 +3417,7 @@
   {
     "id": "e202",
     "name": "Lateral Lunge",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Hip Adductors"],
     "equipment": "None",
     "category": "Strength",
@@ -3502,7 +3502,7 @@
   {
     "id": "e207",
     "name": "Lateral Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Hip Adductors"],
     "equipment": "None",
     "category": "Strength",
@@ -3519,7 +3519,7 @@
   {
     "id": "e208",
     "name": "Leg Extension (Machine)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -3536,7 +3536,7 @@
   {
     "id": "e209",
     "name": "Leg Press (Machine)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Machine",
     "category": "Strength",
@@ -3553,7 +3553,7 @@
   {
     "id": "e210",
     "name": "Leg Press Horizontal (Machine)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Machine",
     "category": "Strength",
@@ -3621,7 +3621,7 @@
   {
     "id": "e214",
     "name": "Lunge",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "None",
     "category": "Strength",
@@ -3638,7 +3638,7 @@
   {
     "id": "e215",
     "name": "Lunge (Barbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -3655,7 +3655,7 @@
   {
     "id": "e216",
     "name": "Lunge (Dumbbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -3689,7 +3689,7 @@
   {
     "id": "e218",
     "name": "Lying Leg Curl (Machine)",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -3723,7 +3723,7 @@
   {
     "id": "e220",
     "name": "Lying Neck Curls",
-    "primaryMuscle": "Neck",
+    "primaryMuscle": "Back",
     "secondaryMuscles": [],
     "equipment": "None",
     "category": "Strength",
@@ -3740,7 +3740,7 @@
   {
     "id": "e221",
     "name": "Lying Neck Curls (Weighted)",
-    "primaryMuscle": "Neck",
+    "primaryMuscle": "Back",
     "secondaryMuscles": [],
     "equipment": "Weight Plate",
     "category": "Strength",
@@ -3757,7 +3757,7 @@
   {
     "id": "e222",
     "name": "Lying Neck Extension",
-    "primaryMuscle": "Neck",
+    "primaryMuscle": "Back",
     "secondaryMuscles": [],
     "equipment": "None",
     "category": "Strength",
@@ -3774,7 +3774,7 @@
   {
     "id": "e223",
     "name": "Lying Neck Extension (Weighted)",
-    "primaryMuscle": "Neck",
+    "primaryMuscle": "Back",
     "secondaryMuscles": [],
     "equipment": "Weight Plate",
     "category": "Strength",
@@ -3859,7 +3859,7 @@
   {
     "id": "e228",
     "name": "Nordic Hamstrings Curls",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "None",
     "category": "Strength",
@@ -3910,7 +3910,7 @@
   {
     "id": "e231",
     "name": "Overhead Curl (Cable)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Cable",
     "category": "Strength",
@@ -3927,7 +3927,7 @@
   {
     "id": "e232",
     "name": "Overhead Dumbbell Lunge",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Shoulders", "Core"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -4012,7 +4012,7 @@
   {
     "id": "e237",
     "name": "Overhead Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Shoulders", "Core"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -4029,7 +4029,7 @@
   {
     "id": "e238",
     "name": "Overhead Triceps Extension (Cable)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Cable",
     "category": "Strength",
@@ -4046,7 +4046,7 @@
   {
     "id": "e239",
     "name": "Partial Glute Bridge (Barbell)",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -4063,7 +4063,7 @@
   {
     "id": "e240",
     "name": "Pause Squat (Barbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -4097,7 +4097,7 @@
   {
     "id": "e242",
     "name": "Pendulum Squat (Machine)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Machine",
     "category": "Strength",
@@ -4148,7 +4148,7 @@
   {
     "id": "e245",
     "name": "Pinwheel Curl (Dumbbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -4165,7 +4165,7 @@
   {
     "id": "e246",
     "name": "Pistol Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "None",
     "category": "Strength",
@@ -4216,7 +4216,7 @@
   {
     "id": "e249",
     "name": "Plate Curl",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Weight Plate",
     "category": "Strength",
@@ -4318,7 +4318,7 @@
   {
     "id": "e255",
     "name": "Preacher Curl (Barbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -4335,7 +4335,7 @@
   {
     "id": "e256",
     "name": "Preacher Curl (Dumbbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -4352,7 +4352,7 @@
   {
     "id": "e257",
     "name": "Preacher Curl (Machine)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Machine",
     "category": "Strength",
@@ -4539,7 +4539,7 @@
   {
     "id": "e268",
     "name": "Push Up - Close Grip",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest"],
     "equipment": "None",
     "category": "Strength",
@@ -4573,7 +4573,7 @@
   {
     "id": "e270",
     "name": "Rear Delt Reverse Fly (Cable)",
-    "primaryMuscle": "Rear Delts",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Upper Back"],
     "equipment": "Cable",
     "category": "Strength",
@@ -4590,7 +4590,7 @@
   {
     "id": "e271",
     "name": "Rear Delt Reverse Fly (Dumbbell)",
-    "primaryMuscle": "Rear Delts",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Upper Back"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -4607,7 +4607,7 @@
   {
     "id": "e272",
     "name": "Rear Delt Reverse Fly (Machine)",
-    "primaryMuscle": "Rear Delts",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Upper Back"],
     "equipment": "Machine",
     "category": "Strength",
@@ -4624,7 +4624,7 @@
   {
     "id": "e273",
     "name": "Rear Kick (Machine)",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -4675,7 +4675,7 @@
   {
     "id": "e276",
     "name": "Reverse Curl (Barbell)",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Biceps"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -4692,7 +4692,7 @@
   {
     "id": "e277",
     "name": "Reverse Curl (Cable)",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Biceps"],
     "equipment": "Cable",
     "category": "Strength",
@@ -4709,7 +4709,7 @@
   {
     "id": "e278",
     "name": "Reverse Curl (Dumbbell)",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Biceps"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -4726,7 +4726,7 @@
   {
     "id": "e279",
     "name": "Reverse Fly Single Arm (Cable)",
-    "primaryMuscle": "Rear Delts",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Upper Back"],
     "equipment": "Cable",
     "category": "Strength",
@@ -4743,7 +4743,7 @@
   {
     "id": "e280",
     "name": "Reverse Grip Concentration Curl",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Biceps"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -4777,7 +4777,7 @@
   {
     "id": "e282",
     "name": "Reverse Hyperextension",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings", "Lower Back"],
     "equipment": "Hyperextension Bench",
     "category": "Strength",
@@ -4794,7 +4794,7 @@
   {
     "id": "e283",
     "name": "Reverse Lunge",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "None",
     "category": "Strength",
@@ -4811,7 +4811,7 @@
   {
     "id": "e284",
     "name": "Reverse Lunge (Barbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -4828,7 +4828,7 @@
   {
     "id": "e285",
     "name": "Reverse Lunge (Dumbbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -4913,7 +4913,7 @@
   {
     "id": "e290",
     "name": "Romanian Deadlift (Barbell)",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Lower Back"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -4930,7 +4930,7 @@
   {
     "id": "e291",
     "name": "Romanian Deadlift (Dumbbell)",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Lower Back"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -4947,7 +4947,7 @@
   {
     "id": "e292",
     "name": "Rope Cable Curl",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Cable",
     "category": "Strength",
@@ -4998,7 +4998,7 @@
   {
     "id": "e295",
     "name": "Running",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "None",
     "category": "Cardio",
@@ -5117,7 +5117,7 @@
   {
     "id": "e302",
     "name": "Seated Calf Raise",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -5151,7 +5151,7 @@
   {
     "id": "e304",
     "name": "Seated Dip Machine",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest"],
     "equipment": "Machine",
     "category": "Strength",
@@ -5168,7 +5168,7 @@
   {
     "id": "e305",
     "name": "Seated Incline Curl (Dumbbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -5202,7 +5202,7 @@
   {
     "id": "e307",
     "name": "Seated Leg Curl (Machine)",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -5253,7 +5253,7 @@
   {
     "id": "e310",
     "name": "Seated Palms Up Wrist Curl",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -5304,7 +5304,7 @@
   {
     "id": "e313",
     "name": "Seated Triceps Press",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -5321,7 +5321,7 @@
   {
     "id": "e314",
     "name": "Seated Wrist Extension (Barbell)",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Barbell",
     "category": "Strength",
@@ -5389,7 +5389,7 @@
   {
     "id": "e318",
     "name": "Shrug (Barbell)",
-    "primaryMuscle": "Traps",
+    "primaryMuscle": "Back",
     "secondaryMuscles": [],
     "equipment": "Barbell",
     "category": "Strength",
@@ -5406,7 +5406,7 @@
   {
     "id": "e319",
     "name": "Shrug (Cable)",
-    "primaryMuscle": "Traps",
+    "primaryMuscle": "Back",
     "secondaryMuscles": [],
     "equipment": "Cable",
     "category": "Strength",
@@ -5423,7 +5423,7 @@
   {
     "id": "e320",
     "name": "Shrug (Dumbbell)",
-    "primaryMuscle": "Traps",
+    "primaryMuscle": "Back",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -5440,7 +5440,7 @@
   {
     "id": "e321",
     "name": "Shrug (Machine)",
-    "primaryMuscle": "Traps",
+    "primaryMuscle": "Back",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -5457,7 +5457,7 @@
   {
     "id": "e322",
     "name": "Shrug (Smith Machine)",
-    "primaryMuscle": "Traps",
+    "primaryMuscle": "Back",
     "secondaryMuscles": [],
     "equipment": "Smith Machine",
     "category": "Strength",
@@ -5559,7 +5559,7 @@
   {
     "id": "e328",
     "name": "Single Arm Curl (Cable)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Cable",
     "category": "Strength",
@@ -5627,7 +5627,7 @@
   {
     "id": "e332",
     "name": "Single Arm Tricep Extension (Dumbbell)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -5644,7 +5644,7 @@
   {
     "id": "e333",
     "name": "Single Arm Triceps Pushdown (Cable)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Cable",
     "category": "Strength",
@@ -5661,7 +5661,7 @@
   {
     "id": "e334",
     "name": "Single Leg Extensions",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -5678,7 +5678,7 @@
   {
     "id": "e335",
     "name": "Single Leg Glute Bridge",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "None",
     "category": "Strength",
@@ -5695,7 +5695,7 @@
   {
     "id": "e336",
     "name": "Single Leg Hip Thrust",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "Bench",
     "category": "Strength",
@@ -5712,7 +5712,7 @@
   {
     "id": "e337",
     "name": "Single Leg Hip Thrust (Dumbbell)",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Hamstrings"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -5729,7 +5729,7 @@
   {
     "id": "e338",
     "name": "Single Leg Press (Machine)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Machine",
     "category": "Strength",
@@ -5746,7 +5746,7 @@
   {
     "id": "e339",
     "name": "Single Leg Romanian Deadlift (Barbell)",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -5763,7 +5763,7 @@
   {
     "id": "e340",
     "name": "Single Leg Romanian Deadlift (Dumbbell)",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -5780,7 +5780,7 @@
   {
     "id": "e341",
     "name": "Single Leg Standing Calf Raise",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "None",
     "category": "Strength",
@@ -5797,7 +5797,7 @@
   {
     "id": "e342",
     "name": "Single Leg Standing Calf Raise (Barbell)",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Barbell",
     "category": "Strength",
@@ -5814,7 +5814,7 @@
   {
     "id": "e343",
     "name": "Single Leg Standing Calf Raise (Dumbbell)",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -5831,7 +5831,7 @@
   {
     "id": "e344",
     "name": "Single Leg Standing Calf Raise (Machine)",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -5848,7 +5848,7 @@
   {
     "id": "e345",
     "name": "Sissy Squat (Weighted)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Weight Plate",
     "category": "Strength",
@@ -5899,7 +5899,7 @@
   {
     "id": "e348",
     "name": "Skating",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "Skates",
     "category": "Cardio",
@@ -5916,7 +5916,7 @@
   {
     "id": "e349",
     "name": "Skiing",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "Skis",
     "category": "Cardio",
@@ -5933,7 +5933,7 @@
   {
     "id": "e350",
     "name": "Skullcrusher (Barbell)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Barbell",
     "category": "Strength",
@@ -5950,7 +5950,7 @@
   {
     "id": "e351",
     "name": "Skullcrusher (Dumbbell)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -5967,7 +5967,7 @@
   {
     "id": "e352",
     "name": "Sled Push",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "Sled",
     "category": "Power",
@@ -6001,7 +6001,7 @@
   {
     "id": "e354",
     "name": "Snowboarding",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "Snowboard",
     "category": "Cardio",
@@ -6018,7 +6018,7 @@
   {
     "id": "e355",
     "name": "Spider Curl (Barbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -6035,7 +6035,7 @@
   {
     "id": "e356",
     "name": "Spider Curl (Dumbbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -6069,7 +6069,7 @@
   {
     "id": "e358",
     "name": "Spinning",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "Spin Bike",
     "category": "Cardio",
@@ -6103,7 +6103,7 @@
   {
     "id": "e360",
     "name": "Split Squat (Dumbbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -6120,7 +6120,7 @@
   {
     "id": "e361",
     "name": "Sprints",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "None",
     "category": "Cardio",
@@ -6137,7 +6137,7 @@
   {
     "id": "e362",
     "name": "Squat (Band)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Band",
     "category": "Strength",
@@ -6154,7 +6154,7 @@
   {
     "id": "e363",
     "name": "Squat (Barbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Core"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -6171,7 +6171,7 @@
   {
     "id": "e364",
     "name": "Squat (Bodyweight)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "None",
     "category": "Strength",
@@ -6188,7 +6188,7 @@
   {
     "id": "e365",
     "name": "Squat (Dumbbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -6205,7 +6205,7 @@
   {
     "id": "e366",
     "name": "Squat (Machine)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Machine",
     "category": "Strength",
@@ -6222,7 +6222,7 @@
   {
     "id": "e367",
     "name": "Squat (Smith Machine)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Smith Machine",
     "category": "Strength",
@@ -6239,7 +6239,7 @@
   {
     "id": "e368",
     "name": "Squat (Suspension)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Core"],
     "equipment": "Suspension Trainer",
     "category": "Strength",
@@ -6273,7 +6273,7 @@
   {
     "id": "e370",
     "name": "Stair Machine (Floors)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "Stair Machine",
     "category": "Cardio",
@@ -6290,7 +6290,7 @@
   {
     "id": "e371",
     "name": "Stair Machine (Steps)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "Stair Machine",
     "category": "Cardio",
@@ -6307,7 +6307,7 @@
   {
     "id": "e372",
     "name": "Standing Cable Glute Kickbacks",
-    "primaryMuscle": "Glutes",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Cable",
     "category": "Strength",
@@ -6324,7 +6324,7 @@
   {
     "id": "e373",
     "name": "Standing Calf Raise",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "None",
     "category": "Strength",
@@ -6341,7 +6341,7 @@
   {
     "id": "e374",
     "name": "Standing Calf Raise (Barbell)",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Barbell",
     "category": "Strength",
@@ -6358,7 +6358,7 @@
   {
     "id": "e375",
     "name": "Standing Calf Raise (Dumbbell)",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -6375,7 +6375,7 @@
   {
     "id": "e376",
     "name": "Standing Calf Raise (Machine)",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -6392,7 +6392,7 @@
   {
     "id": "e377",
     "name": "Standing Calf Raise (Smith)",
-    "primaryMuscle": "Calves",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Smith Machine",
     "category": "Strength",
@@ -6409,7 +6409,7 @@
   {
     "id": "e378",
     "name": "Standing Leg Curls",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -6443,7 +6443,7 @@
   {
     "id": "e380",
     "name": "Step Up",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Box",
     "category": "Strength",
@@ -6494,7 +6494,7 @@
   {
     "id": "e383",
     "name": "Straight Leg Deadlift",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Lower Back", "Glutes"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -6528,7 +6528,7 @@
   {
     "id": "e385",
     "name": "Sumo Deadlift",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Back"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -6545,7 +6545,7 @@
   {
     "id": "e386",
     "name": "Sumo Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Hip Adductors"],
     "equipment": "None",
     "category": "Strength",
@@ -6562,7 +6562,7 @@
   {
     "id": "e387",
     "name": "Sumo Squat (Barbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Hip Adductors"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -6579,7 +6579,7 @@
   {
     "id": "e388",
     "name": "Sumo Squat (Dumbbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Hip Adductors"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -6596,7 +6596,7 @@
   {
     "id": "e389",
     "name": "Sumo Squat (Kettlebell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Hip Adductors"],
     "equipment": "Kettlebell",
     "category": "Strength",
@@ -6613,7 +6613,7 @@
   {
     "id": "e390",
     "name": "Superman",
-    "primaryMuscle": "Lower Back",
+    "primaryMuscle": "Back",
     "secondaryMuscles": ["Glutes"],
     "equipment": "None",
     "category": "Strength",
@@ -6664,7 +6664,7 @@
   {
     "id": "e393",
     "name": "Thruster (Barbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Shoulders", "Core"],
     "equipment": "Barbell",
     "category": "Power",
@@ -6681,7 +6681,7 @@
   {
     "id": "e394",
     "name": "Thruster (Kettlebell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Shoulders", "Core"],
     "equipment": "Kettlebell",
     "category": "Power",
@@ -6698,7 +6698,7 @@
   {
     "id": "e395",
     "name": "Toe Touch",
-    "primaryMuscle": "Hamstrings",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Lower Back"],
     "equipment": "None",
     "category": "Flexibility",
@@ -6749,7 +6749,7 @@
   {
     "id": "e398",
     "name": "Treadmill",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "Treadmill",
     "category": "Cardio",
@@ -6766,7 +6766,7 @@
   {
     "id": "e399",
     "name": "Triceps Dip",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest", "Shoulders"],
     "equipment": "Dip Bars",
     "category": "Strength",
@@ -6783,7 +6783,7 @@
   {
     "id": "e400",
     "name": "Triceps Dip (Assisted)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest", "Shoulders"],
     "equipment": "Machine",
     "category": "Strength",
@@ -6800,7 +6800,7 @@
   {
     "id": "e401",
     "name": "Triceps Dip (Weighted)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest", "Shoulders"],
     "equipment": "Dip Belt",
     "category": "Strength",
@@ -6817,7 +6817,7 @@
   {
     "id": "e402",
     "name": "Triceps Extension (Barbell)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Barbell",
     "category": "Strength",
@@ -6834,7 +6834,7 @@
   {
     "id": "e403",
     "name": "Triceps Extension (Cable)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Cable",
     "category": "Strength",
@@ -6851,7 +6851,7 @@
   {
     "id": "e404",
     "name": "Triceps Extension (Dumbbell)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -6868,7 +6868,7 @@
   {
     "id": "e405",
     "name": "Triceps Extension (Machine)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Machine",
     "category": "Strength",
@@ -6885,7 +6885,7 @@
   {
     "id": "e406",
     "name": "Triceps Extension (Suspension)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Core"],
     "equipment": "Suspension Trainer",
     "category": "Strength",
@@ -6902,7 +6902,7 @@
   {
     "id": "e407",
     "name": "Triceps Kickback (Cable)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Cable",
     "category": "Strength",
@@ -6919,7 +6919,7 @@
   {
     "id": "e408",
     "name": "Triceps Kickback (Dumbbell)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -6936,7 +6936,7 @@
   {
     "id": "e409",
     "name": "Triceps Pressdown",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Cable",
     "category": "Strength",
@@ -6953,7 +6953,7 @@
   {
     "id": "e410",
     "name": "Triceps Pushdown",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Cable",
     "category": "Strength",
@@ -6970,7 +6970,7 @@
   {
     "id": "e411",
     "name": "Triceps Rope Pushdown",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Cable",
     "category": "Strength",
@@ -7072,7 +7072,7 @@
   {
     "id": "e417",
     "name": "Waiter Curl (Dumbbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -7089,7 +7089,7 @@
   {
     "id": "e418",
     "name": "Walking",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes", "Calves"],
     "equipment": "None",
     "category": "Cardio",
@@ -7106,7 +7106,7 @@
   {
     "id": "e419",
     "name": "Walking Lunge",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "None",
     "category": "Strength",
@@ -7123,7 +7123,7 @@
   {
     "id": "e420",
     "name": "Walking Lunge (Dumbbell)",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Glutes"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -7140,7 +7140,7 @@
   {
     "id": "e421",
     "name": "Wall Ball",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Shoulders", "Core"],
     "equipment": "Medicine Ball",
     "category": "Power",
@@ -7157,7 +7157,7 @@
   {
     "id": "e422",
     "name": "Wall Sit",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": [],
     "equipment": "None",
     "category": "Strength",
@@ -7208,7 +7208,7 @@
   {
     "id": "e425",
     "name": "Wide-Elbow Triceps Press (Dumbbell)",
-    "primaryMuscle": "Triceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Chest"],
     "equipment": "Dumbbell",
     "category": "Strength",
@@ -7225,7 +7225,7 @@
   {
     "id": "e426",
     "name": "Wrist Roller",
-    "primaryMuscle": "Forearms",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": [],
     "equipment": "Wrist Roller",
     "category": "Strength",
@@ -7259,7 +7259,7 @@
   {
     "id": "e428",
     "name": "Zercher Squat",
-    "primaryMuscle": "Quads",
+    "primaryMuscle": "Legs",
     "secondaryMuscles": ["Core", "Back"],
     "equipment": "Barbell",
     "category": "Strength",
@@ -7276,7 +7276,7 @@
   {
     "id": "e429",
     "name": "Zottman Curl (Dumbbell)",
-    "primaryMuscle": "Biceps",
+    "primaryMuscle": "Arms",
     "secondaryMuscles": ["Forearms"],
     "equipment": "Dumbbell",
     "category": "Strength",
