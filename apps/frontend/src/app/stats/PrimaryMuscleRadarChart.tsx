@@ -36,16 +36,6 @@ interface PrimaryMuscleRadarChartProps {
 export function PrimaryMuscleRadarChart({
   data,
 }: PrimaryMuscleRadarChartProps) {
-  const chartCategories = [
-    "Back",
-    "Full Body",
-    "Chest",
-    "Core",
-    "Shoulders",
-    "Arms",
-    "Legs",
-  ];
-
   const primaryMuscles = data
     .map((d) =>
       d.exercise_codes
@@ -55,8 +45,7 @@ export function PrimaryMuscleRadarChart({
     .flat();
 
   const dateInterval = data.map((d) => d.date);
-  const workoutDateInterval = `${dateInterval.at(0)}${dateInterval.at(0) !== dateInterval.at(-1) ? "-" + dateInterval.at(-1) : ""}`;
-  console.log({ dateInterval });
+  const cardFooterString = `${dateInterval.at(0)}${dateInterval.at(0) !== dateInterval.at(-1) ? "-" + dateInterval.at(-1) : ""}`;
 
   const mapPrimaryMuscles = primaryMuscles?.reduce(
     (acc, muscle) => {
@@ -106,9 +95,19 @@ export function PrimaryMuscleRadarChart({
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground flex items-center gap-2 leading-none">
-          {workoutDateInterval}
+          {cardFooterString}
         </div>
       </CardFooter>
     </Card>
   );
 }
+
+const chartCategories = [
+  "Back",
+  "Full Body",
+  "Chest",
+  "Core",
+  "Shoulders",
+  "Arms",
+  "Legs",
+] as const;

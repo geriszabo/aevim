@@ -1,7 +1,6 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
@@ -21,18 +20,9 @@ import {
 import { WorkoutWithoutUserId } from "@aevim/shared-types";
 import { addMonths, format, startOfYear } from "date-fns";
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
-
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  workout: {
+    label: "Workout",
     color: "var(--color-decor)",
   },
 } satisfies ChartConfig;
@@ -41,7 +31,14 @@ interface WorkoutsPerMonthProps {
   workouts: WorkoutWithoutUserId[];
 }
 
-export function WorkoutsPerMonth({ workouts }: WorkoutsPerMonthProps) {
+//TODO: leave this component for now, come back when workout lenghths are stored
+//display workout length per week instead of workout count
+
+export function WorkoutFrequencyBarChart({ workouts }: WorkoutsPerMonthProps) {
+  if (workouts.length <= 1) {
+    return <EmptyData />;
+  }
+
   const yearStart = startOfYear(new Date());
   const months = Array.from({ length: 12 }, (_, i) =>
     format(addMonths(yearStart, i), "MMMM"),
@@ -52,20 +49,20 @@ export function WorkoutsPerMonth({ workouts }: WorkoutsPerMonthProps) {
     getChartData.find((data) => data.month === month)
       ? {
           month,
-          desktop: getChartData.find((data) => data.month === month)?.desktop,
+          workout: getChartData.find((data) => data.month === month)?.workout,
         }
-      : { month, desktop: 0 },
+      : { month, workout: 0 },
   );
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>TITLE</CardTitle>
+        <CardDescription>DESCRIPTION</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart accessibilityLayer data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -78,7 +75,7 @@ export function WorkoutsPerMonth({ workouts }: WorkoutsPerMonthProps) {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
+            <Bar dataKey="workout" fill="var(--color-workout)" radius={8} />
           </BarChart>
         </ChartContainer>
       </CardContent>
@@ -104,5 +101,17 @@ function groupWorkoutsByMonth(workouts: WorkoutWithoutUserId[]) {
       },
       {} as Record<string, number>,
     ),
-  ).map(([month, desktop]) => ({ month, desktop }));
+  ).map(([month, workout]) => ({ month, workout }));
 }
+
+const EmptyData = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>TITLE</CardTitle>
+        <CardDescription>DESCRIPTION</CardDescription>
+        <CardContent>This is your latest workout</CardContent>
+      </CardHeader>
+    </Card>
+  );
+};
