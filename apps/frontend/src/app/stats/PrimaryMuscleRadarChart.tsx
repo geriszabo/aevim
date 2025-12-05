@@ -1,6 +1,5 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 
 import {
@@ -42,7 +41,7 @@ export function PrimaryMuscleRadarChart({
     .map((d) =>
       d.exercise_codes
         ?.map((code) => exercises.find((exercise) => exercise.id === code))
-        .map((exercise) => exercise?.primaryMuscle),
+        .map((exercise) => exercise?.primaryMuscle)
     )
     .flat();
 
