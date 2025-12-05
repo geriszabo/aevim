@@ -35,8 +35,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "bun run format && git add -A .",
-      "pre-push": "bun run test"
+      "pre-commit": "bun run format && git add -A ."
     }
   },
   "devDependencies": {

@@ -1,0 +1,7 @@
+
+
+echo "🪩 Pre-push checks... 🕺"
+
+bun run test
+
+echo "✅ Pre-push checks passed!"
