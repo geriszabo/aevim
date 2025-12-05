@@ -52,3 +52,20 @@ export const apiClient = async <T>(
 
   return response.json();
 };
+
+export const mapPrimaryMuscles = (primaryMuscles: (string | undefined)[]) => {
+  return primaryMuscles?.reduce(
+    (acc, muscle) => {
+      if (!muscle) {
+        return acc;
+      }
+      if (!acc[muscle]) {
+        acc[muscle] = 1;
+      } else if (acc[muscle]) {
+        acc[muscle] += 1;
+      }
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+};
