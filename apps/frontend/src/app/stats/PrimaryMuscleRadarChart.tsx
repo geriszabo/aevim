@@ -41,7 +41,7 @@ export function PrimaryMuscleRadarChart({
     .map((d) =>
       d.exercise_codes
         ?.map((code) => exercises.find((exercise) => exercise.id === code))
-        .map((exercise) => exercise?.primaryMuscle)
+        .map((exercise) => exercise?.primaryMuscle),
     )
     .flat();
 
@@ -55,7 +55,7 @@ export function PrimaryMuscleRadarChart({
 
   const chartData = chartCategories.map((muscle) => ({
     muscle: muscle,
-    desktop: primaryMusclesSummary?.[muscle] || 0.1
+    desktop: primaryMusclesSummary?.[muscle] || 0.1,
   }));
 
   console.log(data);
