@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Typography } from "@/components/ui/typography";
 
 import { MoreHorizontal, Edit, Trash2 } from "lucide-react";
@@ -13,6 +18,7 @@ interface WorkoutTemplateCardProps {
   lastUsed: string;
 }
 
+//TODO: use this later as workout template, dont delete for now
 export const WorkoutTemplateCard = (template: WorkoutTemplateCardProps) => {
   return (
     <Card key={template.id} className="p-4">

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/typography";
 import { Card } from "@/components/ui/card";
-import { Plus, Play, User } from "lucide-react";
+import { Play, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +15,6 @@ import { Logo } from "@/components/Logo/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import { postLogout } from "@/hooks/api/auth/postLogout";
 import { useRouter } from "next/navigation";
-import { WorkoutTemplateCard } from "./WorkoutTemplateCard";
 import { RecentWorkoutsCard } from "./RecentWorkoutsCard";
 import { useGetWorkouts } from "@/hooks/workouts/useGetWorkouts";
 import { ModeToggle } from "@/components/ModeToggle/ModeToggle";
@@ -57,7 +56,7 @@ export default function Dashboard() {
 
   return (
     <PageContainer display="block">
-      <ModeToggle/>
+      <ModeToggle />
       <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -132,23 +131,6 @@ export default function Dashboard() {
           </div>
         </Card>
         <div>
-          <div className="flex items-center justify-between mb-4">
-            <Typography variant="body" size="lg">
-              Your Workouts
-            </Typography>
-            <Button variant="outline" size="sm">
-              <Plus className="h-4 w-4 mr-2" />
-              New
-            </Button>
-          </div>
-
-          <div className="space-y-3">
-            {workoutTemplates.map((template) => (
-              <WorkoutTemplateCard {...template} key={template.id} />
-            ))}
-          </div>
-        </div>
-        <div>
           <Typography variant="body" size="lg" className="mb-4">
             Recent Sessions
           </Typography>
@@ -164,27 +146,6 @@ export default function Dashboard() {
     </PageContainer>
   );
 }
-
-const workoutTemplates = [
-  {
-    id: "1",
-    name: "Push Day",
-    exercises: 5,
-    lastUsed: "Today",
-  },
-  {
-    id: "2",
-    name: "Pull Day",
-    exercises: 6,
-    lastUsed: "2 days ago",
-  },
-  {
-    id: "3",
-    name: "Leg Day",
-    exercises: 4,
-    lastUsed: "4 days ago",
-  },
-];
 
 const stats = [
   { amount: 4, label: "This week" },
