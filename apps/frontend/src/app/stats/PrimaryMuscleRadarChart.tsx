@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/chart";
 import { WorkoutWithoutUserId } from "@aevim/shared-types";
 import exercises from "@aevim/shared-types/exercises.json";
+import { mapPrimaryMuscles } from "@/hooks/helpers";
+import { Typography } from "@/components/ui/typography";
 
 export const description = "A radar chart";
 
@@ -45,27 +47,19 @@ export function PrimaryMuscleRadarChart({
     .flat();
 
   const dateInterval = data.map((d) => d.date);
-  const cardFooterString = `${dateInterval.at(0)}${dateInterval.at(0) !== dateInterval.at(-1) ? "-" + dateInterval.at(-1) : ""}`;
+  const cardFooterString =
+    data && data.length
+      ? `${dateInterval.at(0)}${dateInterval.at(0) !== dateInterval.at(-1) ? "-" + dateInterval.at(-1) : ""}`
+      : "";
 
-  const mapPrimaryMuscles = primaryMuscles?.reduce(
-    (acc, muscle) => {
-      if (!muscle) {
-        return acc;
-      }
-      if (!acc[muscle]) {
-        acc[muscle] = 1;
-      } else if (acc[muscle]) {
-        acc[muscle] += 1;
-      }
-      return acc;
-    },
-    {} as Record<string, number>,
-  );
+  const primaryMusclesSummary = mapPrimaryMuscles(primaryMuscles);
 
   const chartData = chartCategories.map((muscle) => ({
     muscle: muscle,
-    desktop: mapPrimaryMuscles?.[muscle] || 0.1,
+    desktop: primaryMusclesSummary?.[muscle] || 0.1,
   }));
+
+  console.log(data);
 
   return (
     <Card>
@@ -74,26 +68,27 @@ export function PrimaryMuscleRadarChart({
         <CardDescription>Showing exercises per muscle area</CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
-          <RadarChart data={chartData} innerRadius={20}>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <PolarAngleAxis dataKey="muscle" />
-            <PolarGrid />
-            <Radar
-              dataKey="desktop"
-              fill="var(--color-decor)"
-              fillOpacity={0.6}
-            />
-          </RadarChart>
-        </ChartContainer>
+        {!data || data.length === 0 ? (
+          <Typography variant="muted">No data available yet</Typography>
+        ) : (
+          <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square max-h-[250px]"
+          >
+            <RadarChart data={chartData} innerRadius={20}>
+              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+              <PolarAngleAxis dataKey="muscle" />
+              <PolarGrid />
+              <Radar
+                dataKey="desktop"
+                fill="var(--color-decor)"
+                fillOpacity={0.6}
+              />
+            </RadarChart>
+          </ChartContainer>
+        )}
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
         <div className="text-muted-foreground flex items-center gap-2 leading-none">
           {cardFooterString}
         </div>
