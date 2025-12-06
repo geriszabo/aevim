@@ -2,9 +2,6 @@
 
 echo "🪩 Pre-commit checks... 🕺"
 
-bun run lint:backend
-bun run lint:frontend
-
 bunx lint-staged
 
 echo "✅ Pre-commit checks passed!"

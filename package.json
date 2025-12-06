@@ -56,6 +56,10 @@
     "lint-staged": "^16.2.6"
   },
   "lint-staged": {
-    "**/*.{js,jsx,html,css,ts,tsx,json}": "prettier --write"
+    "**/*.{ts,tsx,js,jsx}": [
+      "eslint",
+      "prettier --write"
+    ],
+    "**/*.{html,css,json}": "prettier --write"
   }
 }
