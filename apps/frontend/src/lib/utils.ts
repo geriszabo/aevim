@@ -19,7 +19,26 @@ export const getUnit = (metricType: SetMetrics | undefined) => {
   }
 };
 
-export const toSentenceCase = (str: string | undefined): string => {
-  if (!str) return "";
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+export const toSentenceCase = (string: string | undefined) => {
+  if (!string) return string;
+  return (
+    string.toLowerCase().charAt(0).toUpperCase() + string.toLowerCase().slice(1)
+  );
+};
+
+export const mapPrimaryMuscles = (primaryMuscles: (string | undefined)[]) => {
+  return primaryMuscles?.reduce(
+    (acc, muscle) => {
+      if (!muscle) {
+        return acc;
+      }
+      if (!acc[muscle]) {
+        acc[muscle] = 1;
+      } else if (acc[muscle]) {
+        acc[muscle] += 1;
+      }
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 };
