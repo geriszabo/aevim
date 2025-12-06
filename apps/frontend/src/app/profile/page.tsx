@@ -9,6 +9,7 @@ import { cookies } from "next/headers";
 import { QueryClient } from "@tanstack/react-query";
 import { getUserBiometrics } from "@/hooks/api/userBiometrics/getUserBiometrics";
 import { UpdateProfilePage } from "./UpdateProfilePage";
+import { UserMenu } from "./UserMenu";
 
 export default async function ProfilePage() {
   const cookieStore = await cookies();
@@ -21,6 +22,9 @@ export default async function ProfilePage() {
 
   return (
     <PageContainer display={"block"}>
+      <ContentContainer className="flex justify-end">
+        <UserMenu />
+      </ContentContainer>
       <SectionContainer>
         <ContentContainer>
           <Card>
@@ -39,7 +43,8 @@ export default async function ProfilePage() {
                 ))
               ) : (
                 <Typography variant="body">
-                  No biometrics data available. Please add your biometrics below.
+                  No biometrics data available. Please add your biometrics
+                  below.
                 </Typography>
               )}
             </CardContent>
