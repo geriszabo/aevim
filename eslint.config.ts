@@ -17,6 +17,7 @@ export default defineConfig([
           varsIgnorePattern: "^_",
         },
       ],
+      "no-extra-boolean-cast": "off",
     },
   },
   tseslint.configs.recommended,
