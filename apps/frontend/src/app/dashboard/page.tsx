@@ -1,92 +1,29 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/typography";
 import { Card } from "@/components/ui/card";
-import { Play, User } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Play } from "lucide-react";
 import { PageContainer } from "@/components/layouts/PageContainer";
-import { Logo } from "@/components/Logo/Logo";
-import { useAuth } from "@/contexts/AuthContext";
-import { postLogout } from "@/hooks/api/auth/postLogout";
-import { useRouter } from "next/navigation";
 import { RecentWorkoutsCard } from "./RecentWorkoutsCard";
-import { useGetWorkouts } from "@/hooks/workouts/useGetWorkouts";
-import { ModeToggle } from "@/components/ModeToggle/ModeToggle";
+import { QueryClient } from "@tanstack/react-query";
+import { getWorkouts } from "@/hooks/api/workouts/getWorkouts";
+import { cookies } from "next/headers";
+import DashboardHeaderSection from "./DashboardHeaderSection";
+import Link from "next/link";
 
-export default function Dashboard() {
-  const router = useRouter();
-  const { data: recentWorkouts, isLoading } = useGetWorkouts();
-  const { user } = useAuth();
+export default async function Dashboard() {
+  const cookieStore = await cookies();
+  const queryClient = new QueryClient();
 
-  if (isLoading) {
-    return (
-      <PageContainer display="block">
-        <div className="container mx-auto px-4 py-6">
-          <div className="text-center">
-            <Typography variant="heading" size="3xl" className="mb-2">
-              Loading...
-            </Typography>
-          </div>
-        </div>
-      </PageContainer>
-    );
-  }
-
-  const handleLogout = async () => {
-    try {
-      const res = await postLogout();
-      if (res.ok) {
-        await res.json();
-        router.push("/");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleRouteToProfile = () => {
-    router.push("/profile");
-  };
+  const { workouts: recentWorkouts } = await queryClient.fetchQuery({
+    queryKey: ["workouts"],
+    queryFn: () => getWorkouts(cookieStore.toString(), { limit: 5 }),
+  });
 
   return (
     <PageContainer display="block">
-      <ModeToggle />
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Logo size="2xl" />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10">
-                  <User className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={handleRouteToProfile}>
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogout}>
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      </header>
       <main className="container mx-auto px-4 py-6 space-y-6">
         <div className="text-center">
-          <Typography variant="heading" size="3xl" className="mb-2">
-            {`Ready to Log ${user?.username}?`}
-          </Typography>
-          <Typography variant="muted">
-            Time to crush your next session
-          </Typography>
+          <DashboardHeaderSection />
         </div>
         <div className="grid grid-cols-3 gap-4">
           {stats.map((stat) => (
@@ -108,12 +45,10 @@ export default function Dashboard() {
             <Button
               size="lg"
               className="w-full h-14 text-lg font-bold font-heading"
-              onClick={() => router.push("/workouts/create")}
             >
               <Play className="mr-2 h-5 w-5" />
-              QUICK START
+              <Link href="/workouts/create">QUICK START</Link>
             </Button>
-
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -136,7 +71,7 @@ export default function Dashboard() {
           </Typography>
 
           <div className="space-y-3">
-            {recentWorkouts?.workouts.map((workout) => (
+            {recentWorkouts.map((workout) => (
               <RecentWorkoutsCard {...workout} key={workout.id} />
             ))}
           </div>
