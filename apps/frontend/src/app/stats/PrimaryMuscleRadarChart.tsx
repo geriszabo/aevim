@@ -18,8 +18,9 @@ import {
 } from "@/components/ui/chart";
 import { WorkoutWithoutUserId } from "@aevim/shared-types";
 import exercises from "@aevim/shared-types/exercises.json";
-import { mapPrimaryMuscles } from "@/hooks/helpers";
+
 import { Typography } from "@/components/ui/typography";
+import { mapPrimaryMuscles } from "@/lib/utils";
 
 export const description = "A radar chart";
 
