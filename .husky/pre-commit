@@ -1,5 +1,3 @@
-
-
 echo "🪩 Pre-commit checks... 🕺"
 
 bunx lint-staged
